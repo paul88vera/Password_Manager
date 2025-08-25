@@ -1,0 +1,21 @@
+const mysql = require("mysql2/promise");
+require("@dotenvx/dotenvx").config();
+
+async function connectDB() {
+  try {
+    const connection = await mysql.createConnection({
+      host: "localhost",
+      user: process.env.VITE_SQL_USER,
+      password: process.env.VITE_SQL_PASSWD,
+      database: process.env.VITE_SQL_DB,
+    });
+
+    console.log("Database connected successfully!");
+    return connection;
+  } catch (err) {
+    console.error("Database connection failed:", err.message);
+    throw err;
+  }
+}
+
+module.exports = connectDB();

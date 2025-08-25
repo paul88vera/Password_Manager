@@ -1,0 +1,36 @@
+-- Drop existing tables in correct dependency order
+DROP TABLE IF EXISTS PassUsers;
+DROP TABLE IF EXISTS PassClient;
+
+-- Create Users table
+CREATE TABLE PassUsers (
+  UserID INT PRIMARY KEY AUTO_INCREMENT,
+  UserName VARCHAR(255) NOT NULL UNIQUE,
+  UserEmail VARCHAR(255) NOT NULL UNIQUE,
+  UserLogin VARCHAR(255) NOT NULL UNIQUE,
+  UserRole VARCHAR(255) NOT NULL,
+  UserActive BOOLEAN NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Client table
+CREATE TABLE PassClient (
+  ClientID INT PRIMARY KEY AUTO_INCREMENT,
+  ClientUsername VARCHAR(255) NOT NULL UNIQUE,
+  ClientEmail VARCHAR(255) NOT NULL UNIQUE,
+  POC INT NOT NULL,
+  FOREIGN KEY (POC) REFERENCES PassUsers(UserID),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Passwords table
+CREATE TABLE Passwords (
+  PassID INT PRIMARY KEY,
+  PassSite VARCHAR(255) NOT NULL,
+  PassUsername VARCHAR(255) NOT NULL,
+  PassPW VARCHAR(255) NOT NULL,
+  Client INT NOT NULL,
+  UNIQUE (PassID),
+  FOREIGN KEY (Client) REFERENCES PassClient(ClientID),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
