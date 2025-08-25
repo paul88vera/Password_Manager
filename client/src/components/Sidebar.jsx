@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaCircleUser } from "react-icons/fa6";
+import { FaSignOutAlt } from "react-icons/fa";
 import { FaHouse } from "react-icons/fa6";
 import { PiVaultFill } from "react-icons/pi";
 import { FaGear } from "react-icons/fa6";
@@ -12,6 +13,9 @@ const Sidebar = () => {
         <Link to="/login" title="Login">
           <FaCircleUser className="text-lime-500 text-[2em] p-0 hover:scale-[110%]" />
         </Link>
+        {/* <Link to="/logout" title="Logout">
+          <FaSignOutAlt className="text-lime-500 text-[2em] p-0 hover:scale-[110%]" />
+        </Link> */}
       </div>
       <div className="flex flex-col gap-8 text-center p-0">
         <Link to="/dashboard" title="Home">
