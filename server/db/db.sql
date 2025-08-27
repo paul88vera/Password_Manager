@@ -1,3 +1,3 @@
-DROP DATABASE IF EXISTS projectManager;
-CREATE DATABASE projectManager;
-USE projectManager;
+DROP DATABASE IF EXISTS passManager;
+CREATE DATABASE passManager;
+USE passManager;

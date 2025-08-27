@@ -4,11 +4,11 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./router.jsx";
 import { ErrorBoundary } from "./pages/ErrorBoundary.jsx";
 import "./index.css";
-import Dashboard from "./pages/Dashboard.jsx";
+import { DashboardRoute } from "./pages/Dashboard.jsx";
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
-  <ErrorBoundary fallback={<Dashboard />}>
+  <ErrorBoundary fallback={DashboardRoute}>
     <RouterProvider router={router} />
   </ErrorBoundary>
   // </StrictMode>
