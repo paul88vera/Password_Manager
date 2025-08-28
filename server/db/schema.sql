@@ -26,7 +26,7 @@ CREATE TABLE PassClient (
 
 -- Create Passwords table
 CREATE TABLE Passwords (
-  PassID INT PRIMARY KEY,
+  PassID INT PRIMARY KEY AUTO_INCREMENT,
   PassSite VARCHAR(255) NOT NULL,
   PassUsername VARCHAR(255) NOT NULL,
   PassPW VARCHAR(255) NOT NULL,

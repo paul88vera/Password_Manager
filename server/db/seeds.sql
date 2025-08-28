@@ -1,13 +1,18 @@
--- Seed Users
+-- Insert Users
 INSERT INTO PassUsers (UserName, UserEmail, UserLogin, UserRole, UserActive)
 VALUES
-('Alice Smith', 'alice@example.com', 'alice123', 'Admin', TRUE),
-('Bob Johnson', 'bob@example.com', 'bobbyJ', 'Manager', TRUE),
-('Carol White', 'carol@example.com', 'carolW', 'Staff', FALSE);
+('John Doe', 'john@example.com', 'johnd', 'Admin', TRUE),
+('Jane Smith', 'jane@example.com', 'janes', 'Manager', TRUE),
+('Mark Lee', 'mark@example.com', 'markl', 'Staff', FALSE);
 
--- Seed Clients
-INSERT INTO PassClient (ClientUsername, ClientEmail, POC, ClientNotes)
+-- Insert Clients
+INSERT INTO PassClient (ClientUsername, ClientEmail, ClientNotes, POC)
 VALUES
-('client_one', 'client1@example.com', 1, 'No Notes'),
-('client_two', 'client2@example.com', 2, ''),
-('client_three', 'client3@example.com', 1, '');
+('ClientA', 'clientA@example.com', 'VIP Client', 1),
+('ClientB', 'clientB@example.com', 'Regular Client', 2);
+
+-- Insert Passwords
+INSERT INTO Passwords (PassSite, PassUsername, PassPW, Client)
+VALUES
+('example.com', 'clientAuser', 'password123', 1),
+('testsite.com', 'clientBuser', 'securepass', 2);

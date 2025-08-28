@@ -3,8 +3,8 @@ import { baseApi } from "./base";
 // @route    GET /Client
 // @desc     Get all Client
 // @access   Private - Public For Now
-export function getClients(options) {
-  return baseApi.get("client", options).then((res) => res.data);
+export function getClients() {
+  return baseApi.get("client").then((res) => res.data);
 }
 
 // @route    GET /Client/:id
@@ -29,4 +29,3 @@ export function deleteClient(id) {
     window.location.replace("/dashboard");
   });
 }
-
