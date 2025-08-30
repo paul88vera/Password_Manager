@@ -6,13 +6,13 @@ VALUES
 ('Mark Lee', 'mark@example.com', 'markl', 'Staff', FALSE);
 
 -- Insert Clients
-INSERT INTO PassClient (ClientUsername, ClientEmail, ClientNotes, POC)
+INSERT INTO PassClient (ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC)
 VALUES
-('ClientA', 'clientA@example.com', 'VIP Client', 1),
-('ClientB', 'clientB@example.com', 'Regular Client', 2);
+('ClientA', 'Arkham Asylum', 'clientA@example.com', 'VIP Client', 1),
+('ClientB', 'Consultin Group', 'clientB@example.com', 'Regular Client', 2);
 
 -- Insert Passwords
 INSERT INTO Passwords (PassSite, PassUsername, PassPW, PassHTML, Client)
 VALUES
-('example', 'clientAuser', 'password123', 'www.example.com', 1),
-('testsite', 'clientBuser', 'securepass', 'testsite.com', 2);
+('Example', 'clientAuser', 'password123', 'example.com', 1),
+('Testsite', 'clientBuser', 'securepass', 'testsite.com', 2);

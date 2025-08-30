@@ -1,4 +1,5 @@
 -- Drop existing tables in correct dependency order
+DROP TABLE IF EXISTS Passwords;
 DROP TABLE IF EXISTS PassUsers;
 DROP TABLE IF EXISTS PassClient;
 

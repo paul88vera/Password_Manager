@@ -23,7 +23,7 @@ const ClientInner = () => {
           <p className="text-3xl font-bold text-slate-950">
             {client[0].ClientUsername || "Unknown"} <br />{" "}
             <span className="text-2xl font-normal">
-              {client[0].ClientCompany || "Arkham Asylum"}
+              {client[0].ClientCompany || "Unknown"}
             </span>
           </p>
           <Link className="!text-slate-950 absolute right-0 top-0 button flex flex-row gap-2 flex-nowrap align-middle hover:!text-lime-500 hover:scale-105 transition ease-in-out">
@@ -40,8 +40,13 @@ const ClientInner = () => {
               <div
                 className="flex flex-row gap-4 align-middle justify-start w-full relative cursor-pointer"
                 onClick={openedCard}>
-                <RiUserSearchFill className="text-4xl bg-slate-900 " />
-                <h3 className="bg-slate-900 ">{pass.PassSite}</h3>
+                <RiUserSearchFill className="text-6xl bg-slate-900 " />
+                <div className="flex flex-col justify-start">
+                  <h3 className="bg-slate-900 ">{pass.PassSite}</h3>
+                  <Link to={pass.PassHTML} className="text-[1rem] font-thin">
+                    {pass.PassHTML}
+                  </Link>
+                </div>
                 {isOpen ? (
                   <MdEdit className="text-2xl text-lime-500 hover:text-slate-300 absolute right-0" />
                 ) : null}
