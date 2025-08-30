@@ -8,7 +8,7 @@ import Settings from "./pages/Settings";
 import AddPassword from "./pages/AddPassword";
 import Login from "./pages/Login";
 import { ClientInnerRoute } from "./pages/ClientInner";
-import SitesInner from "./pages/SitesInner";
+import { SiteInnerPage } from "./pages/SitesInner";
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
             path: "sites",
             children: [
               { index: true, ...SitesRoute },
-              { path: ":id", element: <SitesInner /> },
+              { path: ":id", ...SiteInnerPage },
             ],
           },
           { path: "login", element: <Login /> },

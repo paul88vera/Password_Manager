@@ -25,7 +25,7 @@ router.get("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { id } = req.params;
-    const query = "SELECT * FROM Passwords WHERE ClientID = ?";
+    const query = "SELECT * FROM Passwords WHERE Client = ?";
     const [results] = await connection.query(query, [id]);
     res.json(results);
   } catch (err) {

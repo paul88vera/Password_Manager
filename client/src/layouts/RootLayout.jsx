@@ -5,10 +5,10 @@ export default function RootLayout() {
   return (
     <div className="flex flex-row gap-0 flex-nowrap">
       <ScrollRestoration />
-      <div id="sidebar" className="float-left p-0 w-15">
+      <div id="sidebar" className="float-left p-0 w-15 h-[100dvh]">
         <Sidebar />
       </div>
-      <div className="main-container float-end p-8 w-85">
+      <div className="main-container float-end p-8 w-85 h-[100dvh]">
         <Outlet />
       </div>
     </div>

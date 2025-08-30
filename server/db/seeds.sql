@@ -12,7 +12,7 @@ VALUES
 ('ClientB', 'clientB@example.com', 'Regular Client', 2);
 
 -- Insert Passwords
-INSERT INTO Passwords (PassSite, PassUsername, PassPW, Client)
+INSERT INTO Passwords (PassSite, PassUsername, PassPW, PassHTML, Client)
 VALUES
-('example.com', 'clientAuser', 'password123', 1),
-('testsite.com', 'clientBuser', 'securepass', 2);
+('example', 'clientAuser', 'password123', 'www.example.com', 1),
+('testsite', 'clientBuser', 'securepass', 'testsite.com', 2);
