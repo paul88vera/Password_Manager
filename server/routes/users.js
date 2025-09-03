@@ -44,12 +44,12 @@ router.put("/:id", async (req, res) => {
     const query =
       "UPDATE PassUsers SET UserName = ?, UserEmail = ?, UserLogin = ?, UserRole = ?, UserActive = ?";
     const [results] = await connection.query(query, [
+      id,
       UserName,
       UserEmail,
       UserLogin,
       UserRole,
       UserActive,
-      id,
     ]);
     res.json(results);
   } catch (err) {
@@ -69,12 +69,12 @@ router.post("/", async (req, res) => {
     const query =
       "INSERT INTO PassUsers (UserName, UserEmail, UserLogin, UserRole, UserActive) VALUES (?,?,?,?,?)";
     const [results] = await connection.query(query, [
+      id,
       UserName,
       UserEmail,
       UserLogin,
       UserRole,
       UserActive,
-      id,
     ]);
     res.json(results);
   } catch (err) {

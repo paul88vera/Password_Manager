@@ -7,7 +7,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: var(--color-slate-950);
+  /* background-color: var(--color-slate-950); */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -48,6 +48,8 @@ button {
   color: var(--color-slate-950);
   cursor: pointer;
   transition: background-color 0.25s;
+  user-select: none;
+  -moz-user-select: none;
 }
 
 button:focus,
@@ -73,7 +75,7 @@ button:focus-visible {
 }
 
 #modal {
-  display: none; /* flex = production */
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-content: center;
@@ -81,6 +83,7 @@ button:focus-visible {
 }
 #modal-container {
   display: flex;
+  position: absolute;
   justify-content: center;
   align-content: center;
   height: 100vh;

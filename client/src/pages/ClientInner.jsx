@@ -1,59 +1,160 @@
-import { Link, useLoaderData } from "react-router-dom";
-import { getPassword } from "../api/passwords";
+import { Form, Link, redirect, useLoaderData } from "react-router-dom";
+import { createPassword, getPassword } from "../api/passwords";
 import { RiUserSearchFill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { FaPlusCircle } from "react-icons/fa";
 import { getClient } from "../api/clients";
 import { useState } from "react";
+import Modal from "../components/Modal";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const ClientInner = () => {
   const { passwords, client } = useLoaderData();
-  const [isOpen, setIsOpen] = useState();
+  const [openCardId, setOpenCardId] = useState();
+  const [modalOpened, setModalOpened] = useState();
 
-  const openedCard = () => {
-    setIsOpen((current) => !current);
+  const [siteName, setSiteName] = useState("");
+  const [siteUrl, setSiteUrl] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const toggleCard = (id) => {
+    setOpenCardId((current) => (current === id ? null : id));
+  };
+
+  const toggleModal = () => {
+    setModalOpened((current) => !current);
   };
 
   return (
-    <div className="flex flex-col gap-4 mt-4">
-      <div className="grid grid-cols-1 grid-rows-auto flex-nowrap justify-between bg-slate-200 p-8 rounded-2xl min-w-dvh">
+    <div className="flex flex-col gap-4 md:mt-4 pb-8">
+      {modalOpened ? (
+        <Modal onClick={toggleModal}>
+          <Form
+            method="post"
+            action={`/client/${client[0]?.ClientID}`}
+            className="form_container flex flex-col justify-between gap-4">
+            <input
+              name="passClient"
+              id="passClient"
+              type="hidden"
+              value={client[0]?.ClientID}
+            />
+            <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+              <label htmlFor="siteName" className="w-40">
+                Site Name:
+              </label>
+              <input
+                type="text"
+                name="siteName"
+                id="siteName"
+                className="w-60"
+                defaultValue={siteName}
+                onChange={(e) => {
+                  setSiteName(e.target.value);
+                }}
+              />
+            </div>
+            <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+              <label htmlFor="site_url" className="w-40">
+                Site URL:
+              </label>
+              <input
+                type="text"
+                name="site_url"
+                id="site_url"
+                className="w-60"
+                onChange={(e) => {
+                  setSiteUrl(e.target.value);
+                }}
+                placeholder={siteUrl}
+              />
+            </div>
+            <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+              <label htmlFor="username" className="w-40">
+                Username:
+              </label>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                className="w-60"
+                defaultValue={username}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                }}
+              />
+            </div>
+            <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+              <label htmlFor="password" className="w-40">
+                Password:
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                className="w-60"
+                defaultValue={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              />
+            </div>
+
+            <div className="flex flex-row gap-2 mt-2">
+              <button
+                type="cancel"
+                className="button cancel-btn"
+                onClick={toggleModal}>
+                Cancel
+              </button>
+              <button type="submit" className="button save-btn">
+                Save
+              </button>
+            </div>
+          </Form>
+        </Modal>
+      ) : null}
+      <div className="flex flex-col flex-nowrap justify-between bg-slate-300 p-8 rounded-2xl">
         <div className="flex flex-row gap-4 justify-start relative">
           <RiUserSearchFill className="text-7xl text-slate-900" />
           <p className="text-3xl font-bold text-slate-950">
-            {client[0].ClientUsername || "Unknown"} <br />{" "}
+            {client[0]?.ClientUsername || "Unknown"} <br />
             <span className="text-2xl font-normal">
-              {client[0].ClientCompany || "Unknown"}
+              {client[0]?.ClientCompany || "Unknown"}
             </span>
           </p>
-          <Link className="!text-slate-950 absolute right-0 top-0 button flex flex-row gap-2 flex-nowrap align-middle hover:!text-lime-500 hover:scale-105 transition ease-in-out">
+          <Link
+            className="!text-slate-950 absolute right-0 top-0 button flex flex-row gap-2 flex-nowrap align-middle hover:!text-lime-500 hover:scale-105 transition ease-in-out"
+            onClick={() => setModalOpened(true)}>
             Add Password <FaPlusCircle className="text-2xl text-slate-900" />
           </Link>
         </div>
 
-        <div className="mt-8">
-          {/* password cards - need to map */}
+        <div className="flex flex-row flex-wrap gap-4 mt-8">
           {passwords.map((pass) => (
             <div
-              className="site-card text-slate-300 flex flex-col flex-nowrap gap-0 align-middle justify-start p-4 rounded-lg bg-slate-900 font-bold max-w-[380px]  hover:scale-105 transition ease-in-out"
+              className="site-card text-slate-300 flex flex-col flex-nowrap gap-4 align-middle justify-start p-4  pb-0 rounded-lg bg-slate-900 font-bold w-full md:max-w-[380px] hover:bg-slate-950 transition ease-in-out"
               key={pass.PassID}>
               <div
                 className="flex flex-row gap-4 align-middle justify-start w-full relative cursor-pointer"
-                onClick={openedCard}>
-                <RiUserSearchFill className="text-6xl bg-slate-900 " />
+                onClick={() => toggleCard(pass.PassID)}>
+                <RiUserSearchFill className="text-6xl  " />
                 <div className="flex flex-col justify-start">
-                  <h3 className="bg-slate-900 ">{pass.PassSite}</h3>
+                  <h3 className=" ">{pass.PassSite}</h3>
                   <Link to={pass.PassHTML} className="text-[1rem] font-thin">
                     {pass.PassHTML}
                   </Link>
                 </div>
-                {isOpen ? (
+                {openCardId === pass.PassID ? (
                   <MdEdit className="text-2xl text-lime-500 hover:text-slate-300 absolute right-0" />
                 ) : null}
               </div>
               <div className="p-0">
-                {isOpen ? (
-                  <div className="flex flex-col gap-4 pt-4">
+                {openCardId === pass.PassID ? (
+                  <div
+                    className="flex flex-col gap-4 pt-0 pb-8"
+                    key={pass.PassID}>
                     <label
                       htmlFor="username"
                       className="flex flex-row flex-nowrap gap-4 justify-end">
@@ -61,7 +162,6 @@ const ClientInner = () => {
                       <input
                         type="text"
                         name="username"
-                        id="username"
                         defaultValue={pass.PassUsername}
                         className="w-auto bg-slate-300 text-slate-900 pl-2 rounded-sm"
                       />
@@ -73,7 +173,6 @@ const ClientInner = () => {
                       <input
                         type="text"
                         name="password"
-                        id="password"
                         defaultValue={pass.PassPW}
                         className="w-auto bg-slate-300 text-slate-900 pl-2 rounded-sm"
                       />
@@ -89,6 +188,30 @@ const ClientInner = () => {
   );
 };
 
+async function action({ request }) {
+  const formData = await request.formData();
+  const PassSite = formData.get("siteName");
+  const PassUsername = formData.get("username");
+  const PassHTML = formData.get("site_url");
+  const PassPW = formData.get("password");
+  const Client = formData.get("passClient");
+
+  const password = await createPassword(
+    {
+      PassSite,
+      PassUsername,
+      PassHTML,
+      PassPW,
+      Client,
+    },
+    { signal: request.signal }
+  );
+
+  password;
+
+  return redirect(`/client/${password.Client}`);
+}
+
 async function loader({ request: { signal }, params: { id } }) {
   const passwords = await getPassword(id, { signal });
   const client = await getClient(id, { signal });
@@ -97,5 +220,6 @@ async function loader({ request: { signal }, params: { id } }) {
 
 export const ClientInnerRoute = {
   loader,
+  action,
   element: <ClientInner />,
 };

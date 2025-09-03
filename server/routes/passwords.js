@@ -41,13 +41,13 @@ router.put("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { id } = req.params;
-    const { PassID, PassSite, PassUsername, PassPW, Client } = req.body;
+    const { PassSite, PassUsername, PassHTML, PassPW, Client } = req.body;
     const query =
-      "UPDATE Passwords SET PassID = ?, PassSite = ?, PassUsername = ?, PassPW = ?, Client = ?";
+      "UPDATE Passwords SET PassSite = ?, PassUsername = ?, PassPW = ?, Client = ?";
     const [results] = await connection.query(query, [
-      PassID,
       PassSite,
       PassUsername,
+      PassHTML,
       PassPW,
       Client,
       id,
@@ -60,20 +60,22 @@ router.put("/:id", async (req, res) => {
 });
 
 // @route    POST /passwords
-// @desc     Create passwords
+// @desc     Create password
 // @access   Private - Public For Now
 router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { PassID, PassSite, PassUsername, PassPW, Client } = req.body;
+    const { id } = req.params;
+    const { PassSite, PassUsername, PassHTML, PassPW, Client } = req.body;
     const query =
-      "INSERT INTO Passwords (PassID, PassSite, PassUsername, PassPW, Client) VALUES (?,?,?,?,?)";
+      "INSERT INTO Passwords (PassSite, PassUsername, PassHTML, PassPW, Client) VALUES (?,?,?,?,?)";
     const [results] = await connection.query(query, [
-      PassID,
       PassSite,
       PassUsername,
+      PassHTML,
       PassPW,
       Client,
+      id,
     ]);
     res.json(results);
   } catch (err) {

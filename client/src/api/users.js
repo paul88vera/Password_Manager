@@ -3,8 +3,8 @@ import { baseApi } from "./base";
 // @route    GET /user
 // @desc     Get all users
 // @access   Private - Public For Now
-export function getUsers(options) {
-  return baseApi.get("user", options).then((res) => res.data);
+export function getUsers() {
+  return baseApi.get("user").then((res) => res.data);
 }
 
 // @route    GET /user/:id

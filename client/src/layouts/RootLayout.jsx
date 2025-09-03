@@ -3,12 +3,14 @@ import Sidebar from "../components/Sidebar";
 
 export default function RootLayout() {
   return (
-    <div className="flex flex-row gap-0 flex-nowrap">
+    <div className="flex flex-col-reverse md:flex-row gap-0 flex-nowrap">
       <ScrollRestoration />
-      <div id="sidebar" className="float-left p-0 w-15 h-[100dvh]">
+      <div
+        id="sidebar"
+        className="md:float-left float-none p-0 md:w-15 md:h-[100dvh] w-screen">
         <Sidebar />
       </div>
-      <div className="main-container float-end p-8 w-85 h-[100dvh]">
+      <div className="main-container md:float-end md:p-8 p-4 w-full">
         <Outlet />
       </div>
     </div>

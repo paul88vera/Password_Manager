@@ -5,7 +5,7 @@ import Error from "./pages/Error";
 import { ClientRoute } from "./pages/Client";
 import { SitesRoute } from "./pages/Sites";
 import Settings from "./pages/Settings";
-import AddPassword from "./pages/AddPassword";
+import { AddClientRoute } from "./pages/AddClient";
 import Login from "./pages/Login";
 import { ClientInnerRoute } from "./pages/ClientInner";
 import { SiteInnerPage } from "./pages/SitesInner";
@@ -35,7 +35,7 @@ export const router = createBrowserRouter([
           },
           { path: "login", element: <Login /> },
           { path: "settings", element: <Settings /> },
-          { path: "add", element: <AddPassword /> },
+          { path: "add-client", ...AddClientRoute },
           { path: "*", element: <Error /> },
         ],
       },

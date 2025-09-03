@@ -40,17 +40,17 @@ router.put("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { id } = req.params;
-    const { ClientID, ClientUsername, ClientEmail, ClientNotes, POC } =
+    const { ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC } =
       req.body;
     const query =
-      "UPDATE PassClient SET ClientID = ?, ClientUsername = ?, ClientEmail = ?, ClientNotes = ?, POC = ?";
+      "UPDATE PassClient SET ClientUsername = ?, ClientCompany = ?, ClientEmail = ?, ClientNotes = ?, POC = ?";
     const [results] = await connection.query(query, [
-      id,
-      ClientID,
       ClientUsername,
+      ClientCompany,
       ClientEmail,
       ClientNotes,
       POC,
+      id,
     ]);
     res.json(results);
   } catch (err) {
@@ -65,16 +65,18 @@ router.put("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { ClientID, ClientUsername, ClientEmail, ClientNotes, POC } =
+    const { id } = req.params;
+    const { ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC } =
       req.body;
     const query =
-      "INSERT INTO PassClient (ClientID, ClientUsername, ClientEmail, ClientNotes, POC) VALUES (?,?,?,?,?)";
+      "INSERT INTO PassClient (ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC) VALUES (?,?,?,?,?)";
     const [results] = await connection.query(query, [
-      ClientID,
       ClientUsername,
+      ClientCompany,
       ClientEmail,
       ClientNotes,
       POC,
+      id,
     ]);
     res.json(results);
   } catch (err) {

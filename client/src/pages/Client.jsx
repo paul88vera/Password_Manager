@@ -1,6 +1,5 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { getClients } from "../api/clients";
-import Modal from "../components/Modal";
 import { RiUserSearchFill } from "react-icons/ri";
 
 /* 
@@ -18,7 +17,7 @@ const Client = () => {
       {client.map((item) => (
         <Link
           to={`/client/${item.ClientID}`}
-          className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold max-w-[350px] hover:text-lime-500 hover:scale-105 transition ease-in-out"
+          className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-100 md:max-w-[350px] hover:text-lime-500 md:hover:scale-105 hover:opacity-90 transition ease-in-out"
           key={item.ClientID}>
           {/* <img src="#" alt={item.ClientUsername} /> */}
           <RiUserSearchFill className="text-4xl text-slate-900 hover:text-lime-500" />
@@ -27,8 +26,6 @@ const Client = () => {
           </h3>
         </Link>
       ))}
-
-      <Modal />
     </div>
   );
 };
