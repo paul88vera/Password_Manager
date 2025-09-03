@@ -5,7 +5,6 @@ const PasswordModal = ({ toggle, id }) => {
   const [siteUrl, setSiteUrl] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const PORT = import.meta.VITE_API_URL;
 
   return (
     <Form

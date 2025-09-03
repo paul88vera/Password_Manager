@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { FaCircleUser } from "react-icons/fa6";
 // import { FaSignOutAlt } from "react-icons/fa";
+import { IoMdCloseCircleOutline } from "react-icons/io";
+
 import { RiUserSearchFill } from "react-icons/ri";
 import { CgWebsite } from "react-icons/cg";
 import { CiCirclePlus } from "react-icons/ci";
@@ -15,7 +17,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="flex flex-row flex-nowrap md:flex-col justify-center md:justify-between md:gap-4 bg-gray-900 md:py-8 md:p-2 py-2 md:min-h-screen md:w-15 items-center fixed w-screen bottom-0 z-50 gap-10">
+    <div className="flex flex-row flex-nowrap md:flex-col justify-center md:justify-between md:gap-4 bg-gray-900 md:py-8 md:p-2 py-2 md:min-h-full md:w-15 items-center fixed w-screen bottom-0 z-50 gap-10">
       <div>
         <Link to="/login" title="Login">
           <FaCircleUser className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
@@ -37,12 +39,12 @@ const Sidebar = () => {
           <CiCirclePlus className="text-lime-500 text-[2.5em] p-0 hover:scale-[110%] transition ease-in-out cursor-pointer" />
         </div>
         {selectAdd ? (
-          <Modal className="justify-center align-middle h-screen">
-            <div className="flex flex-col justify-start border-lime-500 border-2 px-4 pb-8 pt-4 rounded-md absolute md:top-70 top-100 w-50 bg-slate-900">
+          <Modal styles="justify-center align-middle bg-transparent">
+            <div className="flex flex-col justify-start border-lime-500 border-2 px-4 pb-8 pt-4 rounded-md w-50 right-10 bottom-20 md:left-20 md:bottom-10 bg-slate-900 fixed">
               <div
-                className="flex flex-row justify-end cursor-pointer"
+                className="flex flex-row justify-end cursor-pointer mb-2"
                 onClick={showModal}>
-                X
+                <IoMdCloseCircleOutline className="text-3xl" />
               </div>
               <div className="flex flex-col gap-4 text-center">
                 <Link to="/add-user" onClick={showModal}>

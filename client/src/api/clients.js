@@ -25,7 +25,7 @@ export function editClient(id, options) {
 // @desc     Create Client
 // @access   Private - Public For Now
 export function createClient(data, options) {
-  return baseApi.put(`client`, data, options).then((res) => res.data);
+  return baseApi.post(`client`, data, options).then((res) => res.data);
 }
 
 // @route    DELETE /Client/:id

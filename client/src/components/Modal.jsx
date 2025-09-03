@@ -1,8 +1,8 @@
 import { createPortal } from "react-dom";
 
-const Modal = ({ children }) => {
+const Modal = ({ children, styles }) => {
   return createPortal(
-    <div id="modal-container">{children}</div>,
+    <div id={`modal-container ${styles}`}>{children}</div>,
     document.querySelector("#modal")
   );
 };

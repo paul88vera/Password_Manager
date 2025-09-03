@@ -20,17 +20,22 @@ const SitesInner = () => {
     (item) => item.Client
   );
 
-  // TODO this is wrong. Need to fix
   const clientsFiltered = client.filter((item) =>
     clientIDFilterByPassword.includes(item.ClientID)
   );
 
   return (
     <div className="flex flex-col gap-4 mt-4 mb-8">
+      <h2>
+        Website:{" "}
+        <span className="text-3xl font-bold">
+          {passwordFilteredBySite[0].PassSite}
+        </span>
+      </h2>
       {clientsFiltered.map((item) => (
         <Link
           to={`/client/${item.ClientID}`}
-          className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-100 md:max-w-[350px] hover:text-lime-500 md:hover:scale-105 hover:opacity-90 transition ease-in-out"
+          className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px] hover:text-lime-500 md:hover:scale-105 hover:opacity-90 transition ease-in-out"
           key={item.ClientID}>
           {/* <img src="#" alt={clientFilter} /> */}
           <RiUserSearchFill className="text-4xl text-slate-900 hover:text-lime-500" />

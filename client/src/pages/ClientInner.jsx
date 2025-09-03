@@ -1,5 +1,5 @@
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
-import { createPassword, getPassword } from "../api/passwords";
+import { createPassword, getPasswords } from "../api/passwords";
 import { RiUserSearchFill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { FaPlusCircle } from "react-icons/fa";
@@ -13,6 +13,7 @@ const ClientInner = () => {
   const [openCardId, setOpenCardId] = useState();
   const [modalOpened, setModalOpened] = useState();
 
+  const [passClient] = useState(client[0]?.ClientID);
   const [siteName, setSiteName] = useState("");
   const [siteUrl, setSiteUrl] = useState("");
   const [username, setUsername] = useState("");
@@ -26,19 +27,24 @@ const ClientInner = () => {
     setModalOpened((current) => !current);
   };
 
+  const passwordFilter = passwords.filter(
+    (item) => item.Client === client[0]?.ClientID
+  );
+
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
       {modalOpened ? (
-        <Modal onClick={toggleModal}>
+        <Modal>
           <Form
             method="post"
-            action={`/client/${client[0]?.ClientID}`}
+            action={`/client/${passClient}`}
+            onSubmit={toggleModal}
             className="form_container flex flex-col justify-between gap-4">
             <input
               name="passClient"
               id="passClient"
               type="hidden"
-              value={client[0]?.ClientID}
+              defaultValue={passClient}
             />
             <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
               <label htmlFor="siteName" className="w-40">
@@ -103,12 +109,15 @@ const ClientInner = () => {
 
             <div className="flex flex-row gap-2 mt-2">
               <button
-                type="cancel"
+                type="button"
                 className="button cancel-btn"
                 onClick={toggleModal}>
                 Cancel
               </button>
-              <button type="submit" className="button save-btn">
+              <button
+                type="submit"
+                className="button save-btn"
+                onSubmitCapture={toggleModal}>
                 Save
               </button>
             </div>
@@ -116,23 +125,25 @@ const ClientInner = () => {
         </Modal>
       ) : null}
       <div className="flex flex-col flex-nowrap justify-between bg-slate-300 p-8 rounded-2xl">
-        <div className="flex flex-row gap-4 justify-start relative">
-          <RiUserSearchFill className="text-7xl text-slate-900" />
-          <p className="text-3xl font-bold text-slate-950">
-            {client[0]?.ClientUsername || "Unknown"} <br />
-            <span className="text-2xl font-normal">
-              {client[0]?.ClientCompany || "Unknown"}
-            </span>
-          </p>
-          <Link
-            className="!text-slate-950 absolute right-0 top-0 button flex flex-row gap-2 flex-nowrap align-middle hover:!text-lime-500 hover:scale-105 transition ease-in-out"
+        <div className="flex flex-row gap-4 justify-between relative w-full">
+          <div className="flex flex-row flex-nowrap gap-8">
+            <RiUserSearchFill className="text-7xl text-slate-900" />
+            <p className="text-3xl font-bold text-slate-950">
+              {client[0]?.ClientUsername || "Unknown"} <br />
+              <span className="text-2xl font-normal">
+                {client[0]?.ClientCompany || "Unknown"}
+              </span>
+            </p>
+          </div>
+          <button
+            className="!text-slate-950 button flex flex-row gap-2 flex-nowrap align-middle hover:scale-105 transition ease-in-out"
             onClick={() => setModalOpened(true)}>
             Add Password <FaPlusCircle className="text-2xl text-slate-900" />
-          </Link>
+          </button>
         </div>
 
         <div className="flex flex-row flex-wrap gap-4 mt-8">
-          {passwords.map((pass) => (
+          {passwordFilter.map((pass) => (
             <div
               className="site-card text-slate-300 flex flex-col flex-nowrap gap-4 align-middle justify-start p-4  pb-0 rounded-lg bg-slate-900 font-bold w-full md:max-w-[380px] hover:bg-slate-950 transition ease-in-out"
               key={pass.PassID}>
@@ -209,11 +220,11 @@ async function action({ request }) {
 
   password;
 
-  return redirect(`/client/${password.Client}`);
+  return redirect(`./`);
 }
 
 async function loader({ request: { signal }, params: { id } }) {
-  const passwords = await getPassword(id, { signal });
+  const passwords = await getPasswords({ signal });
   const client = await getClient(id, { signal });
   return { passwords: passwords, client: client };
 }
