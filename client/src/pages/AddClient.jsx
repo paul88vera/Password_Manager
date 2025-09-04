@@ -11,7 +11,7 @@ const AddClient = () => {
   const [ClientUsername, setClientUsername] = useState("");
   const [ClientCompany, setClientCompany] = useState("");
   const [ClientNotes, setClientNotes] = useState("");
-  const [POC, setPOC] = useState("");
+  // const [POC, setPOC] = useState("");
   const [ClientEmail, setClientEmail] = useState("");
   /* 
 USERS (PassUsers):
@@ -27,7 +27,6 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
       <Form
         method="post"
-        action={`/client`}
         className="form_container flex flex-col justify-between gap-4 !h-full">
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="ClientUsername" className="w-40">
@@ -81,10 +80,7 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
           </label>
           <select name="ClientPOC" id="POC">
             {users.map((item) => (
-              <option
-                value={`${item.UserID}`}
-                key={item.UserID}
-                onSelect={(e) => setPOC(e.target.value)}>
+              <option value={item.UserID} key={item.UserID}>
                 {item.UserName}
               </option>
             ))}
@@ -122,25 +118,23 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
 async function action({ request }) {
   const formData = await request.formData();
   const ClientUsername = formData.get("ClientUsername");
-  const ClientComplany = formData.get("ClientCompany");
+  const ClientCompany = formData.get("ClientCompany");
   const ClientEmail = formData.get("ClientEmail");
   const ClientNotes = formData.get("ClientNotes");
-  const Client = formData.get("passClient");
+  const POC = formData.get("ClientPOC");
 
-  const password = await createClient(
+  const client = await createClient(
     {
       ClientUsername,
-      ClientComplany,
+      ClientCompany,
       ClientEmail,
       ClientNotes,
-      Client,
+      POC,
     },
     { signal: request.signal }
   );
 
-  password;
-
-  return redirect(`/client/`);
+  return redirect(`/client/${client.insertId}`);
 }
 
 async function loader({ request: { signal } }) {

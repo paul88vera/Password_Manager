@@ -88,16 +88,18 @@ router.post("/", async (req, res) => {
 // @route    DELETE /Clients/:id
 // @desc     Delete Client by id
 // @access   Private - Public For Now
-router.delete("/:id", (req, res) => {
-  try {
-    const { id } = req.params;
-    const query = "DELETE FROM PassClient WHERE ClientID = ?";
-    db.query(query, [id]);
-    res.send("Client Deleted");
-  } catch {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
+router.delete("/:id", async (req, res) => {
+  const connection = await db;
+  const { id } = req.params;
+  const query = "DELETE FROM PassClient WHERE ClientID = ?";
+  connection.query(query, [id], (err, result) => {
+    if (err) {
+      res.status(500).send("Server error");
+      console.error(err);
+    } else {
+      res.send("Client Deleted");
+    }
+  });
 });
 
 module.exports = router;

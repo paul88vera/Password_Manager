@@ -7,10 +7,10 @@ export default function RootLayout() {
       <ScrollRestoration />
       <div
         id="sidebar"
-        className="md:float-left float-none p-0 md:w-15 h-[100dvh] w-screen">
+        className="md:float-left float-none p-0 md:w-15 w-screen">
         <Sidebar />
       </div>
-      <div className="main-container md:float-end md:p-8 p-4 w-full">
+      <div className="main-container md:float-end md:p-8 p-4 pb-10 w-full">
         <Outlet />
       </div>
     </div>

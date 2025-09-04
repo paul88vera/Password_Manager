@@ -39,10 +39,10 @@ const Sidebar = () => {
           <CiCirclePlus className="text-lime-500 text-[2.5em] p-0 hover:scale-[110%] transition ease-in-out cursor-pointer" />
         </div>
         {selectAdd ? (
-          <Modal styles="justify-center align-middle bg-transparent">
-            <div className="flex flex-col justify-start border-lime-500 border-2 px-4 pb-8 pt-4 rounded-md w-50 right-10 bottom-20 md:left-20 md:bottom-10 bg-slate-900 fixed">
+          <Modal styles="justify-center align-middle bg-transparent ">
+            <div className="flex flex-col justify-start border-lime-500 border-2 px-4 pb-8 pt-4 rounded-md w-40 bg-slate-900 absolute top-[32rem] md:top-[34rem] right-[-24rem] md:right-[-15rem]">
               <div
-                className="flex flex-row justify-end cursor-pointer mb-2"
+                className="flex flex-row justify-end cursor-pointer absolute right-[-1.7rem] top-[-1.7rem]"
                 onClick={showModal}>
                 <IoMdCloseCircleOutline className="text-3xl" />
               </div>

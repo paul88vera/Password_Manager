@@ -78,7 +78,9 @@ button:focus-visible {
   flex-direction: column;
   justify-content: center;
   align-content: center;
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 #modal-container {
   display: flex;
@@ -95,16 +97,9 @@ button:focus-visible {
   justify-content: flex-start;
   align-content: center;
   flex-wrap: nowrap;
-  width: 100%;
-  height: auto;
-  max-height: 500px;
   background-color: var(--color-slate-800);
   border: 2px solid var(--color-lime-500);
   border-radius: 20px;
-  position: relative;
-  top: 10%;
-  left: -2%;
-  transform: translate(0%, 50%);
   padding: 2rem;
 }
 

@@ -33,6 +33,6 @@ export function createClient(data, options) {
 // @access   Private - Public For Now
 export function deleteClient(id) {
   return baseApi.delete(`client/${id}`, { method: "DELETE" }).then(() => {
-    window.location.replace("/dashboard");
+    window.location.replace("/client");
   });
 }

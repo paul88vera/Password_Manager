@@ -3,7 +3,8 @@ import { createPassword, getPasswords } from "../api/passwords";
 import { RiUserSearchFill } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { FaPlusCircle } from "react-icons/fa";
-import { getClient } from "../api/clients";
+import { IoIosTrash } from "react-icons/io";
+import { deleteClient, getClient } from "../api/clients";
 import { useState } from "react";
 import Modal from "../components/Modal";
 
@@ -12,6 +13,7 @@ const ClientInner = () => {
   const { passwords, client } = useLoaderData();
   const [openCardId, setOpenCardId] = useState();
   const [modalOpened, setModalOpened] = useState();
+  const [editIcon, setEditIcon] = useState();
 
   const [passClient] = useState(client[0]?.ClientID);
   const [siteName, setSiteName] = useState("");
@@ -34,112 +36,130 @@ const ClientInner = () => {
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
       {modalOpened ? (
-        <Modal>
-          <Form
-            method="post"
-            action={`/client/${passClient}`}
-            onSubmit={toggleModal}
-            className="form_container flex flex-col justify-between gap-4">
-            <input
-              name="passClient"
-              id="passClient"
-              type="hidden"
-              defaultValue={passClient}
-            />
-            <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
-              <label htmlFor="siteName" className="w-40">
-                Site Name:
-              </label>
+        <Modal styles="flex flex-col w-screen">
+          <div className="bg-slate-900 flex flex-col align-middle justify-center">
+            <Form
+              method="post"
+              action={`/client/${passClient}`}
+              onSubmit={toggleModal}
+              className="form_container flex flex-col justify-between gap-4 max-w-100">
               <input
-                type="text"
-                name="siteName"
-                id="siteName"
-                className="w-60"
-                defaultValue={siteName}
-                onChange={(e) => {
-                  setSiteName(e.target.value);
-                }}
+                name="passClient"
+                id="passClient"
+                type="hidden"
+                defaultValue={passClient}
               />
-            </div>
-            <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
-              <label htmlFor="site_url" className="w-40">
-                Site URL:
-              </label>
-              <input
-                type="text"
-                name="site_url"
-                id="site_url"
-                className="w-60"
-                onChange={(e) => {
-                  setSiteUrl(e.target.value);
-                }}
-                placeholder={siteUrl}
-              />
-            </div>
-            <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
-              <label htmlFor="username" className="w-40">
-                Username:
-              </label>
-              <input
-                type="text"
-                name="username"
-                id="username"
-                className="w-60"
-                defaultValue={username}
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                }}
-              />
-            </div>
-            <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
-              <label htmlFor="password" className="w-40">
-                Password:
-              </label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                className="w-60"
-                defaultValue={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-            </div>
+              <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+                <label htmlFor="siteName" className="w-40">
+                  Site Name:
+                </label>
+                <input
+                  type="text"
+                  name="siteName"
+                  id="siteName"
+                  className="w-60"
+                  defaultValue={siteName}
+                  onChange={(e) => {
+                    setSiteName(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+                <label htmlFor="site_url" className="w-40">
+                  Site URL:
+                </label>
+                <input
+                  type="text"
+                  name="site_url"
+                  id="site_url"
+                  className="w-60"
+                  onChange={(e) => {
+                    setSiteUrl(e.target.value);
+                  }}
+                  placeholder={siteUrl}
+                />
+              </div>
+              <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+                <label htmlFor="username" className="w-40">
+                  Username:
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  className="w-60"
+                  defaultValue={username}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+                <label htmlFor="password" className="w-40">
+                  Password:
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  className="w-60"
+                  defaultValue={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+              </div>
 
-            <div className="flex flex-row gap-2 mt-2">
-              <button
-                type="button"
-                className="button cancel-btn"
-                onClick={toggleModal}>
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="button save-btn"
-                onSubmitCapture={toggleModal}>
-                Save
-              </button>
-            </div>
-          </Form>
+              <div className="flex flex-row gap-2 mt-2">
+                <button
+                  type="button"
+                  className="button cancel-btn"
+                  onClick={toggleModal}>
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="button save-btn"
+                  onSubmitCapture={toggleModal}>
+                  Save
+                </button>
+              </div>
+            </Form>
+          </div>
         </Modal>
       ) : null}
-      <div className="flex flex-col flex-nowrap justify-between bg-slate-300 p-8 rounded-2xl">
-        <div className="flex flex-row gap-4 justify-between relative w-full">
-          <div className="flex flex-row flex-nowrap gap-8">
-            <RiUserSearchFill className="text-7xl text-slate-900" />
-            <p className="text-3xl font-bold text-slate-950">
+      <div className="flex flex-col flex-nowrap justify-between bg-slate-300 pl-4 pr-8 pb-8 pt-4 rounded-2xl relative">
+        <div className="flex flex-row md:gap-60 justify-between relative w-full">
+          <div className="flex flex-row flex-nowrap gap-2">
+            <div
+              className="flex flex-col align-middle justify-center cursor-pointer"
+              onMouseEnter={() => {
+                setEditIcon(true);
+              }}
+              onMouseLeave={() => {
+                setEditIcon(false);
+              }}
+              onClick={() => {
+                console.log("clicked");
+              }}>
+              <RiUserSearchFill className="text-5xl text-slate-900" />
+              <div className="text-red-900 text-[1rem] text-center hover:text-red-700  pb-2 h-2 transition ease-in-out">
+                {editIcon ? <p>edit</p> : null}
+              </div>
+            </div>
+            <p className="flex flex-col gap-0 text-2xl font-bold text-slate-950">
               {client[0]?.ClientUsername || "Unknown"} <br />
-              <span className="text-2xl font-normal">
+              <span className="text-[1.2rem] font-normal">
                 {client[0]?.ClientCompany || "Unknown"}
               </span>
             </p>
           </div>
-          <button
-            className="!text-slate-950 button flex flex-row gap-2 flex-nowrap align-middle hover:scale-105 transition ease-in-out"
+          <div
+            className="!text-slate-900 button flex flex-row gap-2 flex-nowrap align-middle justify-end mr-[-20px] hover:scale-105 transition ease-in-out p-0 cursor-pointer text-[1rem]"
             onClick={() => setModalOpened(true)}>
-            Add Password <FaPlusCircle className="text-2xl text-slate-900" />
-          </button>
+            Add Password{" "}
+            <FaPlusCircle className="text-1xl mt-1 text-slate-900" />
+          </div>
         </div>
 
         <div className="flex flex-row flex-wrap gap-4 mt-8">
@@ -150,7 +170,7 @@ const ClientInner = () => {
               <div
                 className="flex flex-row gap-4 align-middle justify-start w-full relative cursor-pointer"
                 onClick={() => toggleCard(pass.PassID)}>
-                <RiUserSearchFill className="text-6xl  " />
+                <RiUserSearchFill className="text-6xl" />
                 <div className="flex flex-col justify-start">
                   <h3 className=" ">{pass.PassSite}</h3>
                   <Link to={pass.PassHTML} className="text-[1rem] font-thin">
@@ -193,6 +213,20 @@ const ClientInner = () => {
               </div>
             </div>
           ))}
+        </div>
+        {client[0]?.ClientNotes ? (
+          <div className="text-slate-950 mt-4">
+            <h3 className="font-bold">Notes:</h3>
+            <p>{client[0]?.ClientNotes}</p>
+          </div>
+        ) : null}
+        <div className="absolute right-1 bottom-2 text-slate-950">
+          <IoIosTrash
+            className="text-3xl text-red-900 hover:text-red-700 hover:animate-pulse cursor-pointer"
+            onClick={() => {
+              deleteClient(passClient).then(redirect("/client"));
+            }}
+          />
         </div>
       </div>
     </div>
