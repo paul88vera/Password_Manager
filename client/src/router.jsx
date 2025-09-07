@@ -7,8 +7,11 @@ import { SitesRoute } from "./pages/Sites";
 import Settings from "./pages/Settings";
 import { AddClientRoute } from "./pages/AddClient";
 import Login from "./pages/Login";
+import User from "./pages/User";
 import { ClientInnerRoute } from "./pages/ClientInner";
 import { SiteInnerPage } from "./pages/SitesInner";
+import { AddUserRoute } from "./pages/AddUser";
+import { ProfileRoute } from "./pages/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -34,8 +37,16 @@ export const router = createBrowserRouter([
             ],
           },
           { path: "login", element: <Login /> },
+          {
+            path: `profile`,
+            children: [
+              { index: true, element: <User /> },
+              { path: ":id", ...ProfileRoute },
+            ],
+          },
           { path: "settings", element: <Settings /> },
           { path: "add-client", ...AddClientRoute },
+          { path: "add-user", ...AddUserRoute },
           { path: "*", element: <Error /> },
         ],
       },

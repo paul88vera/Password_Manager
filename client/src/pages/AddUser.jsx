@@ -1,0 +1,155 @@
+import { Form, Link, redirect, useLoaderData } from "react-router-dom";
+import { useState } from "react";
+import { createUser, getUsers } from "../api/users";
+
+// eslint-disable-next-line react-refresh/only-export-components
+const AddUser = () => {
+  const { users } = useLoaderData();
+
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userLogin, setUserLogin] = useState("");
+  const [userActive, setUserActive] = useState(1);
+
+  const roles = users.filter((item) => item.UserRole);
+
+  const toggleActive = () => {
+    setUserActive((current) => !current);
+  };
+
+  /* Schema Reference ==
+USERS (PassUsers):
+UserID, UserName, UserEmail, UserLogin, UserRole, UserActive
+
+- - -
+
+CLIENTS (PassClient):
+ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
+*/
+
+  return (
+    <div className="flex flex-col gap-4 md:mt-4 pb-8">
+      <Form
+        method="post"
+        action="/profile/"
+        className="form_container flex flex-col justify-between gap-4 !h-full">
+        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+          <label htmlFor="UserName" className="w-40">
+            Username:
+          </label>
+          <input
+            type="text"
+            name="userName"
+            id="userName"
+            className="w-60"
+            defaultValue={userName}
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
+          />
+        </div>
+
+        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+          <label htmlFor="userEmail" className="w-40">
+            Email:
+          </label>
+          <input
+            type="email"
+            name="userEmail"
+            id="userEmail"
+            className="w-60"
+            defaultValue={userEmail}
+            onChange={(e) => {
+              setUserEmail(e.target.value);
+            }}
+          />
+        </div>
+        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+          <label htmlFor="userLogin" className="w-40">
+            Login Password:
+          </label>
+          <input
+            type="password"
+            name="userLogin"
+            id="userLogin"
+            className="w-60"
+            defaultValue={userLogin}
+            onChange={(e) => {
+              setUserLogin(e.target.value);
+            }}
+          />
+        </div>
+        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+          <label htmlFor="userRole" className="w-40">
+            Role:
+          </label>
+          <select name="userRole" id="role">
+            {roles.map((item) => (
+              <option value={item.UserRole} key={item.UserID}>
+                {item.UserRole}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex flex-row gap-2 justify-end flex-nowrap text-right">
+          <label
+            htmlFor="userActive"
+            className="flex flex-row flex-nowrap gap-0 w-40 justify-start align-middle">
+            Active:
+            <input
+              type="checkbox"
+              name="userActive"
+              id="userActive"
+              className="w-40"
+              defaultValue={userActive}
+              onChange={toggleActive}
+            />
+          </label>
+        </div>
+
+        <div className="flex flex-row gap-2 mt-2">
+          <Link to="/client" type="cancel" className="button cancel-btn">
+            Cancel
+          </Link>
+          <button type="submit" className="button save-btn">
+            Save
+          </button>
+        </div>
+      </Form>
+    </div>
+  );
+};
+
+async function action({ request }) {
+  const formData = await request.formData();
+  const UserName = formData.get("userName");
+  const UserEmail = formData.get("userEmail");
+  const UserLogin = formData.get("userLogin");
+  const UserRole = formData.get("userRole");
+  const UserActive = formData.get("userActive");
+
+  const user = await createUser(
+    {
+      UserName,
+      UserEmail,
+      UserLogin,
+      UserRole,
+      UserActive,
+    },
+    { signal: request.signal }
+  );
+
+  return redirect(`/profile/${user.insertId}`);
+}
+
+async function loader({ request: { signal } }) {
+  const users = await getUsers({ signal });
+  return { users: users };
+}
+
+export const AddUserRoute = {
+  loader,
+  action,
+  element: <AddUser />,
+};

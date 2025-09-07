@@ -6,12 +6,10 @@ import { getUsers } from "../api/users";
 // eslint-disable-next-line react-refresh/only-export-components
 const AddClient = () => {
   const { users } = useLoaderData();
-  // const [passClient] = useState(0);
 
   const [ClientUsername, setClientUsername] = useState("");
   const [ClientCompany, setClientCompany] = useState("");
   const [ClientNotes, setClientNotes] = useState("");
-  // const [POC, setPOC] = useState("");
   const [ClientEmail, setClientEmail] = useState("");
   /* 
 USERS (PassUsers):

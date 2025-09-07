@@ -1,12 +1,14 @@
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { createPassword, getPasswords } from "../api/passwords";
-import { RiUserSearchFill } from "react-icons/ri";
+import { CgProfile } from "react-icons/cg";
+import { FaLock } from "react-icons/fa6";
+import { FaLockOpen } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
 import { FaPlusCircle } from "react-icons/fa";
 import { IoIosTrash } from "react-icons/io";
 import { deleteClient, getClient } from "../api/clients";
 import { useState } from "react";
-import Modal from "../components/Modal";
+import { capitalizeFirstWord } from "../utils/caps";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const ClientInner = () => {
@@ -35,99 +37,6 @@ const ClientInner = () => {
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
-      {modalOpened ? (
-        <Modal styles="flex flex-col w-screen">
-          <div className="bg-slate-900 flex flex-col align-middle justify-center">
-            <Form
-              method="post"
-              action={`/client/${passClient}`}
-              onSubmit={toggleModal}
-              className="form_container flex flex-col justify-between gap-4 max-w-100">
-              <input
-                name="passClient"
-                id="passClient"
-                type="hidden"
-                defaultValue={passClient}
-              />
-              <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
-                <label htmlFor="siteName" className="w-40">
-                  Site Name:
-                </label>
-                <input
-                  type="text"
-                  name="siteName"
-                  id="siteName"
-                  className="w-60"
-                  defaultValue={siteName}
-                  onChange={(e) => {
-                    setSiteName(e.target.value);
-                  }}
-                />
-              </div>
-              <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
-                <label htmlFor="site_url" className="w-40">
-                  Site URL:
-                </label>
-                <input
-                  type="text"
-                  name="site_url"
-                  id="site_url"
-                  className="w-60"
-                  onChange={(e) => {
-                    setSiteUrl(e.target.value);
-                  }}
-                  placeholder={siteUrl}
-                />
-              </div>
-              <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
-                <label htmlFor="username" className="w-40">
-                  Username:
-                </label>
-                <input
-                  type="text"
-                  name="username"
-                  id="username"
-                  className="w-60"
-                  defaultValue={username}
-                  onChange={(e) => {
-                    setUsername(e.target.value);
-                  }}
-                />
-              </div>
-              <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
-                <label htmlFor="password" className="w-40">
-                  Password:
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  className="w-60"
-                  defaultValue={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="flex flex-row gap-2 mt-2">
-                <button
-                  type="button"
-                  className="button cancel-btn"
-                  onClick={toggleModal}>
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="button save-btn"
-                  onSubmitCapture={toggleModal}>
-                  Save
-                </button>
-              </div>
-            </Form>
-          </div>
-        </Modal>
-      ) : null}
       <div className="flex flex-col flex-nowrap justify-between bg-slate-300 pl-4 pr-8 pb-8 pt-4 rounded-2xl relative">
         <div className="flex flex-row md:gap-60 justify-between relative w-full">
           <div className="flex flex-row flex-nowrap gap-2">
@@ -142,15 +51,16 @@ const ClientInner = () => {
               onClick={() => {
                 console.log("clicked");
               }}>
-              <RiUserSearchFill className="text-5xl text-slate-900" />
+              <CgProfile className="text-5xl text-slate-900" />
               <div className="text-red-900 text-[1rem] text-center hover:text-red-700  pb-2 h-2 transition ease-in-out">
                 {editIcon ? <p>edit</p> : null}
               </div>
             </div>
             <p className="flex flex-col gap-0 text-2xl font-bold text-slate-950">
-              {client[0]?.ClientUsername || "Unknown"} <br />
+              {capitalizeFirstWord(client[0]?.ClientUsername) || "Unknown"}{" "}
+              <br />
               <span className="text-[1.2rem] font-normal">
-                {client[0]?.ClientCompany || "Unknown"}
+                {capitalizeFirstWord(client[0]?.ClientCompany) || "Unknown"}
               </span>
             </p>
           </div>
@@ -163,6 +73,97 @@ const ClientInner = () => {
         </div>
 
         <div className="flex flex-row flex-wrap gap-4 mt-8">
+          {modalOpened ? (
+            <div className="flex flex-col align-middle justify-center">
+              <Form
+                method="post"
+                action={`/client/${passClient}`}
+                onSubmit={toggleModal}
+                className="form_container flex flex-col justify-between gap-4 max-w-100">
+                <input
+                  name="passClient"
+                  id="passClient"
+                  type="hidden"
+                  defaultValue={passClient}
+                />
+                <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+                  <label htmlFor="siteName" className="w-40">
+                    Site Name:
+                  </label>
+                  <input
+                    type="text"
+                    name="siteName"
+                    id="siteName"
+                    className="w-60"
+                    defaultValue={capitalizeFirstWord(siteName)}
+                    onChange={(e) => {
+                      capitalizeFirstWord(setSiteName(e.target.value));
+                    }}
+                  />
+                </div>
+                <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+                  <label htmlFor="site_url" className="w-40">
+                    Site URL:
+                  </label>
+                  <input
+                    type="text"
+                    name="site_url"
+                    id="site_url"
+                    className="w-60"
+                    onChange={(e) => {
+                      capitalizeFirstWord(setSiteUrl(e.target.value));
+                    }}
+                    placeholder={capitalizeFirstWord(siteUrl)}
+                  />
+                </div>
+                <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+                  <label htmlFor="username" className="w-40">
+                    Username:
+                  </label>
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    className="w-60"
+                    defaultValue={username}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+                  <label htmlFor="password" className="w-40">
+                    Password:
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    className="w-60"
+                    defaultValue={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="flex flex-row gap-2 mt-2">
+                  <button
+                    type="button"
+                    className="button cancel-btn"
+                    onClick={toggleModal}>
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="button save-btn"
+                    onSubmitCapture={toggleModal}>
+                    Save
+                  </button>
+                </div>
+              </Form>
+            </div>
+          ) : null}
           {passwordFilter.map((pass) => (
             <div
               className="site-card text-slate-300 flex flex-col flex-nowrap gap-4 align-middle justify-start p-4  pb-0 rounded-lg bg-slate-900 font-bold w-full md:max-w-[380px] hover:bg-slate-950 transition ease-in-out"
@@ -170,7 +171,11 @@ const ClientInner = () => {
               <div
                 className="flex flex-row gap-4 align-middle justify-start w-full relative cursor-pointer"
                 onClick={() => toggleCard(pass.PassID)}>
-                <RiUserSearchFill className="text-6xl" />
+                {openCardId === pass.PassID ? (
+                  <FaLockOpen className="text-3xl flex flex-row justify-center align-middle mt-2" />
+                ) : (
+                  <FaLock className="text-3xl flex flex-row justify-center align-middle mt-2" />
+                )}
                 <div className="flex flex-col justify-start">
                   <h3 className=" ">{pass.PassSite}</h3>
                   <Link to={pass.PassHTML} className="text-[1rem] font-thin">
@@ -224,7 +229,8 @@ const ClientInner = () => {
           <IoIosTrash
             className="text-3xl text-red-900 hover:text-red-700 hover:animate-pulse cursor-pointer"
             onClick={() => {
-              deleteClient(passClient).then(redirect("/client"));
+              deleteClient(passClient);
+              return redirect("/client");
             }}
           />
         </div>
@@ -254,7 +260,7 @@ async function action({ request }) {
 
   password;
 
-  return redirect(`./`);
+  return location.reload();
 }
 
 async function loader({ request: { signal }, params: { id } }) {

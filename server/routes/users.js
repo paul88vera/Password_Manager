@@ -65,11 +65,11 @@ router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { id } = req.params;
-    const { UserName, UserEmail, UserLogin, UserRole, UserActive } = req.body;
+    const { UserID, UserName, UserEmail, UserLogin, UserRole, UserActive } = req.body;
     const query =
-      "INSERT INTO PassUsers (UserName, UserEmail, UserLogin, UserRole, UserActive) VALUES (?,?,?,?,?)";
+      "INSERT INTO PassUsers (UserID, UserName, UserEmail, UserLogin, UserRole, UserActive) VALUES (?,?,?,?,?,?)";
     const [results] = await connection.query(query, [
-      id,
+      UserID == id,
       UserName,
       UserEmail,
       UserLogin,
@@ -88,9 +88,10 @@ router.post("/", async (req, res) => {
 // @access   Private - Public For Now
 router.delete("/:id", async (req, res) => {
   try {
+    const connection = await db;
     const { id } = req.params;
     const query = "DELETE FROM PassUsers WHERE UserID = ?";
-    db.query(query, [id]);
+    connection.query(query, [id]);
     res.send("User Deleted");
   } catch (err) {
     console.error(err);

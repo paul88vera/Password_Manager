@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import { FaCircleUser } from "react-icons/fa6";
 // import { FaSignOutAlt } from "react-icons/fa";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { MdOutlineScreenSearchDesktop } from "react-icons/md";
 
 import { RiUserSearchFill } from "react-icons/ri";
 import { CgWebsite } from "react-icons/cg";
 import { CiCirclePlus } from "react-icons/ci";
-import Modal from "./Modal";
 import { useState } from "react";
 
 const Sidebar = () => {
@@ -19,7 +19,7 @@ const Sidebar = () => {
   return (
     <div className="flex flex-row flex-nowrap md:flex-col justify-center md:justify-between md:gap-4 bg-gray-900 md:py-8 md:p-2 py-2 md:min-h-full md:w-15 items-center fixed w-screen bottom-0 z-50 gap-10">
       <div>
-        <Link to="/login" title="Login">
+        <Link to="/profile" title="Profile">
           <FaCircleUser className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
         </Link>
         {/* <Link to="/logout" title="Logout">
@@ -31,7 +31,7 @@ const Sidebar = () => {
           <RiUserSearchFill className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
         </Link>
         <Link to="/sites" title="Websites">
-          <CgWebsite className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
+          <MdOutlineScreenSearchDesktop className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
         </Link>
       </div>
       <div>
@@ -39,23 +39,21 @@ const Sidebar = () => {
           <CiCirclePlus className="text-lime-500 text-[2.5em] p-0 hover:scale-[110%] transition ease-in-out cursor-pointer" />
         </div>
         {selectAdd ? (
-          <Modal styles="justify-center align-middle bg-transparent ">
-            <div className="flex flex-col justify-start border-lime-500 border-2 px-4 pb-8 pt-4 rounded-md w-40 bg-slate-900 absolute top-[32rem] md:top-[34rem] right-[-24rem] md:right-[-15rem]">
-              <div
-                className="flex flex-row justify-end cursor-pointer absolute right-[-1.7rem] top-[-1.7rem]"
-                onClick={showModal}>
-                <IoMdCloseCircleOutline className="text-3xl" />
-              </div>
-              <div className="flex flex-col gap-4 text-center">
-                <Link to="/add-user" onClick={showModal}>
-                  Add A User
-                </Link>
-                <Link to="/add-client" onClick={showModal}>
-                  Add A Client
-                </Link>
-              </div>
+          <div className="flex flex-col justify-start border-lime-500 border-2 px-4 pb-8 pt-4 rounded-md w-40 bg-slate-900 fixed bottom-20 md:bottom-10 md:left-20 right-10">
+            <div
+              className="flex flex-row justify-end cursor-pointer absolute right-[-1.7rem] top-[-1.7rem]"
+              onClick={showModal}>
+              <IoMdCloseCircleOutline className="text-3xl" />
             </div>
-          </Modal>
+            <div className="flex flex-col gap-4 text-center">
+              <Link to="/add-user" onClick={showModal}>
+                Add A User
+              </Link>
+              <Link to="/add-client" onClick={showModal}>
+                Add A Client
+              </Link>
+            </div>
+          </div>
         ) : null}
       </div>
     </div>

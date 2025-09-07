@@ -1,6 +1,7 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { getClients } from "../api/clients";
-import { RiUserSearchFill } from "react-icons/ri";
+import { CgProfile } from "react-icons/cg";
+import { capitalizeFirstWord } from "../utils/caps";
 
 /* 
 CLIENT = 0{ClientID: 1, ClientUsername: 'client_one', ClientEmail: 'client1@example.com', POC: 1, created_at: '2025-08-24T19:48:43.000Z'}
@@ -14,18 +15,22 @@ const Client = () => {
 
   return (
     <div className="flex flex-col gap-4 mt-4">
-      {client.map((item) => (
-        <Link
-          to={`/client/${item.ClientID}`}
-          className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px] hover:text-lime-500 md:hover:scale-105 hover:opacity-90 transition ease-in-out"
-          key={item.ClientID}>
-          {/* <img src="#" alt={item.ClientUsername} /> */}
-          <RiUserSearchFill className="text-4xl text-slate-900 hover:text-lime-500" />
-          <h3 className="text-slate-900 hover:text-lime-500">
-            {item.ClientUsername}
-          </h3>
-        </Link>
-      ))}
+      {/* TODO Need to make paragraph conditional */}
+      {client ? (
+        client.map((item) => (
+          <Link
+            to={`/client/${item.ClientID}`}
+            className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px] hover:text-lime-500 md:hover:scale-105 hover:opacity-90 transition ease-in-out"
+            key={item.ClientID}>
+            <CgProfile className="text-4xl text-slate-900 hover:text-lime-500" />
+            <h3 className="text-slate-900 hover:text-lime-500">
+              {capitalizeFirstWord(item.ClientUsername)}
+            </h3>
+          </Link>
+        ))
+      ) : (
+        <div className="text-white">no clients yet...</div>
+      )}
     </div>
   );
 };

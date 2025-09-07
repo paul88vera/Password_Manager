@@ -13,6 +13,12 @@ export function getUsers() {
 export function getUser(id, options) {
   return baseApi.get(`user/${id}`, options).then((res) => res.data);
 }
+// @route    POST /user
+// @desc     Create user
+// @access   Private - Public For Now
+export function createUser(data, options) {
+  return baseApi.post(`user/`, data, options).then((res) => res.data);
+}
 
 // @route    PUT /user/:id
 // @desc     Update user by id
@@ -26,6 +32,6 @@ export function editUser(id, options) {
 // @access   Private - Public For Now
 export function deleteUser(id) {
   return baseApi.delete(`user/${id}`, { method: "DELETE" }).then(() => {
-    window.location.replace("/dashboard");
+    window.location.replace("/profile");
   });
 }

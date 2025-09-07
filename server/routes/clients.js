@@ -89,7 +89,7 @@ router.post("/", async (req, res) => {
 // @desc     Delete Client by id
 // @access   Private - Public For Now
 router.delete("/:id", async (req, res) => {
-  const connection = await db;
+  const connection = await db; // Wait for connection to resolve
   const { id } = req.params;
   const query = "DELETE FROM PassClient WHERE ClientID = ?";
   connection.query(query, [id], (err, result) => {
