@@ -42,7 +42,7 @@ router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { UserName, UserEmail, UserLogin, UserRole, UserActive } = req.body;
     const query =
-      "UPDATE PassUsers SET UserName = ?, UserEmail = ?, UserLogin = ?, UserRole = ?, UserActive = ? WHERE PassID = ?";
+      "UPDATE PassUsers SET UserName = ?, UserEmail = ?, UserLogin = ?, UserRole = ?, UserActive = ? WHERE UserID = ?";
     const [results] = await connection.query(query, [
       UserName,
       UserEmail,
@@ -65,17 +65,16 @@ router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { id } = req.params;
-    const { UserID, UserName, UserEmail, UserLogin, UserRole, UserActive } =
-      req.body;
+    const { UserName, UserEmail, UserLogin, UserRole, UserActive } = req.body;
     const query =
-      "INSERT INTO PassUsers (UserID, UserName, UserEmail, UserLogin, UserRole, UserActive) VALUES (?,?,?,?,?,?)";
+      "INSERT INTO PassUsers (UserName, UserEmail, UserLogin, UserRole, UserActive) VALUES (?,?,?,?,?)";
     const [results] = await connection.query(query, [
-      UserID == id,
       UserName,
       UserEmail,
       UserLogin,
       UserRole,
       UserActive,
+      id,
     ]);
     res.json(results);
   } catch (err) {

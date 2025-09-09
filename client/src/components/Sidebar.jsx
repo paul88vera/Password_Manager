@@ -16,7 +16,7 @@ const Sidebar = ({ auth, role }) => {
   return (
     <div className="flex flex-row flex-nowrap md:flex-col justify-center md:justify-between md:gap-4 bg-gray-900 md:py-8 md:p-2 py-2 md:min-h-full md:w-15 items-center fixed w-screen bottom-0 z-50 gap-10">
       <div>
-        <Link to="/profile" title="Profile">
+        <Link to="/dashboard" title="Profile">
           <FaCircleUser className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
         </Link>
         {/* <Link to="/logout" title="Logout">

@@ -3,19 +3,12 @@ import { getClients } from "../api/clients";
 import { CgProfile } from "react-icons/cg";
 import { capitalizeFirstWord } from "../utils/caps";
 
-/* 
-CLIENT = 0{ClientID: 1, ClientUsername: 'client_one', ClientEmail: 'client1@example.com', POC: 1, created_at: '2025-08-24T19:48:43.000Z'}
-
-USER = 0{ UserActive: 1, UserEmail: "alice@example.com", UserID: 1, UserLogin: "alice123", UserName: "Alice Smith", UserRole: "Admin", created_at: "2025-08-24T19:48:43.000Z"}
-*/
-
 // eslint-disable-next-line react-refresh/only-export-components
 const Client = () => {
   const client = useLoaderData();
 
   return (
     <div className="flex flex-col gap-4 mt-4">
-      {/* TODO Need to make paragraph conditional */}
       {client == "" ? (
         <div className="text-white">no clients yet...</div>
       ) : null}

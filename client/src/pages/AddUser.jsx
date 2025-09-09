@@ -6,32 +6,22 @@ import { createUser, getUsers } from "../api/users";
 const AddUser = () => {
   const { users } = useLoaderData();
 
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userLogin, setUserLogin] = useState("");
-  const [userActive, setUserActive] = useState(1);
+  const [userName, setUserName] = useState();
+  const [userEmail, setUserEmail] = useState();
+  const [userLogin, setUserLogin] = useState();
+  const [userActive] = useState(1);
+  const [userRole, setUserRole] = useState("Staff");
 
-  const roles = users.filter((item) => item.UserRole);
-
-  const toggleActive = () => {
-    setUserActive((current) => !current);
-  };
-
-  /* Schema Reference ==
-USERS (PassUsers):
-UserID, UserName, UserEmail, UserLogin, UserRole, UserActive
-
-- - -
-
-CLIENTS (PassClient):
-ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
-*/
+  // Filter User Roles
+  const roles = users.filter(
+    (item, index, self) =>
+      index === self.findIndex((i) => i.UserRole === item.UserRole)
+  );
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
       <Form
         method="post"
-        action="/profile/"
         className="form_container flex flex-col justify-between gap-4 !h-full">
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="UserName" className="w-40">
@@ -66,10 +56,10 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
         </div>
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="userLogin" className="w-40">
-            Login Password:
+            Password:
           </label>
           <input
-            type="password"
+            type="text"
             name="userLogin"
             id="userLogin"
             className="w-60"
@@ -83,7 +73,11 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
           <label htmlFor="userRole" className="w-40">
             Role:
           </label>
-          <select name="userRole" id="role">
+          <select
+            name="userRole"
+            id="role"
+            onChange={(e) => setUserRole(e.target.value)}
+            defaultValue={userRole}>
             {roles.map((item) => (
               <option value={item.UserRole} key={item.UserID}>
                 {item.UserRole}
@@ -103,7 +97,6 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
               id="userActive"
               className="w-40"
               defaultValue={userActive}
-              onChange={toggleActive}
               defaultChecked
             />
           </label>
@@ -130,7 +123,7 @@ async function action({ request }) {
   const UserRole = formData.get("userRole");
   const UserActive = formData.get("userActive");
 
-  const user = await createUser(
+  await createUser(
     {
       UserName,
       UserEmail,
@@ -141,7 +134,7 @@ async function action({ request }) {
     { signal: request.signal }
   );
 
-  return redirect(`/profile/${user.insertId}`);
+  return redirect(`/profile`);
 }
 
 async function loader({ request: { signal } }) {

@@ -79,7 +79,7 @@ router.post("/", async (req, res) => {
     ]);
     res.json(results);
   } catch (err) {
-    console.error(err);
+    console.error(err, sqlMessage);
     res.status(500).send("Server error on Passwords");
   }
 });

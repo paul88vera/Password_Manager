@@ -32,6 +32,6 @@ export function editUser(id, data, options) {
 // @access   Private - Public For Now
 export function deleteUser(id) {
   return baseApi.delete(`user/${id}`, { method: "DELETE" }).then(() => {
-    window.location.replace("/profile");
+    window.location.replace("/dashboard");
   });
 }

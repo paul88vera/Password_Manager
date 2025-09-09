@@ -7,14 +7,15 @@ import { SitesRoute } from "./pages/Sites";
 import Settings from "./pages/Settings";
 import { AddClientRoute } from "./pages/AddClient";
 import Login from "./pages/Login";
-import User from "./pages/User";
+// import User from "./pages/User";
 import { ClientInnerRoute } from "./pages/ClientInner";
 import { SiteInnerPage } from "./pages/SitesInner";
 import { AddUserRoute } from "./pages/AddUser";
 import { ProfileRoute } from "./pages/Profile";
 import { EditClientRoute } from "./pages/EditClient";
-import EditUser from "./pages/EditUser";
+import { EditUserRoute } from "./pages/EditUser";
 import { EditPasswordRoute } from "./pages/EditPassword";
+import { UserRoute } from "./pages/User";
 
 export const router = createBrowserRouter([
   {
@@ -29,8 +30,13 @@ export const router = createBrowserRouter([
             path: "client",
             children: [
               { index: true, ...ClientRoute },
-              { path: ":id", ...ClientInnerRoute },
-              { path: ":id/edit", ...EditClientRoute },
+              {
+                path: ":id",
+                children: [
+                  { index: true, ...ClientInnerRoute },
+                  { path: "edit", ...EditClientRoute },
+                ],
+              },
             ],
           },
           {
@@ -42,10 +48,14 @@ export const router = createBrowserRouter([
           },
           { path: "login", element: <Login /> },
           {
-            path: `profile`,
+            path: `dashboard`,
+            children: [{ index: true, ...ProfileRoute }],
+          },
+          {
+            path: "user/:id",
             children: [
-              { index: true, ...ProfileRoute },
-              { path: ":id/edit", element: <EditUser /> },
+              { index: true, ...UserRoute },
+              { path: "edit", ...EditUserRoute },
             ],
           },
           {

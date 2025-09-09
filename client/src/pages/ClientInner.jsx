@@ -146,7 +146,7 @@ const ClientInner = () => {
                     Password:
                   </label>
                   <input
-                    type="password"
+                    type="text"
                     name="password"
                     id="password"
                     className="w-60"
