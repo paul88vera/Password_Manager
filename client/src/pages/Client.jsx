@@ -16,21 +16,20 @@ const Client = () => {
   return (
     <div className="flex flex-col gap-4 mt-4">
       {/* TODO Need to make paragraph conditional */}
-      {client ? (
-        client.map((item) => (
-          <Link
-            to={`/client/${item.ClientID}`}
-            className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px] hover:text-lime-500 md:hover:scale-105 hover:opacity-90 transition ease-in-out"
-            key={item.ClientID}>
-            <CgProfile className="text-4xl text-slate-900 hover:text-lime-500" />
-            <h3 className="text-slate-900 hover:text-lime-500">
-              {capitalizeFirstWord(item.ClientUsername)}
-            </h3>
-          </Link>
-        ))
-      ) : (
+      {client == "" ? (
         <div className="text-white">no clients yet...</div>
-      )}
+      ) : null}
+      {client.map((item) => (
+        <Link
+          to={`/client/${item.ClientID}`}
+          className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px] hover:text-lime-500 md:hover:scale-105 hover:opacity-90 transition ease-in-out"
+          key={item.ClientID}>
+          <CgProfile className="text-4xl text-slate-900 hover:text-lime-500" />
+          <h3 className="text-slate-900 hover:text-lime-500">
+            {capitalizeFirstWord(item.ClientUsername)}
+          </h3>
+        </Link>
+      ))}
     </div>
   );
 };

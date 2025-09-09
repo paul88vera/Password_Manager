@@ -33,8 +33,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// @route    PUT /client
-// @desc     Update Client
+// @route    PUT /client/:id
+// @desc     Update Client by id
 // @access   Private - Public For Now
 router.put("/:id", async (req, res) => {
   try {
@@ -43,7 +43,7 @@ router.put("/:id", async (req, res) => {
     const { ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC } =
       req.body;
     const query =
-      "UPDATE PassClient SET ClientUsername = ?, ClientCompany = ?, ClientEmail = ?, ClientNotes = ?, POC = ?";
+      "UPDATE PassClient SET ClientUsername = ?, ClientCompany = ?, ClientEmail = ?, ClientNotes = ?, POC = ? WHERE ClientID = ?";
     const [results] = await connection.query(query, [
       ClientUsername,
       ClientCompany,
@@ -92,7 +92,7 @@ router.delete("/:id", async (req, res) => {
   const connection = await db; // Wait for connection to resolve
   const { id } = req.params;
   const query = "DELETE FROM PassClient WHERE ClientID = ?";
-  connection.query(query, [id], (err, result) => {
+  connection.query(query, [id], (err) => {
     if (err) {
       res.status(500).send("Server error");
       console.error(err);

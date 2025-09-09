@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import RootLayout from "./layouts/RootLayout";
+import { LayoutRoute } from "./layouts/RootLayout";
 import ErrorMessage from "./pages/ErrorMessage";
 import Error from "./pages/Error";
 import { ClientRoute } from "./pages/Client";
@@ -12,11 +12,14 @@ import { ClientInnerRoute } from "./pages/ClientInner";
 import { SiteInnerPage } from "./pages/SitesInner";
 import { AddUserRoute } from "./pages/AddUser";
 import { ProfileRoute } from "./pages/Profile";
+import { EditClientRoute } from "./pages/EditClient";
+import EditUser from "./pages/EditUser";
+import { EditPasswordRoute } from "./pages/EditPassword";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    ...LayoutRoute,
     children: [
       {
         errorElement: <ErrorMessage />,
@@ -27,6 +30,7 @@ export const router = createBrowserRouter([
             children: [
               { index: true, ...ClientRoute },
               { path: ":id", ...ClientInnerRoute },
+              { path: ":id/edit", ...EditClientRoute },
             ],
           },
           {
@@ -40,9 +44,13 @@ export const router = createBrowserRouter([
           {
             path: `profile`,
             children: [
-              { index: true, element: <User /> },
-              { path: ":id", ...ProfileRoute },
+              { index: true, ...ProfileRoute },
+              { path: ":id/edit", element: <EditUser /> },
             ],
+          },
+          {
+            path: "password/:id/edit",
+            ...EditPasswordRoute,
           },
           { path: "settings", element: <Settings /> },
           { path: "add-client", ...AddClientRoute },

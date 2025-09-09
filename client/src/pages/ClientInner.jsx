@@ -1,4 +1,4 @@
-import { Form, Link, redirect, useLoaderData } from "react-router-dom";
+import { Form, Link, useLoaderData } from "react-router-dom";
 import { createPassword, getPasswords } from "../api/passwords";
 import { CgProfile } from "react-icons/cg";
 import { FaLock } from "react-icons/fa6";
@@ -9,10 +9,11 @@ import { IoIosTrash } from "react-icons/io";
 import { deleteClient, getClient } from "../api/clients";
 import { useState } from "react";
 import { capitalizeFirstWord } from "../utils/caps";
+import { getUsers } from "../api/users";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const ClientInner = () => {
-  const { passwords, client } = useLoaderData();
+  const { passwords, client, users } = useLoaderData();
   const [openCardId, setOpenCardId] = useState();
   const [modalOpened, setModalOpened] = useState();
   const [editIcon, setEditIcon] = useState();
@@ -31,9 +32,14 @@ const ClientInner = () => {
     setModalOpened((current) => !current);
   };
 
+  // Filter passwords with current ClientID
   const passwordFilter = passwords.filter(
     (item) => item.Client === client[0]?.ClientID
   );
+
+  // Filter Username from client
+  const clientFilter = client.map((item) => item.POC);
+  const userFilter = users.filter((item) => clientFilter.includes(item.UserID));
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
@@ -41,20 +47,19 @@ const ClientInner = () => {
         <div className="flex flex-row md:gap-60 justify-between relative w-full">
           <div className="flex flex-row flex-nowrap gap-2">
             <div
-              className="flex flex-col align-middle justify-center cursor-pointer"
+              className="flex flex-col align-middle justify-start cursor-pointer"
               onMouseEnter={() => {
                 setEditIcon(true);
               }}
               onMouseLeave={() => {
                 setEditIcon(false);
-              }}
-              onClick={() => {
-                console.log("clicked");
               }}>
-              <CgProfile className="text-5xl text-slate-900" />
-              <div className="text-red-900 text-[1rem] text-center hover:text-red-700  pb-2 h-2 transition ease-in-out">
-                {editIcon ? <p>edit</p> : null}
-              </div>
+              <Link
+                to={`/client/${client[0]?.ClientID}/edit`}
+                className="text-red-900 text-[1rem] text-center hover:text-red-700 h-2 transition ease-in-out">
+                <CgProfile className="text-6xl text-slate-900" />
+                {editIcon ? <p className="text-red-900">edit</p> : null}
+              </Link>
             </div>
             <p className="flex flex-col gap-0 text-2xl font-bold text-slate-950">
               {capitalizeFirstWord(client[0]?.ClientUsername) || "Unknown"}{" "}
@@ -62,6 +67,11 @@ const ClientInner = () => {
               <span className="text-[1.2rem] font-normal">
                 {capitalizeFirstWord(client[0]?.ClientCompany) || "Unknown"}
               </span>
+              <Link
+                to={`mailto:${client[0]?.ClientEmail}`}
+                className="text-[1rem] font-thin !text-lime-900">
+                {client[0]?.ClientEmail || "Unknown"}
+              </Link>
             </p>
           </div>
           <div
@@ -177,13 +187,22 @@ const ClientInner = () => {
                   <FaLock className="text-3xl flex flex-row justify-center align-middle mt-2" />
                 )}
                 <div className="flex flex-col justify-start">
-                  <h3 className=" ">{pass.PassSite}</h3>
-                  <Link to={pass.PassHTML} className="text-[1rem] font-thin">
+                  <h3 className=" ">{capitalizeFirstWord(pass.PassSite)}</h3>
+                  <Link
+                    to={
+                      pass.PassHTML.includes("https://") ||
+                      pass.PassHTML.includes("http://")
+                        ? `${pass.PassHTML}`
+                        : `https://${pass.PassHTML}`
+                    }
+                    className="text-[1rem] font-thin">
                     {pass.PassHTML}
                   </Link>
                 </div>
                 {openCardId === pass.PassID ? (
-                  <MdEdit className="text-2xl text-lime-500 hover:text-slate-300 absolute right-0" />
+                  <Link to={`/password/${pass.PassID}/edit`}>
+                    <MdEdit className="text-2xl text-lime-500 hover:text-slate-300 absolute right-0" />
+                  </Link>
                 ) : null}
               </div>
               <div className="p-0">
@@ -219,9 +238,13 @@ const ClientInner = () => {
             </div>
           ))}
         </div>
+        <div className="text-slate-950 mt-4">
+          <h3 className="font-bold">Account Manager:</h3>
+          <p>{userFilter[0]?.UserName}</p>
+        </div>
         {client[0]?.ClientNotes ? (
           <div className="text-slate-950 mt-4">
-            <h3 className="font-bold">Notes:</h3>
+            <h3 className="font-bold">Client Notes:</h3>
             <p>{client[0]?.ClientNotes}</p>
           </div>
         ) : null}
@@ -229,8 +252,16 @@ const ClientInner = () => {
           <IoIosTrash
             className="text-3xl text-red-900 hover:text-red-700 hover:animate-pulse cursor-pointer"
             onClick={() => {
-              deleteClient(passClient);
-              return redirect("/client");
+              if (
+                window.confirm(
+                  "Are you sure you would like to delete this client?"
+                ) === true
+              ) {
+                window.location.replace("/client");
+                deleteClient(passClient);
+              } else {
+                return;
+              }
             }}
           />
         </div>
@@ -266,7 +297,8 @@ async function action({ request }) {
 async function loader({ request: { signal }, params: { id } }) {
   const passwords = await getPasswords({ signal });
   const client = await getClient(id, { signal });
-  return { passwords: passwords, client: client };
+  const users = await getUsers({ signal });
+  return { passwords: passwords, client: client, users: users };
 }
 
 export const ClientInnerRoute = {

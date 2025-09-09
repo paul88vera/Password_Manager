@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom";
 import { FaCircleUser } from "react-icons/fa6";
-// import { FaSignOutAlt } from "react-icons/fa";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdOutlineScreenSearchDesktop } from "react-icons/md";
-
 import { RiUserSearchFill } from "react-icons/ri";
-import { CgWebsite } from "react-icons/cg";
 import { CiCirclePlus } from "react-icons/ci";
 import { useState } from "react";
 
-const Sidebar = () => {
+const Sidebar = ({ auth, role }) => {
   const [selectAdd, setSelectAdd] = useState();
 
   const showModal = () => {
@@ -46,9 +43,11 @@ const Sidebar = () => {
               <IoMdCloseCircleOutline className="text-3xl" />
             </div>
             <div className="flex flex-col gap-4 text-center">
-              <Link to="/add-user" onClick={showModal}>
-                Add A User
-              </Link>
+              {auth == role ? (
+                <Link to="/add-user" onClick={showModal}>
+                  Add A User
+                </Link>
+              ) : null}
               <Link to="/add-client" onClick={showModal}>
                 Add A Client
               </Link>

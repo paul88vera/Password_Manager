@@ -104,6 +104,7 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
               className="w-40"
               defaultValue={userActive}
               onChange={toggleActive}
+              defaultChecked
             />
           </label>
         </div>

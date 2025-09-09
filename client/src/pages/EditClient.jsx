@@ -1,27 +1,26 @@
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { useState } from "react";
-import { createClient, getClients } from "../api/clients";
+import { editClient, getClient } from "../api/clients";
 import { getUsers } from "../api/users";
 import { capitalizeFirstWord } from "../utils/caps";
 
 // eslint-disable-next-line react-refresh/only-export-components
-const AddClient = () => {
-  const { users } = useLoaderData();
+const EditClient = () => {
+  const { users, client } = useLoaderData();
 
-  const [ClientUsername, setClientUsername] = useState("");
-  const [ClientCompany, setClientCompany] = useState("");
-  const [ClientNotes, setClientNotes] = useState("");
-  const [ClientEmail, setClientEmail] = useState("");
-  // const [POC, setPOC] = useState();
-  /* 
-USERS (PassUsers):
-UserID, UserName, UserEmail, UserLogin, UserRole, UserActive
+  // Default State
+  const [ClientUsername, setClientUsername] = useState(
+    client[0]?.ClientUsername
+  );
+  const [ClientCompany, setClientCompany] = useState(
+    client[0]?.ClientCompany || ""
+  );
+  const [ClientNotes, setClientNotes] = useState(client[0]?.ClientNotes || "");
+  const [ClientEmail, setClientEmail] = useState(client[0]?.ClientEmail || "");
+  const [POCs, setPOC] = useState(client[0]?.POC || "");
 
-- - -
-
-CLIENTS (PassClient):
-ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
-*/
+  // Filters only Active Users
+  const activeUserFilter = users.filter((item) => item.UserActive === 1);
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
@@ -37,7 +36,7 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
             name="ClientUsername"
             id="ClientUsername"
             className="w-60"
-            defaultValue={ClientUsername}
+            defaultValue={capitalizeFirstWord(ClientUsername)}
             onChange={(e) => {
               setClientUsername(e.target.value);
             }}
@@ -53,7 +52,7 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
             name="ClientCompany"
             id="ClientCompany"
             className="w-60"
-            defaultValue={ClientCompany}
+            defaultValue={capitalizeFirstWord(ClientCompany)}
             onChange={(e) => {
               setClientCompany(e.target.value);
             }}
@@ -81,11 +80,12 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
           <select
             name="ClientPOC"
             id="ClientPOC"
-            onChange={(e) => parseInt(e.target.value)}
+            defaultValue={POCs}
+            onChange={(e) => setPOC(e.target.value)}
             required>
-            {users.map((item, index) => (
-              <option value={parseInt(item.UserID)} key={index}>
-                {capitalizeFirstWord(item.UserName)}
+            {activeUserFilter.map((item) => (
+              <option value={item.UserID.toString()} key={item.UserID}>
+                {item.UserName}
               </option>
             ))}
           </select>
@@ -102,7 +102,7 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
             onChange={(e) => {
               setClientNotes(e.target.value);
             }}
-            placeholder={ClientNotes}
+            defaultValue={ClientNotes}
           />
         </div>
 
@@ -119,7 +119,7 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
   );
 };
 
-async function action({ request }) {
+async function action({ request, params: { id } }) {
   const formData = await request.formData();
   const ClientUsername = formData.get("ClientUsername");
   const ClientCompany = formData.get("ClientCompany");
@@ -127,7 +127,8 @@ async function action({ request }) {
   const ClientNotes = formData.get("ClientNotes");
   const POC = formData.get("ClientPOC");
 
-  const client = await createClient(
+  const client = await editClient(
+    id,
     {
       ClientUsername,
       ClientCompany,
@@ -138,17 +139,19 @@ async function action({ request }) {
     { signal: request.signal }
   );
 
-  return redirect(`/client/${client.insertId}`);
+  client;
+
+  return redirect(`/client/${id}`);
 }
 
-async function loader({ request: { signal } }) {
+async function loader({ request: { signal }, params: { id } }) {
   const users = await getUsers({ signal });
-  const client = await getClients({ signal });
+  const client = await getClient(id, { signal });
   return { users: users, client: client };
 }
 
-export const AddClientRoute = {
+export const EditClientRoute = {
   loader,
   action,
-  element: <AddClient />,
+  element: <EditClient />,
 };

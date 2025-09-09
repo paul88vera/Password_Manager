@@ -12,6 +12,7 @@ CLIENT = {Client: 1, PassID: 1, PassPW: "password123", PassSite: "example.com", 
 const Sites = () => {
   const passwords = useLoaderData();
 
+  // Filters only one instance of a site // NO DOUBLE TITLES
   const passFiltered = passwords.filter(
     (item, index, self) =>
       index === self.findIndex((i) => i.PassSite === item.PassSite)
@@ -20,22 +21,21 @@ const Sites = () => {
   return (
     <div className="grid grid-flow-row gap-4 mt-4 pb-10 w-full">
       {/* TODO Need to make paragraph conditional */}
-      {passwords ? (
-        passFiltered.map((item) => (
-          <Link
-            to={`/sites/${item.PassSite}`}
-            className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px] hover:text-lime-500 md:hover:scale-105 hover:opacity-90 transition ease-in-out"
-            key={item.PassID}>
-            {/* <img src="#" alt={item.ClientUsername} /> */}
-            <MdOutlineComputer className="text-4xl text-slate-900 hover:text-lime-500" />
-            <h3 className="text-slate-900 hover:text-lime-500">
-              {capitalizeFirstWord(item.PassSite)}
-            </h3>
-          </Link>
-        ))
-      ) : (
+      {passFiltered == "" ? (
         <div className="text-white">no sites yet...</div>
-      )}
+      ) : null}
+      {passFiltered.map((item) => (
+        <Link
+          to={`/sites/${item.PassSite}`}
+          className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px] hover:text-lime-500 md:hover:scale-105 hover:opacity-90 transition ease-in-out"
+          key={item.PassID}>
+          {/* <img src="#" alt={item.ClientUsername} /> */}
+          <MdOutlineComputer className="text-4xl text-slate-900 hover:text-lime-500" />
+          <h3 className="text-slate-900 hover:text-lime-500">
+            {capitalizeFirstWord(item.PassSite)}
+          </h3>
+        </Link>
+      ))}
     </div>
   );
 };

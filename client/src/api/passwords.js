@@ -30,8 +30,8 @@ export function createPassword(data, options) {
 // @route    DELETE /passwords/:id
 // @desc     Delete passwords by id
 // @access   Private - Public For Now
-export function deletePassword(id) {
-  return baseApi.delete(`passwords/${id}`, { method: "DELETE" }).then(() => {
-    window.location.replace("/dashboard");
+export function deletePassword(id, Client) {
+  return baseApi.delete(`passwords/${id}`).then(() => {
+    window.location.replace(`/client/${Client}`);
   });
 }

@@ -4,7 +4,7 @@ const router = express.Router();
 const db = require("../db/connection");
 
 // @route    GET /passwords
-// @desc     Get all client passwords by id
+// @desc     Get all client passwords
 // @access   Private - Public For Now
 router.get("/", async (req, res) => {
   try {
@@ -19,13 +19,13 @@ router.get("/", async (req, res) => {
 });
 
 // @route    GET /passwords/:id
-// @desc     Get all client passwords by id
+// @desc     Get client passwords by id
 // @access   Private - Public For Now
 router.get("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { id } = req.params;
-    const query = "SELECT * FROM Passwords WHERE Client = ?";
+    const query = "SELECT * FROM Passwords WHERE PassID = ?";
     const [results] = await connection.query(query, [id]);
     res.json(results);
   } catch (err) {
@@ -43,7 +43,7 @@ router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { PassSite, PassUsername, PassHTML, PassPW, Client } = req.body;
     const query =
-      "UPDATE Passwords SET PassSite = ?, PassUsername = ?, PassPW = ?, Client = ?";
+      "UPDATE Passwords SET PassSite = ?, PassUsername = ?, PassHTML = ?, PassPW = ?, Client = ? WHERE PassID = ?";
     const [results] = await connection.query(query, [
       PassSite,
       PassUsername,
@@ -89,9 +89,10 @@ router.post("/", async (req, res) => {
 // @access   Private - Public For Now
 router.delete("/:id", async (req, res) => {
   try {
+    const connection = await db;
     const { id } = req.params;
     const query = "DELETE FROM Passwords WHERE PassID = ?";
-    db.query(query, [id]);
+    connection.query(query, [id]);
     res.send("Password Deleted");
   } catch (err) {
     console.error(err);

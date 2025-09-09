@@ -23,8 +23,8 @@ export function createUser(data, options) {
 // @route    PUT /user/:id
 // @desc     Update user by id
 // @access   Private - Public For Now
-export function editUser(id, options) {
-  return baseApi.put(`user/${id}`, options).then((res) => res.data);
+export function editUser(id, data, options) {
+  return baseApi.put(`user/${id}`, data, options).then((res) => res.data);
 }
 
 // @route    DELETE /user/:id

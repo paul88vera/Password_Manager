@@ -17,8 +17,8 @@ export function getClient(id, options) {
 // @route    PUT /Client/:id
 // @desc     Update Client by id
 // @access   Private - Public For Now
-export function editClient(id, options) {
-  return baseApi.put(`client/${id}`, options).then((res) => res.data);
+export function editClient(id, data, options) {
+  return baseApi.put(`client/${id}`, data, options).then((res) => res.data);
 }
 
 // @route    POST /Client

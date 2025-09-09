@@ -2,25 +2,27 @@ import { Link, useLoaderData } from "react-router-dom";
 import { getClients } from "../api/clients";
 import { getPasswords } from "../api/passwords";
 import { CgProfile } from "react-icons/cg";
-import { capitalizeFirstWord } from "../utils/caps";
+import { capitalizeFirstWord } from "../utils/caps"; // capitalizes stuff
 
 // eslint-disable-next-line react-refresh/only-export-components
 const SitesInner = () => {
   const { client, passwords } = useLoaderData();
 
+  // Takes password from URL slug
   const url = window.location;
   const slug = url.pathname.split("/").filter(Boolean);
 
-  // Works password by SiteName
+  // password filter by SiteName
   const passwordFilteredBySite = passwords.filter(
     (item) => item.PassSite === slug[1]
   );
 
-  // Works password Client = [1,2]
+  // password filtered by ClientID = [1,2]
   const clientIDFilterByPassword = passwordFilteredBySite.map(
     (item) => item.Client
   );
 
+  // Client filtered from passwords
   const clientsFiltered = client.filter((item) =>
     clientIDFilterByPassword.includes(item.ClientID)
   );
