@@ -29,7 +29,7 @@ body {
   display: flex;
   place-items: center;
   font-size: 1.2em;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 h1 {

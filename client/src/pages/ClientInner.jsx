@@ -69,7 +69,7 @@ const ClientInner = () => {
               </span>
               <Link
                 to={`mailto:${client[0]?.ClientEmail}`}
-                className="text-[1rem] font-thin !text-lime-900">
+                className="text-[1rem] font-thin !text-lime-900 hover:!text-lime-700">
                 {client[0]?.ClientEmail || "Unknown"}
               </Link>
             </p>
@@ -87,7 +87,6 @@ const ClientInner = () => {
             <div className="flex flex-col align-middle justify-center">
               <Form
                 method="post"
-                action={`/client/${passClient}`}
                 onSubmit={toggleModal}
                 className="form_container flex flex-col justify-between gap-4 max-w-100">
                 <input
@@ -278,7 +277,7 @@ async function action({ request }) {
   const PassPW = formData.get("password");
   const Client = formData.get("passClient");
 
-  const password = await createPassword(
+  await createPassword(
     {
       PassSite,
       PassUsername,
@@ -288,10 +287,6 @@ async function action({ request }) {
     },
     { signal: request.signal }
   );
-
-  password;
-
-  return location.reload();
 }
 
 async function loader({ request: { signal }, params: { id } }) {

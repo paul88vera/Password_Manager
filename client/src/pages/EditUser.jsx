@@ -1,12 +1,10 @@
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { useState } from "react";
-import { deleteUser, editUser, getUser, getUsers } from "../api/users";
+import { deleteUser, editUser, getUser } from "../api/users";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const EditUser = () => {
-  const { users, roles } = useLoaderData();
-
-  console.log(users[0]?.UserActive);
+  const { users } = useLoaderData();
 
   const [userName, setUserName] = useState(users[0]?.UserName);
   const [userEmail, setUserEmail] = useState(users[0]?.UserEmail);
@@ -14,12 +12,6 @@ const EditUser = () => {
   const [userActive] = useState(users[0]?.UserActive);
   const [userRole, setUserRole] = useState(users[0]?.UserRole);
   const userID = users[0]?.UserID;
-
-  // Filter User Roles
-  const role = roles.filter(
-    (item, index, self) =>
-      index === self.findIndex((i) => i.UserRole === item.UserRole)
-  );
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
@@ -29,7 +21,7 @@ const EditUser = () => {
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <input type="hidden" name="userId" defaultValue={userID} />
           <label htmlFor="UserName" className="w-40">
-            Username:
+            Full Name:
           </label>
           <input
             type="text"
@@ -82,11 +74,9 @@ const EditUser = () => {
             id="role"
             onChange={(e) => setUserRole(e.target.value)}
             defaultValue={userRole}>
-            {role.map((item) => (
-              <option value={item.UserRole} key={item.UserID}>
-                {item.UserRole}
-              </option>
-            ))}
+            <option value="Admin">Admin</option>
+            <option value="Manager">Manager</option>
+            <option value="Staff">Staff</option>
           </select>
         </div>
 
@@ -103,7 +93,7 @@ const EditUser = () => {
         </div>
 
         <div className="flex flex-row gap-2 mt-2">
-          <Link to="/client" type="cancel" className="button cancel-btn">
+          <Link to="/dashboard" type="cancel" className="button cancel-btn">
             Cancel
           </Link>
           <button type="submit" className="button save-btn">
@@ -157,8 +147,7 @@ async function action({ request }) {
 
 async function loader({ request: { signal }, params: { id } }) {
   const users = await getUser(id, { signal });
-  const roles = await getUsers({ signal });
-  return { users: users, roles: roles };
+  return { users: users };
 }
 
 export const EditUserRoute = {

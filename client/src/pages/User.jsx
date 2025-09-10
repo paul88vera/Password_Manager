@@ -15,8 +15,6 @@ const User = () => {
   return (
     <div className="flex flex-col gap-4 mt-4">
       <div className="flex flex-col flex-nowrap justify-between bg-slate-300 pl-4 pr-8 pb-8 pt-4 rounded-2xl relative">
-        {user == "" ? <div className="text-white">No Users Yet...</div> : null}
-
         <div className="flex flex-row flex-nowrap gap-4">
           <div
             className="flex flex-col align-middle justify-start cursor-pointer"
@@ -50,7 +48,7 @@ const User = () => {
             </div>
             <Link
               to={`mailto:${user[0]?.UserEmail}`}
-              className="text-[1rem] font-thin !text-lime-900">
+              className="text-[1rem] font-thin !text-lime-900 hover:!text-lime-700">
               {user[0]?.UserEmail || "Unknown"}
             </Link>
           </div>

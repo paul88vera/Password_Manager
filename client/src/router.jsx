@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
       {
         errorElement: <ErrorMessage />,
         children: [
-          { index: true, element: <Navigate to="/client" /> },
+          { index: true, element: <Navigate to="/dashboard" /> },
           {
             path: "client",
             children: [

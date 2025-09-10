@@ -1,16 +1,19 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { getPasswords } from "../api/passwords";
-import Modal from "../components/Modal";
 import { MdOutlineComputer } from "react-icons/md";
+import { BiChevronLeftSquare } from "react-icons/bi";
 import { capitalizeFirstWord } from "../utils/caps";
-
-/* 
-CLIENT = {Client: 1, PassID: 1, PassPW: "password123", PassSite: "example.com", PassUsername: "clientAuser", created_at: "2025-08-28T03:00:19.000Z"}
-*/
+import { useState } from "react";
+import { IoSearch } from "react-icons/io5";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Sites = () => {
   const passwords = useLoaderData();
+
+  // Used for Filter State
+  const [filter, setFilter] = useState("");
+
+  const [searchOpen, setSearchOpen] = useState();
 
   // Filters only one instance of a site // NO DOUBLE TITLES
   const passFiltered = passwords.filter(
@@ -19,23 +22,55 @@ const Sites = () => {
   );
 
   return (
-    <div className="grid grid-flow-row gap-4 mt-4 pb-10 w-full">
-      {/* TODO Need to make paragraph conditional */}
-      {passFiltered == "" ? (
-        <div className="text-white">no sites yet...</div>
-      ) : null}
-      {passFiltered.map((item) => (
-        <Link
-          to={`/sites/${item.PassSite}`}
-          className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px] hover:text-lime-500 md:hover:scale-105 hover:opacity-90 transition ease-in-out"
-          key={item.PassID}>
-          {/* <img src="#" alt={item.ClientUsername} /> */}
-          <MdOutlineComputer className="text-4xl text-slate-900 hover:text-lime-500" />
-          <h3 className="text-slate-900 hover:text-lime-500">
-            {capitalizeFirstWord(item.PassSite)}
-          </h3>
-        </Link>
-      ))}
+    <div className="flex flex-col gap-4 pb-10 justify-center align-middle">
+      <div className="max-w-[1000px] w-full flex flex-col justify-center align-middle content-center">
+        <div className="flex flex-col flex-nowrap gap-4 align-middle justify-start">
+          <IoSearch
+            className={`text-3xl text-lime-500 hover:scale-115 transition-all ease-in-out cursor-pointer ${
+              searchOpen ? "hidden" : null
+            }`}
+            onClick={() => {
+              setSearchOpen(true);
+            }}
+          />
+        </div>
+        {searchOpen ? (
+          <input
+            type="text"
+            placeholder="Search"
+            onChange={(event) => {
+              setFilter(event.target.value);
+            }}
+            className="p-2 text-center rounded-full bg-slate-500 text-slate-200 w-full placeholder:!text-slate-200 focus:outline-1 focus:outline-lime-500 mt-4"
+          />
+        ) : null}
+      </div>
+      <div className="mt-4 grid grid-cols-1 gap-4">
+        {passFiltered == "" ? (
+          <Link to="/client">No Sites Yet... Add A Password To A Client</Link>
+        ) : null}
+        {passFiltered
+          ?.filter((val) => {
+            if (filter == "") {
+              return val;
+            } else if (
+              val.PassSite.toLowerCase().includes(filter.toLowerCase())
+            ) {
+              return val;
+            }
+          })
+          .map((item) => (
+            <Link
+              to={`/sites/${item.PassSite}`}
+              className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px]  md:hover:scale-105 hover:opacity-90 transition ease-in-out"
+              key={item.PassID}>
+              <MdOutlineComputer className="text-4xl text-slate-900 " />
+              <h3 className="text-slate-900 ">
+                {capitalizeFirstWord(item.PassSite)}
+              </h3>
+            </Link>
+          ))}
+      </div>
     </div>
   );
 };

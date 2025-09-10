@@ -12,16 +12,9 @@ const AddClient = () => {
   const [ClientCompany, setClientCompany] = useState("");
   const [ClientNotes, setClientNotes] = useState("");
   const [ClientEmail, setClientEmail] = useState("");
-  // const [POC, setPOC] = useState();
-  /* 
-USERS (PassUsers):
-UserID, UserName, UserEmail, UserLogin, UserRole, UserActive
 
-- - -
-
-CLIENTS (PassClient):
-ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
-*/
+  // Only Active Users as Client POC
+  const activeUsers = users.filter((item) => item.UserActive === 1);
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
@@ -30,7 +23,7 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
         className="form_container flex flex-col justify-between gap-4 !h-full">
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="ClientUsername" className="w-40">
-            Username:
+            Full Name:
           </label>
           <input
             type="text"
@@ -83,7 +76,7 @@ ClientID, ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC
             id="ClientPOC"
             onChange={(e) => parseInt(e.target.value)}
             required>
-            {users.map((item, index) => (
+            {activeUsers.map((item, index) => (
               <option value={parseInt(item.UserID)} key={index}>
                 {capitalizeFirstWord(item.UserName)}
               </option>

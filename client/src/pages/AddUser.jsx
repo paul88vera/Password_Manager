@@ -1,22 +1,16 @@
-import { Form, Link, redirect, useLoaderData } from "react-router-dom";
+import { Form, Link, redirect } from "react-router-dom";
 import { useState } from "react";
-import { createUser, getUsers } from "../api/users";
+import { createUser } from "../api/users";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AddUser = () => {
-  const { users } = useLoaderData();
+  // const { users } = useLoaderData();
 
   const [userName, setUserName] = useState();
   const [userEmail, setUserEmail] = useState();
   const [userLogin, setUserLogin] = useState();
   const [userActive] = useState(1);
   const [userRole, setUserRole] = useState("Staff");
-
-  // Filter User Roles
-  const roles = users.filter(
-    (item, index, self) =>
-      index === self.findIndex((i) => i.UserRole === item.UserRole)
-  );
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
@@ -25,7 +19,7 @@ const AddUser = () => {
         className="form_container flex flex-col justify-between gap-4 !h-full">
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="UserName" className="w-40">
-            Username:
+            Full Name:
           </label>
           <input
             type="text"
@@ -78,11 +72,9 @@ const AddUser = () => {
             id="role"
             onChange={(e) => setUserRole(e.target.value)}
             defaultValue={userRole}>
-            {roles.map((item) => (
-              <option value={item.UserRole} key={item.UserID}>
-                {item.UserRole}
-              </option>
-            ))}
+            <option value="Admin">Admin</option>
+            <option value="Manager">Manager</option>
+            <option value="Staff">Staff</option>
           </select>
         </div>
 
@@ -134,16 +126,16 @@ async function action({ request }) {
     { signal: request.signal }
   );
 
-  return redirect(`/profile`);
+  return redirect(`/dashboard`);
 }
 
-async function loader({ request: { signal } }) {
-  const users = await getUsers({ signal });
-  return { users: users };
-}
+// async function loader({ request: { signal } }) {
+//   const users = await getUsers({ signal });
+//   return { users: users };
+// }
 
 export const AddUserRoute = {
-  loader,
+  // loader,
   action,
   element: <AddUser />,
 };

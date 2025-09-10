@@ -29,7 +29,7 @@ const EditClient = () => {
         className="form_container flex flex-col justify-between gap-4 !h-full">
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="ClientUsername" className="w-40">
-            Username:
+            Full Name:
           </label>
           <input
             type="text"
