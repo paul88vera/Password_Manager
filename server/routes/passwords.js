@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 
 const db = require("../db/connection");
 
@@ -27,6 +28,7 @@ router.get("/:id", async (req, res) => {
     const { id } = req.params;
     const query = "SELECT * FROM Passwords WHERE PassID = ?";
     const [results] = await connection.query(query, [id]);
+
     res.json(results);
   } catch (err) {
     console.error(err);
