@@ -1,0 +1,18 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.client
+    environment:
+      - REACT_APP_API_URL=http://server:5500
+    ports:
+      - 3000:80 # Map local 3000 -> Nginx 80
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.server
+    ports:
+      - 5500:5500
