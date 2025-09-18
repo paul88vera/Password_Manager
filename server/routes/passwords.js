@@ -6,7 +6,7 @@ const db = require("../db/connection");
 
 // @route    GET /passwords
 // @desc     Get all client passwords
-// @access   Private - Public For Now
+// @access   Private
 router.get("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
 
 // @route    GET /passwords/:id
 // @desc     Get client passwords by id
-// @access   Private - Public For Now
+// @access   Private
 router.get("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
@@ -38,7 +38,7 @@ router.get("/:id", async (req, res) => {
 
 // @route    PUT /passwords/:id
 // @desc     Update passwords by password id
-// @access   Private - Public For Now
+// @access   Private
 router.put("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
@@ -63,7 +63,7 @@ router.put("/:id", async (req, res) => {
 
 // @route    POST /passwords
 // @desc     Create password
-// @access   Private - Public For Now
+// @access   Private
 router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
@@ -88,7 +88,7 @@ router.post("/", async (req, res) => {
 
 // @route    DELETE /passwords:id
 // @desc     Create a Password
-// @access   Private - Public For Now
+// @access   Private
 router.delete("/:id", async (req, res) => {
   try {
     const connection = await db;

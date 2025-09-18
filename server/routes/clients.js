@@ -5,7 +5,7 @@ const db = require("../db/connection");
 
 // @route    GET /client
 // @desc     Get all Client
-// @access   Private - Public For Now
+// @access   Private
 router.get("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
 
 // @route    GET /client:id
 // @desc     Get one Client by id
-// @access   Private - Public For Now
+// @access   Private
 router.get("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
@@ -35,7 +35,7 @@ router.get("/:id", async (req, res) => {
 
 // @route    PUT /client/:id
 // @desc     Update Client by id
-// @access   Private - Public For Now
+// @access   Private
 router.put("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
@@ -61,7 +61,7 @@ router.put("/:id", async (req, res) => {
 
 // @route    POST /client
 // @desc     Create new Client
-// @access   Private - Public For Now
+// @access   Private
 router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
@@ -87,7 +87,7 @@ router.post("/", async (req, res) => {
 
 // @route    DELETE /Clients/:id
 // @desc     Delete Client by id
-// @access   Private - Public For Now
+// @access   Private
 router.delete("/:id", async (req, res) => {
   const connection = await db; // Wait for connection to resolve
   const { id } = req.params;

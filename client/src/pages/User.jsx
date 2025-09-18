@@ -1,6 +1,5 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { getUser } from "../api/users";
-// import { capitalizeFirstWord } from "../utils/caps";
 import { CgProfile } from "react-icons/cg";
 import { capitalizeFirstWord } from "../utils/caps";
 import { useState } from "react";
@@ -9,7 +8,6 @@ import { useState } from "react";
 const User = () => {
   const { user } = useLoaderData();
   const [editIcon, setEditIcon] = useState();
-
   const userActive = user[0]?.UserActive;
 
   return (

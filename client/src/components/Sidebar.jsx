@@ -1,13 +1,21 @@
 import { Link } from "react-router-dom";
-import { FaCircleUser } from "react-icons/fa6";
+import { IoHomeSharp } from "react-icons/io5";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdOutlineScreenSearchDesktop } from "react-icons/md";
 import { RiUserSearchFill } from "react-icons/ri";
 import { CiCirclePlus } from "react-icons/ci";
 import { useState } from "react";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+  useUser,
+} from "@clerk/clerk-react";
 
-const Sidebar = ({ auth, role }) => {
+const Sidebar = () => {
   const [selectAdd, setSelectAdd] = useState();
+  const auth = useUser().user.id;
 
   const showModal = () => {
     setSelectAdd((current) => !current);
@@ -16,14 +24,17 @@ const Sidebar = ({ auth, role }) => {
   return (
     <div className="flex flex-row flex-nowrap md:flex-col justify-center md:justify-between md:gap-4 bg-gray-900 md:py-8 md:p-2 py-2 md:min-h-full md:w-15 items-center fixed w-screen bottom-0 z-50 gap-10">
       <div>
-        <Link to="/dashboard" title="Profile">
-          <FaCircleUser className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
-        </Link>
-        {/* <Link to="/logout" title="Logout">
-          <FaSignOutAlt className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
-        </Link> */}
+        <SignedOut>
+          <SignInButton className="!text-white" />
+        </SignedOut>
+        <SignedIn>
+          <UserButton className="!min-w-[500px]" />
+        </SignedIn>
       </div>
       <div className="flex flex-row flex-nowrap md:flex-col md:gap-8 text-center p-0 md:justify-between gap-10">
+        <Link to="/dashboard" title="Profile">
+          <IoHomeSharp className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
+        </Link>
         <Link to="/client" title="Clients">
           <RiUserSearchFill className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
         </Link>
@@ -42,16 +53,23 @@ const Sidebar = ({ auth, role }) => {
               onClick={showModal}>
               <IoMdCloseCircleOutline className="text-3xl" />
             </div>
-            <div className="flex flex-col gap-4 text-center">
-              {auth == role ? (
+            {auth == import.meta.env.VITE_DEV_TOKEN ||
+            auth == import.meta.env.VITE_DEV_TOKEN2 ? (
+              <div className="flex flex-col gap-4 text-center pt-4">
                 <Link to="/add-user" onClick={showModal}>
-                  Add A User
+                  Add Manager
                 </Link>
-              ) : null}
-              <Link to="/add-client" onClick={showModal}>
-                Add A Client
-              </Link>
-            </div>
+                <Link to="/add-client" onClick={showModal}>
+                  Add Client
+                </Link>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-4 text-center pt-4">
+                <Link to="/add-client" onClick={showModal}>
+                  Add Client
+                </Link>
+              </div>
+            )}
           </div>
         ) : null}
       </div>

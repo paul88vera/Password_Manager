@@ -8,7 +8,7 @@ const EditUser = () => {
 
   const [userName, setUserName] = useState(users[0]?.UserName);
   const [userEmail, setUserEmail] = useState(users[0]?.UserEmail);
-  const [userLogin, setUserLogin] = useState(users[0]?.UserLogin);
+  // const [userLogin, setUserLogin] = useState(users[0]?.UserLogin);
   const [userActive] = useState(users[0]?.UserActive);
   const [userRole, setUserRole] = useState(users[0]?.UserRole);
   const userID = users[0]?.UserID;
@@ -50,7 +50,7 @@ const EditUser = () => {
             }}
           />
         </div>
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        {/* <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="userLogin" className="w-40">
             Password:
           </label>
@@ -64,7 +64,7 @@ const EditUser = () => {
               setUserLogin(e.target.value);
             }}
           />
-        </div>
+        </div> */}
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="userRole" className="w-40">
             Role:
@@ -106,7 +106,7 @@ const EditUser = () => {
         onClick={() => {
           if (
             window.confirm(
-              "Are you sure you would like to delete this users?"
+              "Are you sure you want to delete this Account Manager?"
             ) == true
           ) {
             deleteUser(users[0]?.UserID);
@@ -115,7 +115,7 @@ const EditUser = () => {
             return;
           }
         }}>
-        Delete User
+        Delete Account Manager
       </div>
     </div>
   );

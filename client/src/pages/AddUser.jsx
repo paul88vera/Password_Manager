@@ -4,11 +4,8 @@ import { createUser } from "../api/users";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AddUser = () => {
-  // const { users } = useLoaderData();
-
   const [userName, setUserName] = useState();
   const [userEmail, setUserEmail] = useState();
-  const [userLogin, setUserLogin] = useState();
   const [userActive] = useState(1);
   const [userRole, setUserRole] = useState("Staff");
 
@@ -45,21 +42,6 @@ const AddUser = () => {
             defaultValue={userEmail}
             onChange={(e) => {
               setUserEmail(e.target.value);
-            }}
-          />
-        </div>
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
-          <label htmlFor="userLogin" className="w-40">
-            Password:
-          </label>
-          <input
-            type="text"
-            name="userLogin"
-            id="userLogin"
-            className="w-60"
-            defaultValue={userLogin}
-            onChange={(e) => {
-              setUserLogin(e.target.value);
             }}
           />
         </div>
@@ -111,7 +93,6 @@ async function action({ request }) {
   const formData = await request.formData();
   const UserName = formData.get("userName");
   const UserEmail = formData.get("userEmail");
-  const UserLogin = formData.get("userLogin");
   const UserRole = formData.get("userRole");
   const UserActive = formData.get("userActive");
 
@@ -119,7 +100,6 @@ async function action({ request }) {
     {
       UserName,
       UserEmail,
-      UserLogin,
       UserRole,
       UserActive,
     },
@@ -129,13 +109,7 @@ async function action({ request }) {
   return redirect(`/dashboard`);
 }
 
-// async function loader({ request: { signal } }) {
-//   const users = await getUsers({ signal });
-//   return { users: users };
-// }
-
 export const AddUserRoute = {
-  // loader,
   action,
   element: <AddUser />,
 };

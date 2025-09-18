@@ -6,8 +6,6 @@ import { ClientRoute } from "./pages/Client";
 import { SitesRoute } from "./pages/Sites";
 import Settings from "./pages/Settings";
 import { AddClientRoute } from "./pages/AddClient";
-import Login from "./pages/Login";
-// import User from "./pages/User";
 import { ClientInnerRoute } from "./pages/ClientInner";
 import { SiteInnerPage } from "./pages/SitesInner";
 import { AddUserRoute } from "./pages/AddUser";
@@ -25,7 +23,10 @@ export const router = createBrowserRouter([
       {
         errorElement: <ErrorMessage />,
         children: [
-          { index: true, element: <Navigate to="/dashboard" /> },
+          {
+            index: true,
+            element: <Navigate to="/dashboard" />,
+          },
           {
             path: "client",
             children: [
@@ -46,7 +47,6 @@ export const router = createBrowserRouter([
               { path: ":id", ...SiteInnerPage },
             ],
           },
-          { path: "login", element: <Login /> },
           {
             path: `dashboard`,
             children: [{ index: true, ...ProfileRoute }],

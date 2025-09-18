@@ -5,7 +5,7 @@ const db = require("../db/connection");
 
 // @route    GET /users
 // @desc     Get all users
-// @access   Private - Public For Now
+// @access   Private
 router.get("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
 
 // @route    GET /users:id
 // @desc     Get one user
-// @access   Private - Public For Now
+// @access   Private
 router.get("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
@@ -35,18 +35,17 @@ router.get("/:id", async (req, res) => {
 
 // @route    PUT /users:id
 // @desc     Update one user by id
-// @access   Private - Public For Now
+// @access   Private
 router.put("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { id } = req.params;
-    const { UserName, UserEmail, UserLogin, UserRole, UserActive } = req.body;
+    const { UserName, UserEmail, UserRole, UserActive } = req.body;
     const query =
-      "UPDATE PassUsers SET UserName = ?, UserEmail = ?, UserLogin = ?, UserRole = ?, UserActive = ? WHERE UserID = ?";
+      "UPDATE PassUsers SET UserName = ?, UserEmail = ?, UserRole = ?, UserActive = ? WHERE UserID = ?";
     const [results] = await connection.query(query, [
       UserName,
       UserEmail,
-      UserLogin,
       UserRole,
       UserActive,
       id,
@@ -60,18 +59,17 @@ router.put("/:id", async (req, res) => {
 
 // @route    POST /users
 // @desc     Create a user
-// @access   Private - Public For Now
+// @access   Private
 router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { id } = req.params;
-    const { UserName, UserEmail, UserLogin, UserRole, UserActive } = req.body;
+    const { UserName, UserEmail, UserRole, UserActive } = req.body;
     const query =
-      "INSERT INTO PassUsers (UserName, UserEmail, UserLogin, UserRole, UserActive) VALUES (?,?,?,?,?)";
+      "INSERT INTO PassUsers (UserName, UserEmail, UserRole, UserActive) VALUES (?,?,?,?)";
     const [results] = await connection.query(query, [
       UserName,
       UserEmail,
-      UserLogin,
       UserRole,
       UserActive,
       id,
@@ -85,7 +83,7 @@ router.post("/", async (req, res) => {
 
 // @route    DELETE /users:id
 // @desc     Create a user
-// @access   Private - Public For Now
+// @access   Private
 router.delete("/:id", async (req, res) => {
   try {
     const connection = await db;
