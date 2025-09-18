@@ -134,3 +134,9 @@ button:focus-visible {
     background-color: #d5dae5;
   }
 }
+
+/* Clerk UserButton */
+.cl-avatarBox {
+  width: 100% !important;
+  min-height: 40px !important;
+}
