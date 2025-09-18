@@ -4,7 +4,6 @@ import { CgProfile } from "react-icons/cg";
 import { IoSearch } from "react-icons/io5";
 import { capitalizeFirstWord } from "../utils/caps";
 import { useState } from "react";
-import { Helmet } from "react-helmet-async";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Client = () => {
@@ -16,13 +15,6 @@ const Client = () => {
 
   return (
     <div className="flex flex-col gap-4  pb-10">
-       <Helmet>
-        <title>About Us - MyApp</title>
-        <meta
-          name="description"
-          content="Learn more about MyApp, our mission, and our team."
-        />
-      </Helmet>
       <div className="max-w-[1000px] w-full flex flex-col justify-center align-middle content-center">
         <IoSearch
           className={`text-3xl text-lime-500 hover:scale-115 transition-all ease-in-out ${
