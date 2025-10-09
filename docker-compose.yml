@@ -4,15 +4,49 @@ services:
       context: ./client
       dockerfile: Dockerfile.client
     environment:
-      - REACT_APP_API_URL=http://server:5500
+      # Internal API for Docker networking
+      - REACT_APP_API_URL=http://server:5500/
     ports:
-      - 3000:80 # Map local 3000 -> Nginx 80
+      - "3000:80" # React app exposed on LAN
     depends_on:
       - server
+    volumes:
+      - ./client:/app # mount local client code → container
+      - /app/node_modules # keep container's node_modules separate
 
   server:
     build:
       context: ./server
       dockerfile: Dockerfile.server
     ports:
-      - 5500:5500
+      - "5500:5500" # API exposed on LAN
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - VITE_SQL_USER=root
+      - VITE_SQL_PASSWD=WebDev88!!
+      - VITE_SQL_DB=passManager
+    volumes:
+      - ./server:/app # mount local server code → container
+      - /app/node_modules # container keeps its own node_modules
+    command: >
+      sh -c "node server.js --watch /app" # hot reload on code changes
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: WebDev88!!
+      MYSQL_DATABASE: passManager
+    ports:
+      - "3307:3306" # MySQL reachable on LAN
+    volumes:
+      - db_data:/var/lib/mysql # persistent DB storage
+      # only for first boot:
+      # - ./server/db/db.sql:/docker-entrypoint-initdb.d/1-db.sql
+      # - ./server/db/schema.sql:/docker-entrypoint-initdb.d/2-schema.sql
+      # - ./server/db/seeds.sql:/docker-entrypoint-initdb.d/3-seeds.sql
+
+volumes:
+  db_data: {}
