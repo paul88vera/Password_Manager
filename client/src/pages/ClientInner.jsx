@@ -9,8 +9,7 @@ import { IoIosTrash } from "react-icons/io";
 import { deleteClient, getClient } from "../api/clients";
 import { useState } from "react";
 import { capitalizeFirstWord } from "../utils/caps";
-import { getUsers } from "../api/users";
-import { isMobile } from "react-device-detect";
+import { getManagers } from "../api/managers";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const ClientInner = () => {
@@ -295,7 +294,7 @@ async function action({ request }) {
 async function loader({ request: { signal }, params: { id } }) {
   const passwords = await getPasswords({ signal });
   const client = await getClient(id, { signal });
-  const users = await getUsers({ signal });
+  const users = await getManagers({ signal });
   return { passwords: passwords, client: client, users: users };
 }
 

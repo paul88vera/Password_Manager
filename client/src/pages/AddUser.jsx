@@ -1,6 +1,6 @@
 import { Form, Link, redirect } from "react-router-dom";
 import { useState } from "react";
-import { createUser } from "../api/users";
+import { createManager } from "../api/managers";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AddUser = () => {
@@ -96,7 +96,7 @@ async function action({ request }) {
   const UserRole = formData.get("userRole");
   const UserActive = formData.get("userActive");
 
-  await createUser(
+  await createManager(
     {
       UserName,
       UserEmail,

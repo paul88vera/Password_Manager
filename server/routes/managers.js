@@ -9,7 +9,7 @@ const db = require("../db/connection");
 router.get("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const [results] = await connection.query("SELECT * FROM PassUsers");
+    const [results] = await connection.query("SELECT * FROM Manager");
     res.json(results);
   } catch (err) {
     console.error(err);
@@ -20,12 +20,12 @@ router.get("/", async (req, res) => {
 // @route    GET /users:id
 // @desc     Get one user
 // @access   Private
-router.get("/:id", async (req, res) => {
+router.get("/:managerId", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { id } = req.params;
-    const query = "SELECT * FROM PassUsers WHERE UserID = ?";
-    const [results] = await connection.query(query, [id]);
+    const { UserId } = req.params;
+    const query = "SELECT * FROM Manager WHERE UserID = ?";
+    const [results] = await connection.query(query, [UserId]);
     res.json(results);
   } catch (err) {
     console.error(err);
@@ -36,19 +36,19 @@ router.get("/:id", async (req, res) => {
 // @route    PUT /users:id
 // @desc     Update one user by id
 // @access   Private
-router.put("/:id", async (req, res) => {
+router.put("/:UserId", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { id } = req.params;
+    const { UserId } = req.params;
     const { UserName, UserEmail, UserRole, UserActive } = req.body;
     const query =
-      "UPDATE PassUsers SET UserName = ?, UserEmail = ?, UserRole = ?, UserActive = ? WHERE UserID = ?";
+      "UPDATE Manager SET UserName = ?, UserEmail = ?, UserRole = ?, UserActive = ? WHERE UserID = ?";
     const [results] = await connection.query(query, [
       UserName,
       UserEmail,
       UserRole,
       UserActive,
-      id,
+      UserId,
     ]);
     res.json(results);
   } catch (err) {
@@ -66,7 +66,7 @@ router.post("/", async (req, res) => {
     const { id } = req.params;
     const { UserName, UserEmail, UserRole, UserActive } = req.body;
     const query =
-      "INSERT INTO PassUsers (UserName, UserEmail, UserRole, UserActive) VALUES (?,?,?,?)";
+      "INSERT INTO Manager (UserName, UserEmail, UserRole, UserActive) VALUES (?,?,?,?)";
     const [results] = await connection.query(query, [
       UserName,
       UserEmail,
@@ -84,12 +84,12 @@ router.post("/", async (req, res) => {
 // @route    DELETE /users:id
 // @desc     Create a user
 // @access   Private
-router.delete("/:id", async (req, res) => {
+router.delete("/:UserId", async (req, res) => {
   try {
     const connection = await db;
-    const { id } = req.params;
-    const query = "DELETE FROM PassUsers WHERE UserID = ?";
-    connection.query(query, [id]);
+    const { UserId } = req.params;
+    const query = "DELETE FROM Manager WHERE UserID = ?";
+    connection.query(query, [UserId]);
     res.send("User Deleted");
   } catch (err) {
     console.error(err);

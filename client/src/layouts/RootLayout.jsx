@@ -1,10 +1,17 @@
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import { getUser } from "../api/users";
 import { SignedOut, SignedIn, RedirectToSignIn } from "@clerk/clerk-react";
+import { attachClerkInterceptor } from "../api/base";
+import { useAuth } from "@clerk/clerk-react";
+import { useEffect } from "react";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const RootLayout = () => {
+  const { getToken } = useAuth();
+
+  useEffect(() => {
+    attachClerkInterceptor(getToken);
+  }, [getToken]);
+
   return (
     <div className="flex flex-col-reverse md:flex-row gap-0 flex-nowrap">
       <ScrollRestoration />
@@ -27,12 +34,4 @@ const RootLayout = () => {
   );
 };
 
-async function loader({ request: { signal }, params: { id } }) {
-  const user = await getUser(id, { signal });
-  return { user: user };
-}
-
-export const LayoutRoute = {
-  loader,
-  element: <RootLayout />,
-};
+export default RootLayout;

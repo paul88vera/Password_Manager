@@ -1,7 +1,7 @@
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { editClient, getClient } from "../api/clients";
-import { getUsers } from "../api/users";
+import { getManagers } from "../api/managers";
 import { capitalizeFirstWord } from "../utils/caps";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -145,7 +145,7 @@ async function action({ request, params: { id } }) {
 }
 
 async function loader({ request: { signal }, params: { id } }) {
-  const users = await getUsers({ signal });
+  const users = await getManagers({ signal });
   const client = await getClient(id, { signal });
   return { users: users, client: client };
 }

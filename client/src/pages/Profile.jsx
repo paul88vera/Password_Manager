@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from "react-router-dom";
-import { getUsers } from "../api/users";
+import { getManagers } from "../api/managers";
 import { capitalizeFirstWord } from "../utils/caps";
 import { CgProfile } from "react-icons/cg";
 import { getClients } from "../api/clients";
@@ -80,7 +80,7 @@ const Profile = () => {
 };
 
 async function loader({ request: { signal } }) {
-  const user = await getUsers({ signal });
+  const user = await getManagers({ signal });
   const client = await getClients({ signal });
   return { user: user, client: client };
 }

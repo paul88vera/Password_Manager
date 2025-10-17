@@ -1,7 +1,7 @@
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { createClient, getClients } from "../api/clients";
-import { getUsers } from "../api/users";
+import { getManagers } from "../api/managers";
 import { capitalizeFirstWord } from "../utils/caps";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -77,7 +77,7 @@ const AddClient = () => {
             onChange={(e) => parseInt(e.target.value)}
             required>
             {activeUsers.map((item, index) => (
-              <option value={parseInt(item.UserID)} key={index}>
+              <option value={parseInt(item.UserId)} key={index}>
                 {capitalizeFirstWord(item.UserName)}
               </option>
             ))}
@@ -135,7 +135,7 @@ async function action({ request }) {
 }
 
 async function loader({ request: { signal } }) {
-  const users = await getUsers({ signal });
+  const users = await getManagers({ signal });
   const client = await getClients({ signal });
   return { users: users, client: client };
 }
