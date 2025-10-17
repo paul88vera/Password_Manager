@@ -11,12 +11,15 @@ Front-End:
 - Axios
 - React Icons
 - Full Calendar
+- Clerk
 
 Back-End:
 
 - MySQL
 - Express.js
+- Node.js
 - Cors
+- Clerk
 - Nodemon
 - Dotenvx
 
