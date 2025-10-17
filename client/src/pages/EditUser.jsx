@@ -1,6 +1,6 @@
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { useState } from "react";
-import { deleteUser, editUser, getUser } from "../api/users";
+import { deleteManager, editManager, getManager } from "../api/managers";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const EditUser = () => {
@@ -109,7 +109,7 @@ const EditUser = () => {
               "Are you sure you want to delete this Account Manager?"
             ) == true
           ) {
-            deleteUser(users[0]?.UserID);
+            deleteManager(users[0]?.UserId);
             window.location.replace(`/dashboard`);
           } else {
             return;
@@ -130,7 +130,7 @@ async function action({ request }) {
   const UserRole = formData.get("userRole");
   const UserActive = formData.get("userActive");
 
-  await editUser(
+  await editManager(
     UserID,
     {
       UserName,
@@ -146,7 +146,7 @@ async function action({ request }) {
 }
 
 async function loader({ request: { signal }, params: { id } }) {
-  const users = await getUser(id, { signal });
+  const users = await getManager(id, { signal });
   return { users: users };
 }
 

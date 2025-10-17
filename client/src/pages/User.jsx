@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from "react-router-dom";
-import { getUser } from "../api/users";
+import { getManager } from "../api/managers";
 import { CgProfile } from "react-icons/cg";
 import { capitalizeFirstWord } from "../utils/caps";
 import { useState } from "react";
@@ -57,7 +57,7 @@ const User = () => {
 };
 
 async function loader({ request: { signal }, params: { id } }) {
-  const user = await getUser(id, { signal });
+  const user = await getManager(id, { signal });
   return { user: user };
 }
 

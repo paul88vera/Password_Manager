@@ -13,5 +13,15 @@
     <div id="root"></div>
     <div id="modal"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      window.onSpotifyIframeApiReady = (IFrameAPI) => {
+        let element = document.getElementById("modal");
+        let options = {
+          uri: "spotify:episode:7makk4oTQel546B0PZlDM5",
+        };
+        let callback = (EmbedController) => {};
+        IFrameAPI.createController(element, options, callback);
+      };
+    </script>
   </body>
 </html>

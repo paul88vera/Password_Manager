@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { LayoutRoute } from "./layouts/RootLayout";
+import RootLayout from "./layouts/RootLayout";
 import ErrorMessage from "./pages/ErrorMessage";
 import Error from "./pages/Error";
 import { ClientRoute } from "./pages/Client";
@@ -18,7 +18,7 @@ import { UserRoute } from "./pages/User";
 export const router = createBrowserRouter([
   {
     path: "/",
-    ...LayoutRoute,
+    element: <RootLayout />,
     children: [
       {
         errorElement: <ErrorMessage />,

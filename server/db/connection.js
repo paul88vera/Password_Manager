@@ -4,7 +4,7 @@ require("@dotenvx/dotenvx").config();
 async function connectDB() {
   try {
     const connection = await mysql.createConnection({
-      host: process.env.DB_HOST || "host.docker.internal",
+      // host: process.env.DB_HOST || "host.docker.internal",
       user: process.env.VITE_SQL_USER,
       password: process.env.VITE_SQL_PASSWD,
       database: process.env.VITE_SQL_DB,
