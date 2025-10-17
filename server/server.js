@@ -29,7 +29,15 @@ app.use(
 // routes
 app.use("/api", requireAuth, routes);
 
+// Serve React static files
+app.use(express.static(path.join(__dirname, "../client/dist", "/index.html"))); // adjust to your client build path
+
+// Catch-all route for React SPA
+app.get("/*w", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist", "/index.html"));
+});
+
 // listener
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log("server is on port: ", PORT);
 });

@@ -65,7 +65,7 @@ export const router = createBrowserRouter([
           { path: "settings", element: <Settings /> },
           { path: "add-client", ...AddClientRoute },
           { path: "add-user", ...AddUserRoute },
-          { path: "*", element: <Error /> },
+          { path: "*", element: <Navigate to="/dashboard" /> },
         ],
       },
     ],

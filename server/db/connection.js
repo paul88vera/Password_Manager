@@ -8,6 +8,9 @@ async function connectDB() {
       user: process.env.VITE_SQL_USER,
       password: process.env.VITE_SQL_PASSWD,
       database: process.env.VITE_SQL_DB,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
     });
 
     console.log("Database connected successfully!");

@@ -18,12 +18,14 @@ const ClientInner = () => {
   const [modalOpened, setModalOpened] = useState();
   const [editIcon, setEditIcon] = useState();
 
+  // Client Info
   const [passClient] = useState(client[0]?.ClientID);
   const [siteName, setSiteName] = useState("");
   const [siteUrl, setSiteUrl] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  // Card Toggle
   const toggleCard = (id) => {
     setOpenCardId((current) => (current === id ? null : id));
   };
@@ -77,7 +79,7 @@ const ClientInner = () => {
           <div
             className="!text-slate-900 button flex flex-row gap-2 flex-nowrap align-middle justify-end mr-[-20px] hover:scale-105 transition ease-in-out p-0 cursor-pointer text-[1rem]"
             onClick={() => setModalOpened(true)}>
-            Add Password{" "}
+            {isMobile ? null : "Add Password "}
             <FaPlusCircle className="text-1xl mt-1 text-slate-900" />
           </div>
         </div>
