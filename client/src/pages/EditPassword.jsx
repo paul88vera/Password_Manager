@@ -1,6 +1,6 @@
 import { Form, redirect, useLoaderData } from "react-router-dom";
 import { deletePassword, editPassword, getPassword } from "../api/passwords";
-import { capitalizeFirstWord } from "../utils/caps"; // Just makes the stuff Capitalized
+// import { capitalizeFirstWord } from "../utils/caps"; // Just makes the stuff Capitalized
 import { useState } from "react";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -14,7 +14,7 @@ const EditPassword = () => {
   const [newPassword, setNewPassword] = useState(password[0]?.PassPW || "");
 
   // Needed for password/client identification
-  const passID = password[0]?.PassID;
+  const passID = password[0]?.PassId;
   const passClient = password[0]?.Client;
 
   return (
@@ -35,9 +35,9 @@ const EditPassword = () => {
               name="siteName"
               id="siteName"
               className="w-60"
-              defaultValue={capitalizeFirstWord(siteName)}
+              defaultValue={siteName}
               onChange={(e) => {
-                capitalizeFirstWord(setSiteName(e.target.value));
+                setSiteName(e.target.value);
               }}
             />
           </div>
@@ -51,9 +51,9 @@ const EditPassword = () => {
               id="site_url"
               className="w-60"
               onChange={(e) => {
-                capitalizeFirstWord(setSiteUrl(e.target.value));
+                setSiteUrl(e.target.value);
               }}
-              defaultValue={capitalizeFirstWord(siteUrl)}
+              defaultValue={siteUrl}
             />
           </div>
           <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
@@ -109,7 +109,7 @@ const EditPassword = () => {
                 "Are you sure you would like to delete this password?"
               ) == true
             ) {
-              deletePassword(password[0]?.PassID, passClient);
+              deletePassword(password[0]?.PassId, passClient);
               window.location.replace(`/client/${password[0]?.Client}`);
             } else {
               return;

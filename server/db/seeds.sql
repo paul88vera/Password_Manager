@@ -27,7 +27,7 @@ VALUES
 -- Insert Passwords
 INSERT INTO Passwords (PassId, PassSite, PassUsername, PassHTML, PassPW, Client, OrgId)
 VALUES
-  (1, 'https://dashboard.alpha.com', 'alpha_admin', '<html>alpha login</html>', 'alpha123!', 1, @orgId1),
-  (2, 'https://portal.beta.com', 'beta_user', '<html>beta login</html>', 'beta456!', 2, @orgId2),
-  (3, 'https://data.gamma.com', 'gamma_login', '<html>gamma login</html>', 'gamma789!', 3, @orgId1);
+  (1, 'dashboard.alpha', 'alpha_admin', 'https://dashboard.alpha.com', 'alpha123!', 1, @orgId1),
+  (2, 'portal.beta', 'beta_user', 'https://portal.beta.com', 'beta456!', 2, @orgId2),
+  (3, 'data.gamma', 'gamma_login', 'https://data.gamma.com', 'gamma789!', 3, @orgId1);
 

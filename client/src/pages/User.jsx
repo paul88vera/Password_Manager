@@ -1,7 +1,7 @@
 import { Link, useLoaderData } from "react-router-dom";
-import { getManager } from "../api/managers";
+import { getManagers } from "../api/managers";
 import { CgProfile } from "react-icons/cg";
-import { capitalizeFirstWord } from "../utils/caps";
+// import { capitalizeFirstWord } from "../utils/caps";
 import { useState } from "react";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -23,14 +23,14 @@ const User = () => {
               setEditIcon(false);
             }}>
             <Link
-              to={`/user/${user[0]?.UserID}/edit`}
+              to={`/user/${user[0]?.UserId}/edit`}
               className="text-red-900 text-[1rem] text-center hover:text-red-700 h-2 transition ease-in-out">
               <CgProfile className="text-6xl text-slate-900" />
               {editIcon ? <p className="text-red-900">edit</p> : null}
             </Link>
           </div>
           <div className="flex flex-col gap-1 text-2xl font-bold text-slate-950">
-            {capitalizeFirstWord(user[0]?.UserName) || "Unknown"}{" "}
+            {user[0]?.UserName || "Unknown"}{" "}
             <div>
               <p className="text-sm">
                 Status: {userActive == 1 ? "Active" : "Deactivated"}
@@ -56,8 +56,8 @@ const User = () => {
   );
 };
 
-async function loader({ request: { signal }, params: { id } }) {
-  const user = await getManager(id, { signal });
+async function loader({ request: { signal } }) {
+  const user = await getManagers({ signal });
   return { user: user };
 }
 

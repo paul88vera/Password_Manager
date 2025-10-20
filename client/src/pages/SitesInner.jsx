@@ -2,7 +2,7 @@ import { Link, useLoaderData } from "react-router-dom";
 import { getClients } from "../api/clients";
 import { getPasswords } from "../api/passwords";
 import { CgProfile } from "react-icons/cg";
-import { capitalizeFirstWord } from "../utils/caps"; // capitalizes stuff
+// import { capitalizeFirstWord } from "../utils/caps"; // capitalizes stuff
 import { BiChevronLeftSquare } from "react-icons/bi";
 import { IoSearch } from "react-icons/io5";
 import { useState } from "react";
@@ -31,7 +31,7 @@ const SitesInner = () => {
 
   // Client filtered from passwords
   const clientsFiltered = client.filter((item) =>
-    clientIDFilterByPassword.includes(item.ClientID)
+    clientIDFilterByPassword.includes(item.ClientId)
   );
 
   return (
@@ -44,7 +44,7 @@ const SitesInner = () => {
       <div className="flex flex-row flex-nowrap gap-2 justify-start">
         <h2 className="mt-2">Website:</h2>
         <span className="flex flex-row flex-nowrap gap-2 text-3xl font-bold text-lime-500 align-top">
-          {capitalizeFirstWord(passwordFilteredBySite[0].PassSite)}
+          {passwordFilteredBySite[0].PassSite}
           <IoSearch
             className={`text-3xl text-lime-500 hover:scale-115 transition-all ease-in-out cursor-pointer mt-1 ${
               searchOpen ? "hidden" : null
@@ -80,13 +80,11 @@ const SitesInner = () => {
           })
           .map((item) => (
             <Link
-              to={`/client/${item.ClientID}`}
+              to={`/client/${item.ClientId}`}
               className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px]  md:hover:scale-105 hover:opacity-90 transition ease-in-out"
-              key={item.ClientID}>
+              key={item.ClientId}>
               <CgProfile className="text-4xl text-slate-900 " />
-              <h3 className="text-slate-900 ">
-                {capitalizeFirstWord(item.ClientUsername)}
-              </h3>
+              <h3 className="text-slate-900 ">{item.ClientUsername}</h3>
             </Link>
           ))}
       </div>

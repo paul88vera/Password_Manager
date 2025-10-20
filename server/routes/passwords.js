@@ -51,7 +51,7 @@ router.put("/:PassId", async (req, res) => {
     const { PassSite, PassUsername, PassHTML, PassPW, Client, OrgId } =
       req.body;
     const query =
-      "UPDATE Passwords SET PassSite = ?, PassUsername = ?, PassHTML = ?, PassPW = ?, Client = ?, OrgId = ? WHERE PassID = ?";
+      "UPDATE Passwords SET PassSite = ?, PassUsername = ?, PassHTML = ?, PassPW = ?, Client = ?, OrgId = ? WHERE PassId = ?";
     const [results] = await connection.query(query, [
       PassSite,
       PassUsername,

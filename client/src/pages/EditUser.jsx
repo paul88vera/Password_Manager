@@ -1,6 +1,6 @@
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { useState } from "react";
-import { deleteManager, editManager, getManager } from "../api/managers";
+import { deleteManager, editManager, getManagers } from "../api/managers";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const EditUser = () => {
@@ -11,7 +11,7 @@ const EditUser = () => {
   // const [userLogin, setUserLogin] = useState(users[0]?.UserLogin);
   const [userActive] = useState(users[0]?.UserActive);
   const [userRole, setUserRole] = useState(users[0]?.UserRole);
-  const userID = users[0]?.UserID;
+  const userID = users[0]?.UserId;
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
@@ -145,8 +145,8 @@ async function action({ request }) {
   return redirect(`/dashboard`);
 }
 
-async function loader({ request: { signal }, params: { id } }) {
-  const users = await getManager(id, { signal });
+async function loader({ request: { signal } }) {
+  const users = await getManagers({ signal });
   return { users: users };
 }
 

@@ -24,7 +24,7 @@ router.get("/:managerId", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { UserId } = req.params;
-    const query = "SELECT * FROM Manager WHERE UserID = ?";
+    const query = "SELECT * FROM Manager WHERE UserId = ?";
     const [results] = await connection.query(query, [UserId]);
     res.json(results);
   } catch (err) {
@@ -36,13 +36,13 @@ router.get("/:managerId", async (req, res) => {
 // @route    PUT /users:id
 // @desc     Update one user by id
 // @access   Private
-router.put("/:UserId", async (req, res) => {
+router.put("/:ManagerId", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { UserId } = req.params;
     const { UserName, UserEmail, UserRole, UserActive } = req.body;
     const query =
-      "UPDATE Manager SET UserName = ?, UserEmail = ?, UserRole = ?, UserActive = ? WHERE UserID = ?";
+      "UPDATE Manager SET UserName = ?, UserEmail = ?, UserRole = ?, UserActive = ?  WHERE UserId = ?";
     const [results] = await connection.query(query, [
       UserName,
       UserEmail,
@@ -64,14 +64,15 @@ router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { id } = req.params;
-    const { UserName, UserEmail, UserRole, UserActive } = req.body;
+    const { UserName, UserEmail, UserRole, UserActive, OrgId } = req.body;
     const query =
-      "INSERT INTO Manager (UserName, UserEmail, UserRole, UserActive) VALUES (?,?,?,?)";
+      "INSERT INTO Manager (UserName, UserEmail, UserRole, UserActive, OrgId) VALUES (?,?,?,?,?)";
     const [results] = await connection.query(query, [
       UserName,
       UserEmail,
       UserRole,
       UserActive,
+      OrgId,
       id,
     ]);
     res.json(results);
@@ -88,7 +89,7 @@ router.delete("/:UserId", async (req, res) => {
   try {
     const connection = await db;
     const { UserId } = req.params;
-    const query = "DELETE FROM Manager WHERE UserID = ?";
+    const query = "DELETE FROM Manager WHERE UserId = ?";
     connection.query(query, [UserId]);
     res.send("User Deleted");
   } catch (err) {

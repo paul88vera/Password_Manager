@@ -24,7 +24,7 @@ router.get("/:ClientId", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { ClientId } = req.params;
-    const query = "SELECT * FROM Client WHERE ClientID = ?";
+    const query = "SELECT * FROM Client WHERE ClientId = ?";
     const [results] = await connection.query(query, [ClientId]);
     res.json(results);
   } catch (err) {
@@ -40,16 +40,16 @@ router.put("/:ClientId", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { ClientId } = req.params;
-    const { ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC } =
+    const { ClientUsername, ClientCompany, ClientEmail, ClientNotes, Manager } =
       req.body;
     const query =
-      "UPDATE Client SET ClientUsername = ?, ClientCompany = ?, ClientEmail = ?, ClientNotes = ?, POC = ? WHERE ClientID = ?";
+      "UPDATE Client SET ClientUsername = ?, ClientCompany = ?, ClientEmail = ?, ClientNotes = ?, Manager = ? WHERE ClientId = ?";
     const [results] = await connection.query(query, [
       ClientUsername,
       ClientCompany,
       ClientEmail,
       ClientNotes,
-      POC,
+      Manager,
       ClientId,
     ]);
     res.json(results);
@@ -66,16 +66,23 @@ router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { ClientId } = req.params;
-    const { ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC } =
-      req.body;
+    const {
+      ClientUsername,
+      ClientCompany,
+      ClientEmail,
+      ClientNotes,
+      Manager,
+      OrgId,
+    } = req.body;
     const query =
-      "INSERT INTO Client (ClientUsername, ClientCompany, ClientEmail, ClientNotes, POC) VALUES (?,?,?,?,?)";
+      "INSERT INTO Client (ClientUsername, ClientCompany, ClientEmail, ClientNotes, Manager, OrgId) VALUES (?,?,?,?,?,?)";
     const [results] = await connection.query(query, [
       ClientUsername,
       ClientCompany,
       ClientEmail,
       ClientNotes,
-      POC,
+      Manager,
+      OrgId,
       ClientId,
     ]);
     res.json(results);
@@ -93,7 +100,7 @@ router.post("/", async (req, res) => {
 router.delete("/:ClientId", async (req, res) => {
   const connection = await db; // Wait for connection to resolve
   const { ClientId } = req.params;
-  const query = "DELETE FROM Client WHERE ClientID = ?";
+  const query = "DELETE FROM Client WHERE ClientId = ?";
   connection.query(query, [ClientId], (err) => {
     if (err) {
       res.status(500).send("Server error");

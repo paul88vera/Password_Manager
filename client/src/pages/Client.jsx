@@ -2,7 +2,7 @@ import { Link, useLoaderData } from "react-router-dom";
 import { getClients } from "../api/clients";
 import { CgProfile } from "react-icons/cg";
 import { IoSearch } from "react-icons/io5";
-import { capitalizeFirstWord } from "../utils/caps";
+// import { capitalizeFirstWord } from "../utils/caps";
 import { useState } from "react";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -51,13 +51,11 @@ const Client = () => {
           })
           .map((item) => (
             <Link
-              to={`/client/${item.ClientID}`}
+              to={`/client/${item.ClientId}`}
               className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px]  md:hover:scale-105 hover:opacity-90 transition ease-in-out"
-              key={item.ClientID}>
+              key={item.ClientId}>
               <CgProfile className="text-4xl text-slate-900 " />
-              <h3 className="text-slate-900 ">
-                {capitalizeFirstWord(item.ClientUsername)}
-              </h3>
+              <h3 className="text-slate-900 ">{item.ClientUsername}</h3>
             </Link>
           ))}
       </div>

@@ -1,4 +1,4 @@
-import { Form, Link, useLoaderData } from "react-router-dom";
+import { Form, Link, useLoaderData, useNavigation } from "react-router-dom";
 import { createPassword, getPasswords } from "../api/passwords";
 import { CgProfile } from "react-icons/cg";
 import { FaLock } from "react-icons/fa6";
@@ -8,7 +8,7 @@ import { FaPlusCircle } from "react-icons/fa";
 import { IoIosTrash } from "react-icons/io";
 import { deleteClient, getClient } from "../api/clients";
 import { useState } from "react";
-import { capitalizeFirstWord } from "../utils/caps";
+// import { capitalizeFirstWord } from "../utils/caps";
 import { getManagers } from "../api/managers";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -17,9 +17,10 @@ const ClientInner = () => {
   const [openCardId, setOpenCardId] = useState();
   const [modalOpened, setModalOpened] = useState();
   const [editIcon, setEditIcon] = useState();
+  const isMobile = useNavigation();
 
   // Client Info
-  const [passClient] = useState(client[0]?.ClientID);
+  const [passClient] = useState(client[0]?.ClientId);
   const [siteName, setSiteName] = useState("");
   const [siteUrl, setSiteUrl] = useState("");
   const [username, setUsername] = useState("");
@@ -34,14 +35,14 @@ const ClientInner = () => {
     setModalOpened((current) => !current);
   };
 
-  // Filter passwords with current ClientID
+  // Filter passwords with current ClientId
   const passwordFilter = passwords.filter(
-    (item) => item.Client === client[0]?.ClientID
+    (item) => item.Client === client[0]?.ClientId
   );
 
   // Filter Username from client
-  const clientFilter = client.map((item) => item.POC);
-  const userFilter = users.filter((item) => clientFilter.includes(item.UserID));
+  const clientFilter = client.map((item) => item.Manager);
+  const userFilter = users.filter((item) => clientFilter.includes(item.UserId));
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
@@ -57,17 +58,16 @@ const ClientInner = () => {
                 setEditIcon(false);
               }}>
               <Link
-                to={`/client/${client[0]?.ClientID}/edit`}
+                to={`/client/${client[0]?.ClientId}/edit`}
                 className="text-red-900 text-[1rem] text-center hover:text-red-700 h-2 transition ease-in-out">
                 <CgProfile className="text-6xl text-slate-900" />
                 {editIcon ? <p className="text-red-900">edit</p> : null}
               </Link>
             </div>
             <p className="flex flex-col gap-0 text-2xl font-bold text-slate-950">
-              {capitalizeFirstWord(client[0]?.ClientUsername) || "Unknown"}{" "}
-              <br />
+              {client[0]?.ClientUsername || "Unknown"} <br />
               <span className="text-[1.2rem] font-normal">
-                {capitalizeFirstWord(client[0]?.ClientCompany) || "Unknown"}
+                {client[0]?.ClientCompany || "Unknown"}
               </span>
               <Link
                 to={`mailto:${client[0]?.ClientEmail}`}
@@ -106,9 +106,9 @@ const ClientInner = () => {
                     name="siteName"
                     id="siteName"
                     className="w-60"
-                    defaultValue={capitalizeFirstWord(siteName)}
+                    defaultValue={siteName}
                     onChange={(e) => {
-                      capitalizeFirstWord(setSiteName(e.target.value));
+                      setSiteName(e.target.value);
                     }}
                   />
                 </div>
@@ -122,9 +122,9 @@ const ClientInner = () => {
                     id="site_url"
                     className="w-60"
                     onChange={(e) => {
-                      capitalizeFirstWord(setSiteUrl(e.target.value));
+                      setSiteUrl(e.target.value);
                     }}
-                    placeholder={capitalizeFirstWord(siteUrl)}
+                    placeholder={siteUrl}
                   />
                 </div>
                 <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
@@ -178,17 +178,17 @@ const ClientInner = () => {
           {passwordFilter.map((pass) => (
             <div
               className="site-card text-slate-300 flex flex-col flex-nowrap gap-4 align-middle justify-start p-4  pb-0 rounded-lg bg-slate-900 font-bold w-full md:max-w-[380px] hover:bg-slate-950 transition ease-in-out"
-              key={pass.PassID}>
+              key={pass.PassId}>
               <div
                 className="flex flex-row gap-4 align-middle justify-start w-full relative cursor-pointer"
-                onClick={() => toggleCard(pass.PassID)}>
-                {openCardId === pass.PassID ? (
+                onClick={() => toggleCard(pass.PassId)}>
+                {openCardId === pass.PassId ? (
                   <FaLockOpen className="text-3xl flex flex-row justify-center align-middle mt-2" />
                 ) : (
                   <FaLock className="text-3xl flex flex-row justify-center align-middle mt-2" />
                 )}
                 <div className="flex flex-col justify-start">
-                  <h3 className=" ">{capitalizeFirstWord(pass.PassSite)}</h3>
+                  <h3 className=" ">{pass.PassSite}</h3>
                   <Link
                     to={
                       pass.PassHTML.includes("https://") ||
@@ -201,16 +201,16 @@ const ClientInner = () => {
                   </Link>
                 </div>
                 {openCardId === pass.PassID ? (
-                  <Link to={`/password/${pass.PassID}/edit`}>
+                  <Link to={`/password/${pass.PassId}/edit`}>
                     <MdEdit className="text-2xl text-lime-500 hover:text-slate-300 absolute right-0" />
                   </Link>
                 ) : null}
               </div>
               <div className="p-0">
-                {openCardId === pass.PassID ? (
+                {openCardId === pass.PassId ? (
                   <div
                     className="flex flex-col gap-4 pt-0 pb-8"
-                    key={pass.PassID}>
+                    key={pass.PassId}>
                     <label
                       htmlFor="username"
                       className="flex flex-row flex-nowrap gap-4 justify-end">
