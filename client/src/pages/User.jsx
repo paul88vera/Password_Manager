@@ -1,8 +1,9 @@
 import { Link, useLoaderData } from "react-router-dom";
-import { getManagers } from "../api/managers";
+import { getManager } from "../api/managers";
 import { CgProfile } from "react-icons/cg";
 // import { capitalizeFirstWord } from "../utils/caps";
 import { useState } from "react";
+import { BiChevronLeftSquare } from "react-icons/bi";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const User = () => {
@@ -12,6 +13,11 @@ const User = () => {
 
   return (
     <div className="flex flex-col gap-4 mt-4">
+      <div className="flex flex-col flex-nowrap gap-4 align-middle justify-start">
+        <Link to="../">
+          <BiChevronLeftSquare className="text-3xl text-lime-500 hover:scale-115 transition-all ease-in-out cursor-pointer" />
+        </Link>
+      </div>
       <div className="flex flex-col flex-nowrap justify-between bg-slate-300 pl-4 pr-8 pb-8 pt-4 rounded-2xl relative">
         <div className="flex flex-row flex-nowrap gap-4">
           <div
@@ -23,7 +29,7 @@ const User = () => {
               setEditIcon(false);
             }}>
             <Link
-              to={`/user/${user[0]?.UserId}/edit`}
+              to={`/manager/${user[0]?.UserId}/edit`}
               className="text-red-900 text-[1rem] text-center hover:text-red-700 h-2 transition ease-in-out">
               <CgProfile className="text-6xl text-slate-900" />
               {editIcon ? <p className="text-red-900">edit</p> : null}
@@ -56,8 +62,8 @@ const User = () => {
   );
 };
 
-async function loader({ request: { signal } }) {
-  const user = await getManagers({ signal });
+async function loader({ request: { signal }, params: { id } }) {
+  const user = await getManager(id, { signal });
   return { user: user };
 }
 

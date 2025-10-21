@@ -12,7 +12,7 @@ function requireAuth(req, res, next, e) {
   // console.log(userId); // TODO: Dev check delete later
 
   if ((!userId, e)) {
-    e.preventDefault(); // Added to prevent token fallout
+    // e.preventDefault(); // Added to prevent token fallout
     return res.status(401).json({ message: "Unauthorized" });
   }
 

@@ -52,7 +52,7 @@ export const router = createBrowserRouter([
             children: [{ index: true, ...ProfileRoute }],
           },
           {
-            path: "user/:id",
+            path: "manager/:id",
             children: [
               { index: true, ...UserRoute },
               { path: "edit", ...EditUserRoute },
@@ -64,7 +64,7 @@ export const router = createBrowserRouter([
           },
           { path: "settings", element: <Settings /> },
           { path: "add-client", ...AddClientRoute },
-          { path: "add-user", ...AddUserRoute },
+          { path: "add-manager", ...AddUserRoute },
           { path: "*", element: <Error /> || <Navigate to="/dashboard" /> },
         ],
       },

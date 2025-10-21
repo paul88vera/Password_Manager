@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 // @route    GET /users:id
 // @desc     Get one user
 // @access   Private
-router.get("/:managerId", async (req, res) => {
+router.get("/:UserId", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { UserId } = req.params;
@@ -36,13 +36,13 @@ router.get("/:managerId", async (req, res) => {
 // @route    PUT /users:id
 // @desc     Update one user by id
 // @access   Private
-router.put("/:ManagerId", async (req, res) => {
+router.put("/:UserId", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { UserId } = req.params;
     const { UserName, UserEmail, UserRole, UserActive } = req.body;
     const query =
-      "UPDATE Manager SET UserName = ?, UserEmail = ?, UserRole = ?, UserActive = ?  WHERE UserId = ?";
+      "UPDATE Manager SET UserName = ?, UserEmail = ?, UserRole = ?, UserActive = ? WHERE UserId = ?";
     const [results] = await connection.query(query, [
       UserName,
       UserEmail,

@@ -16,8 +16,6 @@ const AddClient = () => {
   // Only Active Users as Client POC
   const activeUsers = users.filter((item) => item.UserActive === 1);
 
-  console.log(activeUsers);
-
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
       <Form

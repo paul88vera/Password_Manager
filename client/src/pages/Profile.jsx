@@ -1,6 +1,5 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { getManagers } from "../api/managers";
-// import { capitalizeFirstWord } from "../utils/caps";
 import { CgProfile } from "react-icons/cg";
 import { getClients } from "../api/clients";
 import { useUser } from "@clerk/clerk-react";
@@ -8,10 +7,6 @@ import { useUser } from "@clerk/clerk-react";
 // eslint-disable-next-line react-refresh/only-export-components
 const Profile = () => {
   const { user, client } = useLoaderData();
-
-  // const userClientFilter = client.filter(
-  //   (item) => item.Manager == user[0]?.UserId
-  // ); // if you want to see only your clients
 
   const userName = useUser().user.fullName;
 
@@ -22,9 +17,9 @@ const Profile = () => {
           Welcome, <b className="text-lime-500">{userName}!</b>
         </div>
       ) : (
-        <Link to="/add-user">Add A New Manager</Link>
+        <Link to="/add-manager">Add A New Manager</Link>
       )}
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col-reverse md:flex-row gap-4">
         {client != "" ? (
           <div className="flex flex-col gap-4 mt-4">
             <h2>Clients:</h2>
@@ -44,7 +39,7 @@ const Profile = () => {
             <h2>Clients:</h2>
             <div className="site-card flex flex-row flex-nowrap gap-4 align-middle justify-start  rounded-lg font-bold w-full md:w-100 md:max-w-[350px] text-lime-500">
               {!user ? (
-                <Link to="/add-user">
+                <Link to="/add-manager">
                   No Managers Yet... :{"("}
                   <br /> Add A Manager
                 </Link>
@@ -64,7 +59,7 @@ const Profile = () => {
               <h2>Account Managers:</h2>
               {user.map((item) => (
                 <Link
-                  to={`/user/${item.UserId}`}
+                  to={`/manager/${item.UserId}`}
                   className={`site-card ${
                     item.UserActive == 1
                       ? `bg-slate-400 !text-slate-500`

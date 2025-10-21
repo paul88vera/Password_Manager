@@ -1,6 +1,6 @@
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { useState } from "react";
-import { deleteManager, editManager, getManagers } from "../api/managers";
+import { deleteManager, editManager, getManager } from "../api/managers";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const EditUser = () => {
@@ -12,6 +12,7 @@ const EditUser = () => {
   const [userActive] = useState(users[0]?.UserActive);
   const [userRole, setUserRole] = useState(users[0]?.UserRole);
   const userID = users[0]?.UserId;
+  const OrgId = users[0]?.OrgId;
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
@@ -20,6 +21,7 @@ const EditUser = () => {
         className="form_container flex flex-col justify-between gap-4 !h-full">
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <input type="hidden" name="userId" defaultValue={userID} />
+          <input type="hidden" name="orgId" defaultValue={OrgId} />
           <label htmlFor="UserName" className="w-40">
             Full Name:
           </label>
@@ -145,8 +147,8 @@ async function action({ request }) {
   return redirect(`/dashboard`);
 }
 
-async function loader({ request: { signal } }) {
-  const users = await getManagers({ signal });
+async function loader({ request: { signal }, params: { id } }) {
+  const users = await getManager(id, { signal });
   return { users: users };
 }
 

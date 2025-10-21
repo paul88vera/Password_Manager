@@ -10,6 +10,7 @@ import { deleteClient, getClient } from "../api/clients";
 import { useState } from "react";
 // import { capitalizeFirstWord } from "../utils/caps";
 import { getManagers } from "../api/managers";
+import { BiChevronLeftSquare } from "react-icons/bi";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const ClientInner = () => {
@@ -46,6 +47,11 @@ const ClientInner = () => {
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
+      <div className="flex flex-col flex-nowrap gap-4 align-middle justify-start">
+        <Link to="../">
+          <BiChevronLeftSquare className="text-3xl text-lime-500 hover:scale-115 transition-all ease-in-out cursor-pointer" />
+        </Link>
+      </div>
       <div className="flex flex-col flex-nowrap justify-between bg-slate-300 pl-4 pr-8 pb-8 pt-4 rounded-2xl relative">
         <div className="flex flex-row md:gap-60 justify-between relative w-full">
           <div className="flex flex-row flex-nowrap gap-2">
@@ -200,7 +206,7 @@ const ClientInner = () => {
                     {pass.PassHTML}
                   </Link>
                 </div>
-                {openCardId === pass.PassID ? (
+                {openCardId === pass.PassId ? (
                   <Link to={`/password/${pass.PassId}/edit`}>
                     <MdEdit className="text-2xl text-lime-500 hover:text-slate-300 absolute right-0" />
                   </Link>
