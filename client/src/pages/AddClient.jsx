@@ -2,7 +2,7 @@ import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { createClient, getClients } from "../api/clients";
 import { getManagers } from "../api/managers";
-import { capitalizeFirstWord } from "../utils/caps";
+// import { capitalizeFirstWord } from "../utils/caps";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AddClient = () => {
@@ -78,7 +78,7 @@ const AddClient = () => {
             required>
             {activeUsers.map((item, index) => (
               <option value={parseInt(item.UserId)} key={index}>
-                {capitalizeFirstWord(item.UserName)}
+                {item.UserName}
               </option>
             ))}
           </select>
@@ -118,7 +118,7 @@ async function action({ request }) {
   const ClientCompany = formData.get("ClientCompany");
   const ClientEmail = formData.get("ClientEmail");
   const ClientNotes = formData.get("ClientNotes");
-  const POC = formData.get("ClientPOC");
+  const Manager = formData.get("ClientPOC");
 
   const client = await createClient(
     {
@@ -126,7 +126,7 @@ async function action({ request }) {
       ClientCompany,
       ClientEmail,
       ClientNotes,
-      POC,
+      Manager,
     },
     { signal: request.signal }
   );

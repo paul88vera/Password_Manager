@@ -24,7 +24,7 @@ export function getManager(id, options) {
  * @access    Private
  */
 export function createManager(data, options) {
-  return baseApi.post(`manager/`, data, options).then((res) => res.data);
+  return baseApi.post(`manager`, data, options).then((res) => res.data);
 }
 
 /**

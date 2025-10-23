@@ -1,8 +1,8 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { getPasswords } from "../api/passwords";
 import { MdOutlineComputer } from "react-icons/md";
-import { BiChevronLeftSquare } from "react-icons/bi";
-import { capitalizeFirstWord } from "../utils/caps";
+// import { BiChevronLeftSquare } from "react-icons/bi";
+// import { capitalizeFirstWord } from "../utils/caps";
 import { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 
@@ -63,11 +63,9 @@ const Sites = () => {
             <Link
               to={`/sites/${item.PassSite}`}
               className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px]  md:hover:scale-105 hover:opacity-90 transition ease-in-out"
-              key={item.PassID}>
+              key={item.PassId}>
               <MdOutlineComputer className="text-4xl text-slate-900 " />
-              <h3 className="text-slate-900 ">
-                {capitalizeFirstWord(item.PassSite)}
-              </h3>
+              <h3 className="text-slate-900 ">{item.PassSite}</h3>
             </Link>
           ))}
       </div>
@@ -75,8 +73,8 @@ const Sites = () => {
   );
 };
 
-async function loader({ request: { signal }, params: id }) {
-  const passwords = await getPasswords(id, { signal });
+async function loader({ request: { signal } }) {
+  const passwords = await getPasswords({ signal });
   return passwords;
 }
 

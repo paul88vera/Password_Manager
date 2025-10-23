@@ -5,11 +5,13 @@ const PORT = 5500;
 const routes = require("./routes");
 const { clerkMiddleware, getAuth } = require("@clerk/express");
 require("@dotenvx/dotenvx").config();
+const path = require("path");
 
-function requireAuth(req, res, next) {
-  const { userId } = getAuth(req);
+function requireAuth(req, res, next, e) {
+  const { userId, orgId } = getAuth(req);
 
-  if (!userId) {
+  if ((!userId || !orgId, e)) {
+    // e.preventDefault(); // Added to prevent token fallout
     return res.status(401).json({ message: "Unauthorized" });
   }
 

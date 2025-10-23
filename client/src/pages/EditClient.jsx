@@ -2,7 +2,7 @@ import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { editClient, getClient } from "../api/clients";
 import { getManagers } from "../api/managers";
-import { capitalizeFirstWord } from "../utils/caps";
+// import { capitalizeFirstWord } from "../utils/caps";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const EditClient = () => {
@@ -17,7 +17,10 @@ const EditClient = () => {
   );
   const [ClientNotes, setClientNotes] = useState(client[0]?.ClientNotes || "");
   const [ClientEmail, setClientEmail] = useState(client[0]?.ClientEmail || "");
-  const [POCs, setPOC] = useState(client[0]?.POC || "");
+  const [POCs, setPOC] = useState(client[0]?.Manager || "");
+
+  const clientID = client[0]?.ClientId;
+  const clientOrg = client[0]?.OrgId;
 
   // Filters only Active Users
   const activeUserFilter = users.filter((item) => item.UserActive === 1);
@@ -27,6 +30,8 @@ const EditClient = () => {
       <Form
         method="post"
         className="form_container flex flex-col justify-between gap-4 !h-full">
+        <input type="hidden" name="clientId" defaultValue={clientID} />
+        <input type="hidden" name="clientOrg" defaultValue={clientOrg} />
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="ClientUsername" className="w-40">
             Full Name:
@@ -36,7 +41,7 @@ const EditClient = () => {
             name="ClientUsername"
             id="ClientUsername"
             className="w-60"
-            defaultValue={capitalizeFirstWord(ClientUsername)}
+            defaultValue={ClientUsername}
             onChange={(e) => {
               setClientUsername(e.target.value);
             }}
@@ -52,7 +57,7 @@ const EditClient = () => {
             name="ClientCompany"
             id="ClientCompany"
             className="w-60"
-            defaultValue={capitalizeFirstWord(ClientCompany)}
+            defaultValue={ClientCompany}
             onChange={(e) => {
               setClientCompany(e.target.value);
             }}
@@ -84,7 +89,7 @@ const EditClient = () => {
             onChange={(e) => setPOC(e.target.value)}
             required>
             {activeUserFilter.map((item) => (
-              <option value={item.UserID.toString()} key={item.UserID}>
+              <option value={item.UserId.toString()} key={item.UserId}>
                 {item.UserName}
               </option>
             ))}
@@ -122,10 +127,11 @@ const EditClient = () => {
 async function action({ request, params: { id } }) {
   const formData = await request.formData();
   const ClientUsername = formData.get("ClientUsername");
+  const OrgId = formData.get("ClientOrg");
   const ClientCompany = formData.get("ClientCompany");
   const ClientEmail = formData.get("ClientEmail");
   const ClientNotes = formData.get("ClientNotes");
-  const POC = formData.get("ClientPOC");
+  const Manager = formData.get("ClientPOC");
 
   const client = await editClient(
     id,
@@ -134,7 +140,8 @@ async function action({ request, params: { id } }) {
       ClientCompany,
       ClientEmail,
       ClientNotes,
-      POC,
+      Manager,
+      OrgId,
     },
     { signal: request.signal }
   );

@@ -56,18 +56,24 @@ const Sidebar = () => {
             {auth == import.meta.env.VITE_DEV_TOKEN ||
             auth == import.meta.env.VITE_DEV_TOKEN2 ? (
               <div className="flex flex-col gap-4 text-center pt-4">
-                <Link to="/add-user" onClick={showModal}>
+                <Link to="/add-manager" onClick={showModal}>
                   Add Manager
                 </Link>
                 <Link to="/add-client" onClick={showModal}>
                   Add Client
                 </Link>
+                {/* <Link to="/settings" onClick={showModal}>
+                  Settings
+                </Link> */}
               </div>
             ) : (
               <div className="flex flex-col gap-4 text-center pt-4">
                 <Link to="/add-client" onClick={showModal}>
                   Add Client
                 </Link>
+                {/* <Link to="/settings" onClick={showModal}>
+                  Settings
+                </Link> */}
               </div>
             )}
           </div>

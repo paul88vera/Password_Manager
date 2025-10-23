@@ -1,6 +1,8 @@
 import { Form, Link, redirect } from "react-router-dom";
 import { useState } from "react";
 import { createManager } from "../api/managers";
+import { getOrgs } from "../api/org";
+import { useOrganization } from "@clerk/clerk-react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AddUser = () => {
@@ -8,12 +10,14 @@ const AddUser = () => {
   const [userEmail, setUserEmail] = useState();
   const [userActive] = useState(1);
   const [userRole, setUserRole] = useState("Staff");
+  const { organization } = useOrganization(); // from Clerk Auth
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
       <Form
         method="post"
         className="form_container flex flex-col justify-between gap-4 !h-full">
+        <input type="hidden" name="orgId" value={organization.id} />
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="UserName" className="w-40">
             Full Name:
@@ -89,12 +93,18 @@ const AddUser = () => {
   );
 };
 
+async function loader({ request: { signal } }) {
+  const org = await getOrgs({ signal });
+  return { org: org };
+}
+
 async function action({ request }) {
   const formData = await request.formData();
   const UserName = formData.get("userName");
   const UserEmail = formData.get("userEmail");
   const UserRole = formData.get("userRole");
   const UserActive = formData.get("userActive");
+  const OrgId = formData.get("orgId");
 
   await createManager(
     {
@@ -102,6 +112,7 @@ async function action({ request }) {
       UserEmail,
       UserRole,
       UserActive,
+      OrgId,
     },
     { signal: request.signal }
   );
@@ -110,6 +121,7 @@ async function action({ request }) {
 }
 
 export const AddUserRoute = {
+  loader,
   action,
   element: <AddUser />,
 };

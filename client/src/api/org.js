@@ -18,6 +18,14 @@ export function getOrg(id, options) {
   return baseApi.get(`org/${id}`, options).then((res) => res.data);
 }
 /**
+ * @route     POST /organizations
+ * @returns   Create one organization
+ * @access    Private
+ */
+export function createOrg(data, options) {
+  return baseApi.post(`org`, data, options).then((res) => res.data);
+}
+/**
  * @route     UPDATE /organizations/:id
  * @returns   Edit one organization by id
  * @access    Private

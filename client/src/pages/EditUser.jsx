@@ -11,7 +11,8 @@ const EditUser = () => {
   // const [userLogin, setUserLogin] = useState(users[0]?.UserLogin);
   const [userActive] = useState(users[0]?.UserActive);
   const [userRole, setUserRole] = useState(users[0]?.UserRole);
-  const userID = users[0]?.UserID;
+  const userID = users[0]?.UserId;
+  const OrgId = users[0]?.OrgId;
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
@@ -20,6 +21,7 @@ const EditUser = () => {
         className="form_container flex flex-col justify-between gap-4 !h-full">
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <input type="hidden" name="userId" defaultValue={userID} />
+          <input type="hidden" name="orgId" defaultValue={OrgId} />
           <label htmlFor="UserName" className="w-40">
             Full Name:
           </label>

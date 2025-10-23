@@ -4,7 +4,7 @@ import ErrorMessage from "./pages/ErrorMessage";
 import Error from "./pages/Error";
 import { ClientRoute } from "./pages/Client";
 import { SitesRoute } from "./pages/Sites";
-import Settings from "./pages/Settings";
+import { SettingsRoute } from "./pages/Settings";
 import { AddClientRoute } from "./pages/AddClient";
 import { ClientInnerRoute } from "./pages/ClientInner";
 import { SiteInnerPage } from "./pages/SitesInner";
@@ -52,7 +52,7 @@ export const router = createBrowserRouter([
             children: [{ index: true, ...ProfileRoute }],
           },
           {
-            path: "user/:id",
+            path: "manager/:id",
             children: [
               { index: true, ...UserRoute },
               { path: "edit", ...EditUserRoute },
@@ -62,10 +62,10 @@ export const router = createBrowserRouter([
             path: "password/:id/edit",
             ...EditPasswordRoute,
           },
-          { path: "settings", element: <Settings /> },
+          // { path: "settings", ...SettingsRoute },
           { path: "add-client", ...AddClientRoute },
-          { path: "add-user", ...AddUserRoute },
-          { path: "*", element: <Navigate to="/dashboard" /> },
+          { path: "add-manager", ...AddUserRoute },
+          { path: "*", element: <Error /> || <Navigate to="/dashboard" /> },
         ],
       },
     ],
