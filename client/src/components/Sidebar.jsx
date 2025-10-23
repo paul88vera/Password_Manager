@@ -62,18 +62,18 @@ const Sidebar = () => {
                 <Link to="/add-client" onClick={showModal}>
                   Add Client
                 </Link>
-                <Link to="/settings" onClick={showModal}>
+                {/* <Link to="/settings" onClick={showModal}>
                   Settings
-                </Link>
+                </Link> */}
               </div>
             ) : (
               <div className="flex flex-col gap-4 text-center pt-4">
                 <Link to="/add-client" onClick={showModal}>
                   Add Client
                 </Link>
-                <Link to="/settings" onClick={showModal}>
+                {/* <Link to="/settings" onClick={showModal}>
                   Settings
-                </Link>
+                </Link> */}
               </div>
             )}
           </div>

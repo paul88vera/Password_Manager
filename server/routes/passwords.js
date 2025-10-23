@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const { getAuth } = require("@clerk/express");
 
 const db = require("../db/connection");
-const { encrypt } = require("../utils/crypto");
 
 /**
  * @route    GET /org/:OrgId/passwords
@@ -13,8 +13,15 @@ router.get("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const query = "SELECT * FROM Passwords";
-    const [results] = await connection.query(query);
+    let [results] = await connection.query(query);
+
     res.json(results);
+
+    // Decryption -- added after for Front-End decryption
+    results = results.map((row) => ({
+      ...row,
+      PassPW: row.PassPW?.split(process.env.ENCRYPTION_KEY).join("") || "",
+    }));
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error on Passwords");
@@ -49,10 +56,10 @@ router.put("/:PassId", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { PassId } = req.params;
-    const { PassSite, PassUsername, PassHTML, PassPW, Client, OrgId } =
-      req.body;
+    const { PassSite, PassUsername, PassHTML, PassPW, Client } = req.body;
+
     const query =
-      "UPDATE Passwords SET PassSite = ?, PassUsername = ?, PassHTML = ?, PassPW = ?, Client = ?, OrgId = ? WHERE PassId = ?";
+      "UPDATE Passwords SET PassSite = ?, PassUsername = ?, PassHTML = ?, PassPW = ?, Client = ? WHERE PassId = ?";
 
     if (
       PassPW.split(!process.env.ENCRYPTION_KEY) != process.env.ENCRYPTION_KEY
@@ -67,7 +74,6 @@ router.put("/:PassId", async (req, res) => {
         PassHTML,
         encryptedPassword,
         Client,
-        OrgId,
         PassId,
       ]);
       res.json(results);
@@ -78,7 +84,6 @@ router.put("/:PassId", async (req, res) => {
         PassHTML,
         PassPW,
         Client,
-        OrgId,
         PassId,
       ]);
       res.json(results);
@@ -97,25 +102,28 @@ router.put("/:PassId", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { PassSite, PassUsername, PassHTML, PassPW, Client, OrgId } =
-      req.body;
+    const { PassSite, PassUsername, PassHTML, PassPW, Client } = req.body;
 
     // Encryption -- added before for DB encryption
     const encryptedPassword = PassPW.split("").join(process.env.ENCRYPTION_KEY);
 
+    // Clerk Auth
+    const { orgId } = getAuth(req);
+
     const query =
       "INSERT INTO Passwords (PassSite, PassUsername, PassHTML, PassPW, Client, OrgId) VALUES (?,?,?,?,?,?)";
+
     const [results] = await connection.query(query, [
       PassSite,
       PassUsername,
       PassHTML,
       encryptedPassword,
       Client,
-      OrgId,
+      orgId,
     ]);
     res.json(results);
   } catch (err) {
-    console.error(err, sqlMessage);
+    console.error(err);
     res.status(500).send("Server error on Passwords");
   }
 });

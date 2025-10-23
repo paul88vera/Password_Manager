@@ -11,7 +11,10 @@ const EditPassword = () => {
   const [siteName, setSiteName] = useState(password[0]?.PassSite || "");
   const [siteUrl, setSiteUrl] = useState(password[0]?.PassHTML || "");
   const [username, setUsername] = useState(password[0]?.PassUsername || "");
-  const [newPassword, setNewPassword] = useState(password[0]?.PassPW || "");
+  const [newPassword, setNewPassword] = useState(
+    password[0]?.PassPW.split(import.meta.env.VITE_ENCRYPTION_KEY).join("") ||
+      ""
+  );
 
   // Needed for password/client identification
   const passID = password[0]?.PassId;

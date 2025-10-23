@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const { getAuth } = require("@clerk/express");
 
 const db = require("../db/connection");
-const { encrypt, normalizeOrgId } = require("../utils/crypto");
 
 // @route    GET /users
 // @desc     Get all users

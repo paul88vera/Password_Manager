@@ -8,10 +8,9 @@ require("@dotenvx/dotenvx").config();
 const path = require("path");
 
 function requireAuth(req, res, next, e) {
-  const { userId } = getAuth(req);
-  // console.log(userId); // TODO: Dev check delete later
+  const { userId, orgId } = getAuth(req);
 
-  if ((!userId, e)) {
+  if ((!userId || !orgId, e)) {
     // e.preventDefault(); // Added to prevent token fallout
     return res.status(401).json({ message: "Unauthorized" });
   }

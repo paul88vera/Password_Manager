@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { getAuth } = require("@clerk/express");
 
 const db = require("../db/connection");
 
@@ -66,14 +67,11 @@ router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { ClientId } = req.params;
-    const {
-      ClientUsername,
-      ClientCompany,
-      ClientEmail,
-      ClientNotes,
-      Manager,
-      OrgId,
-    } = req.body;
+    const { ClientUsername, ClientCompany, ClientEmail, ClientNotes, Manager } =
+      req.body;
+
+    const { userId, orgId } = getAuth(req);
+
     const query =
       "INSERT INTO Client (ClientUsername, ClientCompany, ClientEmail, ClientNotes, Manager, OrgId) VALUES (?,?,?,?,?,?)";
     const [results] = await connection.query(query, [
@@ -82,7 +80,7 @@ router.post("/", async (req, res) => {
       ClientEmail,
       ClientNotes,
       Manager,
-      OrgId,
+      orgId,
       ClientId,
     ]);
     res.json(results);

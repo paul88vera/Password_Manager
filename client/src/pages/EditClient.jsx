@@ -127,7 +127,7 @@ const EditClient = () => {
 async function action({ request, params: { id } }) {
   const formData = await request.formData();
   const ClientUsername = formData.get("ClientUsername");
-  const ClientOrg = formData.get("ClientOrg");
+  const OrgId = formData.get("ClientOrg");
   const ClientCompany = formData.get("ClientCompany");
   const ClientEmail = formData.get("ClientEmail");
   const ClientNotes = formData.get("ClientNotes");
@@ -141,7 +141,7 @@ async function action({ request, params: { id } }) {
       ClientEmail,
       ClientNotes,
       Manager,
-      ClientOrg,
+      OrgId,
     },
     { signal: request.signal }
   );
