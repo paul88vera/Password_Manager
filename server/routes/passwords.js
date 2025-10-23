@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const db = require("../db/connection");
+const { encrypt } = require("../utils/crypto");
 
 /**
  * @route    GET /org/:OrgId/passwords
@@ -52,16 +53,36 @@ router.put("/:PassId", async (req, res) => {
       req.body;
     const query =
       "UPDATE Passwords SET PassSite = ?, PassUsername = ?, PassHTML = ?, PassPW = ?, Client = ?, OrgId = ? WHERE PassId = ?";
-    const [results] = await connection.query(query, [
-      PassSite,
-      PassUsername,
-      PassHTML,
-      PassPW,
-      Client,
-      OrgId,
-      PassId,
-    ]);
-    res.json(results);
+
+    if (
+      PassPW.split(!process.env.ENCRYPTION_KEY) != process.env.ENCRYPTION_KEY
+    ) {
+      // Encryption -- added before for DB encryption
+      const encryptedPassword = PassPW.split("").join(
+        process.env.ENCRYPTION_KEY
+      );
+      const [results] = await connection.query(query, [
+        PassSite,
+        PassUsername,
+        PassHTML,
+        encryptedPassword,
+        Client,
+        OrgId,
+        PassId,
+      ]);
+      res.json(results);
+    } else {
+      const [results] = await connection.query(query, [
+        PassSite,
+        PassUsername,
+        PassHTML,
+        PassPW,
+        Client,
+        OrgId,
+        PassId,
+      ]);
+      res.json(results);
+    }
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error on Passwords");
@@ -78,13 +99,17 @@ router.post("/", async (req, res) => {
     const connection = await db; // Wait for connection to resolve
     const { PassSite, PassUsername, PassHTML, PassPW, Client, OrgId } =
       req.body;
+
+    // Encryption -- added before for DB encryption
+    const encryptedPassword = PassPW.split("").join(process.env.ENCRYPTION_KEY);
+
     const query =
       "INSERT INTO Passwords (PassSite, PassUsername, PassHTML, PassPW, Client, OrgId) VALUES (?,?,?,?,?,?)";
     const [results] = await connection.query(query, [
       PassSite,
       PassUsername,
       PassHTML,
-      PassPW,
+      encryptedPassword,
       Client,
       OrgId,
     ]);

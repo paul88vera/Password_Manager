@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const db = require("../db/connection");
+const { encrypt, normalizeOrgId } = require("../utils/crypto");
 
 // @route    GET /users
 // @desc     Get all users
@@ -10,6 +11,7 @@ router.get("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const [results] = await connection.query("SELECT * FROM Manager");
+
     res.json(results);
   } catch (err) {
     console.error(err);
@@ -63,8 +65,12 @@ router.put("/:UserId", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { id } = req.params;
     const { UserName, UserEmail, UserRole, UserActive, OrgId } = req.body;
+
+    if (!OrgId) {
+      return res.status(400).json({ error: "OrgId is required" });
+    }
+
     const query =
       "INSERT INTO Manager (UserName, UserEmail, UserRole, UserActive, OrgId) VALUES (?,?,?,?,?)";
     const [results] = await connection.query(query, [
@@ -73,7 +79,6 @@ router.post("/", async (req, res) => {
       UserRole,
       UserActive,
       OrgId,
-      id,
     ]);
     res.json(results);
   } catch (err) {

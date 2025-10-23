@@ -38,12 +38,24 @@ const ClientInner = () => {
 
   // Filter passwords with current ClientId
   const passwordFilter = passwords.filter(
-    (item) => item.Client === client[0]?.ClientId
+    (item) => item.Client === client[0]?.ClientId && client[0]?.OrgId
   );
 
   // Filter Username from client
   const clientFilter = client.map((item) => item.Manager);
   const userFilter = users.filter((item) => clientFilter.includes(item.UserId));
+
+  // Decryption -- added after for Front-End decryption
+  if (client.PassPW) {
+    const decryptedPassword = passwordFilter.map((el) => {
+      return el.PassPW.split(import.meta.env.ENCRYPTION_KEY).join("");
+    });
+    console.log(decryptedPassword);
+  }
+
+  // results[0].PassPW = results[0].PassPW.split(
+  //   process.env.ENCRYPTION_KEY
+  // ).join("");
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
