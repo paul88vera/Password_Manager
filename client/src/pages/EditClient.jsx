@@ -2,11 +2,13 @@ import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { editClient, getClient } from "../api/clients";
 import { getManagers } from "../api/managers";
+import { useOrganization } from "@clerk/clerk-react";
 // import { capitalizeFirstWord } from "../utils/caps";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const EditClient = () => {
   const { users, client } = useLoaderData();
+  const { organization } = useOrganization();
 
   // Default State
   const [ClientUsername, setClientUsername] = useState(
@@ -17,21 +19,21 @@ const EditClient = () => {
   );
   const [ClientNotes, setClientNotes] = useState(client[0]?.ClientNotes || "");
   const [ClientEmail, setClientEmail] = useState(client[0]?.ClientEmail || "");
-  const [POCs, setPOC] = useState(client[0]?.Manager || "");
+  const [POCs, setPOC] = useState(client[0]?.ManagerId || "");
 
   const clientID = client[0]?.ClientId;
-  const clientOrg = client[0]?.OrgId;
 
   // Filters only Active Users
   const activeUserFilter = users.filter((item) => item.UserActive === 1);
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
+      <h2>Editing Client:</h2>
       <Form
         method="post"
         className="form_container flex flex-col justify-between gap-4 !h-full">
         <input type="hidden" name="clientId" defaultValue={clientID} />
-        <input type="hidden" name="clientOrg" defaultValue={clientOrg} />
+        <input type="hidden" name="clientOrg" defaultValue={organization.id} />
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="ClientUsername" className="w-40">
             Full Name:
@@ -112,7 +114,10 @@ const EditClient = () => {
         </div>
 
         <div className="flex flex-row gap-2 mt-2">
-          <Link to="/client" type="cancel" className="button cancel-btn">
+          <Link
+            to={`/${organization.id}/client/${client[0]?.ClientId}`}
+            type="cancel"
+            className="button cancel-btn">
             Cancel
           </Link>
           <button type="submit" className="button save-btn">
@@ -131,7 +136,7 @@ async function action({ request, params: { id } }) {
   const ClientCompany = formData.get("ClientCompany");
   const ClientEmail = formData.get("ClientEmail");
   const ClientNotes = formData.get("ClientNotes");
-  const Manager = formData.get("ClientPOC");
+  const ManagerId = formData.get("ClientPOC");
 
   const client = await editClient(
     id,
@@ -140,7 +145,7 @@ async function action({ request, params: { id } }) {
       ClientCompany,
       ClientEmail,
       ClientNotes,
-      Manager,
+      ManagerId,
       OrgId,
     },
     { signal: request.signal }
@@ -148,7 +153,7 @@ async function action({ request, params: { id } }) {
 
   client;
 
-  return redirect(`/client/${id}`);
+  return redirect(`/${OrgId}/client/${id}`);
 }
 
 async function loader({ request: { signal }, params: { id } }) {

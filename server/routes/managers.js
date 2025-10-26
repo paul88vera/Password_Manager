@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getAuth } = require("@clerk/express");
+const { getAuth, Organization } = require("@clerk/express");
 
 const db = require("../db/connection");
 
@@ -67,7 +67,9 @@ router.post("/", async (req, res) => {
     const connection = await db; // Wait for connection to resolve
     const { UserName, UserEmail, UserRole, UserActive, OrgId } = req.body;
 
-    if (!OrgId) {
+    const { orgId } = getAuth(req);
+
+    if (!OrgId || !orgId) {
       return res.status(400).json({ error: "OrgId is required" });
     }
 
@@ -78,7 +80,7 @@ router.post("/", async (req, res) => {
       UserEmail,
       UserRole,
       UserActive,
-      OrgId,
+      orgId,
     ]);
     res.json(results);
   } catch (err) {

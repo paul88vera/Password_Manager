@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { getAuth } = require("@clerk/express");
-
 const db = require("../db/connection");
 
 // @route    GET /client
@@ -10,7 +9,9 @@ const db = require("../db/connection");
 router.get("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const [results] = await connection.query("SELECT * FROM Client");
+
+    const query = "SELECT * FROM Client";
+    const [results] = await connection.query(query);
     res.json(results);
   } catch (err) {
     console.error(err);
@@ -41,16 +42,21 @@ router.put("/:ClientId", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { ClientId } = req.params;
-    const { ClientUsername, ClientCompany, ClientEmail, ClientNotes, Manager } =
-      req.body;
+    const {
+      ClientUsername,
+      ClientCompany,
+      ClientEmail,
+      ClientNotes,
+      ManagerId,
+    } = req.body;
     const query =
-      "UPDATE Client SET ClientUsername = ?, ClientCompany = ?, ClientEmail = ?, ClientNotes = ?, Manager = ? WHERE ClientId = ?";
+      "UPDATE Client SET ClientUsername = ?, ClientCompany = ?, ClientEmail = ?, ClientNotes = ?, ManagerId = ? WHERE ClientId = ?";
     const [results] = await connection.query(query, [
       ClientUsername,
       ClientCompany,
       ClientEmail,
       ClientNotes,
-      Manager,
+      ManagerId,
       ClientId,
     ]);
     res.json(results);
@@ -67,19 +73,28 @@ router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { ClientId } = req.params;
-    const { ClientUsername, ClientCompany, ClientEmail, ClientNotes, Manager } =
-      req.body;
+    const {
+      ClientUsername,
+      ClientCompany,
+      ClientEmail,
+      ClientNotes,
+      ManagerId,
+    } = req.body;
 
-    const { userId, orgId } = getAuth(req);
+    const { orgId } = getAuth(req);
+
+    if (!orgId) {
+      return res.status(400).json({ error: "OrgId is required" });
+    }
 
     const query =
-      "INSERT INTO Client (ClientUsername, ClientCompany, ClientEmail, ClientNotes, Manager, OrgId) VALUES (?,?,?,?,?,?)";
+      "INSERT INTO Client (ClientUsername, ClientCompany, ClientEmail, ClientNotes, ManagerId, OrgId) VALUES (?,?,?,?,?,?)";
     const [results] = await connection.query(query, [
       ClientUsername,
       ClientCompany,
       ClientEmail,
       ClientNotes,
-      Manager,
+      ManagerId,
       orgId,
       ClientId,
     ]);

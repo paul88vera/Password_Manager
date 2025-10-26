@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { useAuth, getAuth } = require("@clerk/express");
+const { getAuth } = require("@clerk/express");
 
 const db = require("../db/connection");
 
@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
     const connection = await db;
     const { OrgName } = req.body;
 
-    const { userId, orgId } = getAuth(req);
+    const { orgId } = getAuth(req);
 
     const query = "INSERT INTO Org (OrgId, OrgName) VALUES (?,?)";
     const [results] = await connection.query(query, [orgId, OrgName]);

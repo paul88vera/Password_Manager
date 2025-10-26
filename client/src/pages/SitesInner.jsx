@@ -6,10 +6,13 @@ import { CgProfile } from "react-icons/cg";
 import { BiChevronLeftSquare } from "react-icons/bi";
 import { IoSearch } from "react-icons/io5";
 import { useState } from "react";
+import ClientCard from "../components/ClientCard";
+import { useOrganization } from "@clerk/clerk-react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const SitesInner = () => {
   const { client, passwords } = useLoaderData();
+  const { organization } = useOrganization();
 
   // Used for Filter State
   const [filter, setFilter] = useState("");
@@ -17,11 +20,11 @@ const SitesInner = () => {
 
   // Takes password from URL slug
   const url = window.location;
-  const slug = url.pathname.split("/").filter(Boolean);
+  const slug = url.pathname.split(`/${organization.id}/sites/`).filter(Boolean);
 
   // password filter by SiteName
   const passwordFilteredBySite = passwords.filter(
-    (item) => item.PassSite === slug[1]
+    (item) => item.PassSite === slug[0]
   );
 
   // password filtered by ClientID = [1,2]
@@ -78,14 +81,14 @@ const SitesInner = () => {
               return val;
             }
           })
-          .map((item) => (
-            <Link
-              to={`/client/${item.ClientId}`}
-              className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px]  md:hover:scale-105 hover:opacity-90 transition ease-in-out"
-              key={item.ClientId}>
+          .map((item, index) => (
+            <ClientCard
+              key={index}
+              id={item.ClientId}
+              name={item.ClientUsername}>
               <CgProfile className="text-4xl text-slate-900 " />
               <h3 className="text-slate-900 ">{item.ClientUsername}</h3>
-            </Link>
+            </ClientCard>
           ))}
       </div>
     </div>

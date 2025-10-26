@@ -1,10 +1,12 @@
 import { Form, Link, redirect } from "react-router-dom";
 import { createOrg } from "../api/org";
 import { useState } from "react";
+import { useOrganization } from "@clerk/clerk-react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Settings = () => {
   const [orgName, setOrgName] = useState("");
+  const { organization } = useOrganization();
 
   return (
     <div>
@@ -13,6 +15,7 @@ const Settings = () => {
       <Form
         method="post"
         className="form_container flex flex-col justify-between gap-4 !h-full">
+        <input type="hidden" name="orgId" defaultValue={organization.id} />
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="org-name" className="w-40">
             Org Name:
@@ -30,7 +33,10 @@ const Settings = () => {
         </div>
 
         <div className="flex flex-row gap-2 mt-2">
-          <Link to="/dashboard" type="cancel" className="button cancel-btn">
+          <Link
+            to={`/${organization.id}/profile`}
+            type="cancel"
+            className="button cancel-btn">
             Cancel
           </Link>
           <button type="submit" className="button save-btn">
@@ -45,6 +51,7 @@ const Settings = () => {
 async function action({ request }) {
   const formData = await request.formData();
   const OrgName = await formData.get("org-name");
+  const OrgId = formData.get("orgId");
 
   await createOrg(
     {
@@ -53,7 +60,7 @@ async function action({ request }) {
     { signal: request.signal }
   );
 
-  return redirect("/dashboard");
+  return redirect(`/${OrgId}/profile`);
 }
 
 export const SettingsRoute = {

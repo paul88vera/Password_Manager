@@ -1,6 +1,16 @@
-import { Outlet, ScrollRestoration } from "react-router-dom";
+import {
+  Outlet,
+  ScrollRestoration,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import { SignedOut, SignedIn, RedirectToSignIn } from "@clerk/clerk-react";
+import {
+  SignedOut,
+  SignedIn,
+  RedirectToSignIn,
+  useOrganization,
+} from "@clerk/clerk-react";
 import { attachClerkInterceptor } from "../api/base";
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
@@ -11,6 +21,17 @@ const RootLayout = () => {
   useEffect(() => {
     attachClerkInterceptor(getToken);
   }, [getToken]);
+
+  const { organization } = useOrganization();
+  const { orgId } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (organization && organization.id && !orgId) {
+      // Redirect to URL with orgId
+      navigate(`/${organization.id}/profile`, { replace: true });
+    }
+  }, [organization, orgId, navigate]);
 
   return (
     <div className="flex flex-col-reverse md:flex-row gap-0 flex-nowrap">
