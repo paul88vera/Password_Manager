@@ -1,10 +1,12 @@
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { deleteManager, editManager, getManager } from "../api/managers";
+import { useOrganization } from "@clerk/clerk-react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const EditUser = () => {
   const { users } = useLoaderData();
+  const { organization } = useOrganization();
 
   const [userName, setUserName] = useState(users[0]?.UserName);
   const [userEmail, setUserEmail] = useState(users[0]?.UserEmail);
@@ -12,16 +14,16 @@ const EditUser = () => {
   const [userActive] = useState(users[0]?.UserActive);
   const [userRole, setUserRole] = useState(users[0]?.UserRole);
   const userID = users[0]?.UserId;
-  const OrgId = users[0]?.OrgId;
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
+      <h2>Editing Manager:</h2>
       <Form
         method="post"
         className="form_container flex flex-col justify-between gap-4 !h-full">
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <input type="hidden" name="userId" defaultValue={userID} />
-          <input type="hidden" name="orgId" defaultValue={OrgId} />
+          <input type="hidden" name="orgId" defaultValue={organization.id} />
           <label htmlFor="UserName" className="w-40">
             Full Name:
           </label>
@@ -95,7 +97,10 @@ const EditUser = () => {
         </div>
 
         <div className="flex flex-row gap-2 mt-2">
-          <Link to="/dashboard" type="cancel" className="button cancel-btn">
+          <Link
+            to={`/${organization.id}/profile`}
+            type="cancel"
+            className="button cancel-btn">
             Cancel
           </Link>
           <button type="submit" className="button save-btn">
@@ -112,7 +117,7 @@ const EditUser = () => {
             ) == true
           ) {
             deleteManager(users[0]?.UserId);
-            window.location.replace(`/dashboard`);
+            window.location.replace(`/${organization.id}/profile`);
           } else {
             return;
           }
@@ -131,6 +136,7 @@ async function action({ request }) {
   const UserLogin = formData.get("userLogin");
   const UserRole = formData.get("userRole");
   const UserActive = formData.get("userActive");
+  const OrgId = formData.get("orgId");
 
   await editManager(
     UserID,
@@ -144,7 +150,7 @@ async function action({ request }) {
     { signal: request.signal }
   );
 
-  return redirect(`/dashboard`);
+  return redirect(`/${OrgId}/profile`);
 }
 
 async function loader({ request: { signal }, params: { id } }) {

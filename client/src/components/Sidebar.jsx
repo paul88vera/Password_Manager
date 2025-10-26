@@ -11,11 +11,13 @@ import {
   SignInButton,
   UserButton,
   useUser,
+  useOrganization,
 } from "@clerk/clerk-react";
 
 const Sidebar = () => {
   const [selectAdd, setSelectAdd] = useState();
   const auth = useUser().user.id;
+  const { organization } = useOrganization();
 
   const showModal = () => {
     setSelectAdd((current) => !current);
@@ -32,18 +34,18 @@ const Sidebar = () => {
         </SignedIn>
       </div>
       <div className="flex flex-row flex-nowrap md:flex-col md:gap-8 text-center p-0 md:justify-between gap-10">
-        <Link to="/dashboard" title="Profile">
+        <Link to={`/${organization.id}/profile`} title="Profile">
           <IoHomeSharp className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
         </Link>
-        <Link to="/client" title="Clients">
+        <Link to={`/${organization.id}/client`} title="Clients">
           <RiUserSearchFill className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
         </Link>
-        <Link to="/sites" title="Websites">
+        <Link to={`/${organization.id}/sites`} title="Websites">
           <MdOutlineScreenSearchDesktop className="text-lime-500 text-[2em] p-0 hover:scale-[110%] transition ease-in-out" />
         </Link>
       </div>
       <div>
-        <div title="Add Users/Clients" onClick={showModal}>
+        <div title="Add Managers/Clients" onClick={showModal}>
           <CiCirclePlus className="text-lime-500 text-[2.5em] p-0 hover:scale-[110%] transition ease-in-out cursor-pointer" />
         </div>
         {selectAdd ? (
@@ -56,24 +58,20 @@ const Sidebar = () => {
             {auth == import.meta.env.VITE_DEV_TOKEN ||
             auth == import.meta.env.VITE_DEV_TOKEN2 ? (
               <div className="flex flex-col gap-4 text-center pt-4">
-                <Link to="/add-manager" onClick={showModal}>
+                <Link
+                  to={`/${organization.id}/add-manager`}
+                  onClick={showModal}>
                   Add Manager
                 </Link>
-                <Link to="/add-client" onClick={showModal}>
+                <Link to={`/${organization.id}/add-client`} onClick={showModal}>
                   Add Client
                 </Link>
-                {/* <Link to="/settings" onClick={showModal}>
-                  Settings
-                </Link> */}
               </div>
             ) : (
               <div className="flex flex-col gap-4 text-center pt-4">
-                <Link to="/add-client" onClick={showModal}>
+                <Link to={`/${organization.id}/add-client`} onClick={showModal}>
                   Add Client
                 </Link>
-                {/* <Link to="/settings" onClick={showModal}>
-                  Settings
-                </Link> */}
               </div>
             )}
           </div>

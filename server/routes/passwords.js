@@ -56,10 +56,10 @@ router.put("/:PassId", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
     const { PassId } = req.params;
-    const { PassSite, PassUsername, PassHTML, PassPW, Client } = req.body;
+    const { PassSite, PassUsername, PassHTML, PassPW, ClientId } = req.body;
 
     const query =
-      "UPDATE Passwords SET PassSite = ?, PassUsername = ?, PassHTML = ?, PassPW = ?, Client = ? WHERE PassId = ?";
+      "UPDATE Passwords SET PassSite = ?, PassUsername = ?, PassHTML = ?, PassPW = ?, ClientId = ? WHERE PassId = ?";
 
     if (
       PassPW.split(!process.env.ENCRYPTION_KEY) != process.env.ENCRYPTION_KEY
@@ -73,7 +73,7 @@ router.put("/:PassId", async (req, res) => {
         PassUsername,
         PassHTML,
         encryptedPassword,
-        Client,
+        ClientId,
         PassId,
       ]);
       res.json(results);
@@ -83,7 +83,7 @@ router.put("/:PassId", async (req, res) => {
         PassUsername,
         PassHTML,
         PassPW,
-        Client,
+        ClientId,
         PassId,
       ]);
       res.json(results);
@@ -102,7 +102,7 @@ router.put("/:PassId", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { PassSite, PassUsername, PassHTML, PassPW, Client } = req.body;
+    const { PassSite, PassUsername, PassHTML, PassPW, ClientId } = req.body;
 
     // Encryption -- added before for DB encryption
     const encryptedPassword = PassPW.split("").join(process.env.ENCRYPTION_KEY);
@@ -110,15 +110,19 @@ router.post("/", async (req, res) => {
     // Clerk Auth
     const { orgId } = getAuth(req);
 
+    if (!orgId) {
+      return res.status(400).json({ error: "OrgId is required" });
+    }
+
     const query =
-      "INSERT INTO Passwords (PassSite, PassUsername, PassHTML, PassPW, Client, OrgId) VALUES (?,?,?,?,?,?)";
+      "INSERT INTO Passwords (PassSite, PassUsername, PassHTML, PassPW, ClientId, OrgId) VALUES (?,?,?,?,?,?)";
 
     const [results] = await connection.query(query, [
       PassSite,
       PassUsername,
       PassHTML,
       encryptedPassword,
-      Client,
+      ClientId,
       orgId,
     ]);
     res.json(results);

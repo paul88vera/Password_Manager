@@ -2,6 +2,7 @@ import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { createClient, getClients } from "../api/clients";
 import { getManagers } from "../api/managers";
+import { useOrganization } from "@clerk/clerk-react";
 // import { capitalizeFirstWord } from "../utils/caps";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -12,16 +13,19 @@ const AddClient = () => {
   const [ClientCompany, setClientCompany] = useState("");
   const [ClientNotes, setClientNotes] = useState("");
   const [ClientEmail, setClientEmail] = useState("");
+  const { organization } = useOrganization(); // from Clerk Auth
 
-  // Only Active Users as Client POC
+  // Only Active Users as Client Account Manager
   const activeUsers = users.filter((item) => item.UserActive === 1);
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
+      <h2>Add A New Client:</h2>
       <Form
         method="post"
         className="form_container flex flex-col justify-between gap-4 !h-full">
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+          <input type="hidden" name="orgId" defaultValue={organization.id} />
           <label htmlFor="ClientUsername" className="w-40">
             Full Name:
           </label>
@@ -69,7 +73,7 @@ const AddClient = () => {
         </div>
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="ClientPOC" className="w-40">
-            POC:
+            Manager:
           </label>
           <select
             name="ClientPOC"
@@ -100,7 +104,10 @@ const AddClient = () => {
         </div>
 
         <div className="flex flex-row gap-2 mt-2">
-          <Link to="/client" type="cancel" className="button cancel-btn">
+          <Link
+            to={`/${organization.id}/client`}
+            type="cancel"
+            className="button cancel-btn">
             Cancel
           </Link>
           <button type="submit" className="button save-btn">
@@ -118,7 +125,8 @@ async function action({ request }) {
   const ClientCompany = formData.get("ClientCompany");
   const ClientEmail = formData.get("ClientEmail");
   const ClientNotes = formData.get("ClientNotes");
-  const Manager = formData.get("ClientPOC");
+  const ManagerId = formData.get("ClientPOC");
+  const OrgId = formData.get("orgId");
 
   const client = await createClient(
     {
@@ -126,12 +134,12 @@ async function action({ request }) {
       ClientCompany,
       ClientEmail,
       ClientNotes,
-      Manager,
+      ManagerId,
     },
     { signal: request.signal }
   );
 
-  return redirect(`/client/${client.insertId}`);
+  return redirect(`/${OrgId}/client/${client.insertId}`);
 }
 
 async function loader({ request: { signal } }) {

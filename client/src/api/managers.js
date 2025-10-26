@@ -43,6 +43,6 @@ export function editManager(id, data, options) {
  */
 export function deleteManager(id) {
   return baseApi.delete(`manager/${id}`, { method: "DELETE" }).then(() => {
-    window.location.replace("/dashboard");
+    window.location.replace("/profile");
   });
 }

@@ -4,12 +4,14 @@ import { CgProfile } from "react-icons/cg";
 // import { capitalizeFirstWord } from "../utils/caps";
 import { useState } from "react";
 import { BiChevronLeftSquare } from "react-icons/bi";
+import { useOrganization } from "@clerk/clerk-react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const User = () => {
   const { user } = useLoaderData();
   const [editIcon, setEditIcon] = useState();
   const userActive = user[0]?.UserActive;
+  const { organization } = useOrganization();
 
   return (
     <div className="flex flex-col gap-4 mt-4">
@@ -29,7 +31,8 @@ const User = () => {
               setEditIcon(false);
             }}>
             <Link
-              to={`/manager/${user[0]?.UserId}/edit`}
+              to={`/${organization.id}/manager/${user[0]?.UserId}/edit`}
+              title={`Edit ${user[0]?.UserName}'s info`}
               className="text-red-900 text-[1rem] text-center hover:text-red-700 h-2 transition ease-in-out">
               <CgProfile className="text-6xl text-slate-900" />
               {editIcon ? <p className="text-red-900">edit</p> : null}
@@ -52,6 +55,7 @@ const User = () => {
             </div>
             <Link
               to={`mailto:${user[0]?.UserEmail}`}
+              title={`Email ${user[0]?.UserName}`}
               className="text-[1rem] font-thin !text-lime-900 hover:!text-lime-700">
               {user[0]?.UserEmail || "Unknown"}
             </Link>

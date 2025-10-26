@@ -1,17 +1,13 @@
--- Insert Orgs (using UUID_TO_BIN for BINARY(16) storage)
--- SET @orgId1 = UUID_TO_BIN(UUID());
--- SET @orgId1 = UNHEX(REPLACE(UUID(), '-', ''));
-
-
+-- -- Insert Orgs (using UUID_TO_BIN for BINARY(16) storage)
 -- INSERT INTO Org (OrgId, OrgName) VALUES
---   (@orgId1, 'Transcendental');
+--   ('org_34S0T5dxNHO8wxHV1SA6P2nekIv', 'Transcendental');
 
 -- -- Insert Manager (referencing Org by name via subselect)
 -- INSERT INTO Manager (UserId, UserName, UserEmail, UserRole, UserActive, OrgId)
 -- VALUES
---   (1, 'Alice Johnson', 'alice@technova.com', 'Admin', TRUE, @orgId1),
---   (2, 'Bob Smith', 'bob@technova.com', 'Manager', TRUE, @orgId2),
---   (3, 'Evelyn Clark', 'evelyn@bluesky.com', 'Admin', TRUE, @orgId1);
+--   (1, 'Nicole', 'nt@transcendentalagency.com', 'Admin', TRUE, 'org_34S0T5dxNHO8wxHV1SA6P2nekIv'),
+--   (2, 'Lauren', 'la@transcendentalagency.com', 'Manager', TRUE, 'org_34S0T5dxNHO8wxHV1SA6P2nekIv'),
+--   (3, 'Bri', 'bf@transcendentalagency.com', 'Manager', TRUE, 'org_34S0T5dxNHO8wxHV1SA6P2nekIv');
 
 -- -- Insert Client
 -- INSERT INTO Client (ClientId, ClientUsername, ClientCompany, ClientEmail, ClientNotes, Manager, OrgId)
@@ -25,7 +21,7 @@
 -- -- Insert Passwords
 -- INSERT INTO Passwords (PassId, PassSite, PassUsername, PassHTML, PassPW, Client, OrgId)
 -- VALUES
---   (1, 'dashboard.alpha', 'alpha_admin', 'https://dashboard.alpha.com', 'alpha123!', 1, @orgId1),
+--   (1, 'dashboard.alpha', 'alpha_admin', 'https://profile.alpha.com', 'alpha123!', 1, @orgId1),
 --   (2, 'portal.beta', 'beta_user', 'https://portal.beta.com', 'beta456!', 2, @orgId2),
 --   (3, 'data.gamma', 'gamma_login', 'https://data.gamma.com', 'gamma789!', 3, @orgId1);
 

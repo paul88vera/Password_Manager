@@ -11,6 +11,7 @@ import { useState } from "react";
 // import { capitalizeFirstWord } from "../utils/caps";
 import { getManagers } from "../api/managers";
 import { BiChevronLeftSquare } from "react-icons/bi";
+import { useOrganization } from "@clerk/clerk-react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const ClientInner = () => {
@@ -19,6 +20,8 @@ const ClientInner = () => {
   const [modalOpened, setModalOpened] = useState();
   const [editIcon, setEditIcon] = useState();
   const isMobile = useNavigation();
+
+  const { organization } = useOrganization();
 
   // Client Info
   const [passClient] = useState(client[0]?.ClientId);
@@ -38,11 +41,11 @@ const ClientInner = () => {
 
   // Filter passwords with current ClientId
   const passwordFilter = passwords.filter(
-    (item) => item.Client === client[0]?.ClientId && client[0]?.OrgId
+    (item) => item.ClientId === client[0]?.ClientId && client[0]?.OrgId
   );
 
   // Filter Username from client
-  const clientFilter = client.map((item) => item.Manager);
+  const clientFilter = client.map((item) => item.ManagerId);
   const userFilter = users.filter((item) => clientFilter.includes(item.UserId));
 
   return (
@@ -64,7 +67,8 @@ const ClientInner = () => {
                 setEditIcon(false);
               }}>
               <Link
-                to={`/client/${client[0]?.ClientId}/edit`}
+                to={`/${organization.id}/client/${client[0]?.ClientId}/edit`}
+                title="Edit Client Info"
                 className="text-red-900 text-[1rem] text-center hover:text-red-700 h-2 transition ease-in-out">
                 <CgProfile className="text-6xl text-slate-900" />
                 {editIcon ? <p className="text-red-900">edit</p> : null}
@@ -77,6 +81,7 @@ const ClientInner = () => {
               </span>
               <Link
                 to={`mailto:${client[0]?.ClientEmail}`}
+                title={`Click to email ${client[0]?.ClientUsername}`}
                 className="text-[1rem] font-thin !text-lime-900 hover:!text-lime-700">
                 {client[0]?.ClientEmail || "Unknown"}
               </Link>
@@ -86,7 +91,10 @@ const ClientInner = () => {
             className="!text-slate-900 button flex flex-row gap-2 flex-nowrap align-middle justify-end mr-[-20px] hover:scale-105 transition ease-in-out p-0 cursor-pointer text-[1rem]"
             onClick={() => setModalOpened(true)}>
             {isMobile ? null : "Add Password "}
-            <FaPlusCircle className="text-1xl mt-1 text-slate-900" />
+            <FaPlusCircle
+              className="text-1xl mt-1 text-slate-900"
+              title="Add a password"
+            />
           </div>
         </div>
 
@@ -196,6 +204,7 @@ const ClientInner = () => {
                 <div className="flex flex-col justify-start">
                   <h3 className=" ">{pass.PassSite}</h3>
                   <Link
+                    target="_blank"
                     to={
                       pass.PassHTML.includes("https://") ||
                       pass.PassHTML.includes("http://")
@@ -207,7 +216,7 @@ const ClientInner = () => {
                   </Link>
                 </div>
                 {openCardId === pass.PassId ? (
-                  <Link to={`/password/${pass.PassId}/edit`}>
+                  <Link to={`/${organization.id}/password/${pass.PassId}/edit`}>
                     <MdEdit className="text-2xl text-lime-500 hover:text-slate-300 absolute right-0" />
                   </Link>
                 ) : null}
@@ -249,7 +258,12 @@ const ClientInner = () => {
         </div>
         <div className="text-slate-950 mt-4">
           <h3 className="font-bold">Account Manager:</h3>
-          <p>{userFilter[0]?.UserName}</p>
+          <a
+            href={`mailto:${userFilter[0]?.UserEmail}`}
+            className="!text-lime-900"
+            title={`Click to email ${userFilter[0]?.UserName}`}>
+            {userFilter[0]?.UserName}
+          </a>
         </div>
         {client[0]?.ClientNotes ? (
           <div className="text-slate-950 mt-4">
@@ -259,6 +273,7 @@ const ClientInner = () => {
         ) : null}
         <div className="absolute right-1 bottom-2 text-slate-950">
           <IoIosTrash
+            title={`Delete ${client[0]?.ClientCompany}`}
             className="text-3xl text-red-900 hover:text-red-700 hover:animate-pulse cursor-pointer"
             onClick={() => {
               if (
@@ -266,7 +281,7 @@ const ClientInner = () => {
                   "Are you sure you would like to delete this client?"
                 ) === true
               ) {
-                window.location.replace("/client");
+                window.location.replace(`/${organization.id}/client`);
                 deleteClient(passClient);
               } else {
                 return;
@@ -285,7 +300,7 @@ async function action({ request }) {
   const PassUsername = formData.get("username");
   const PassHTML = formData.get("site_url");
   const PassPW = formData.get("password");
-  const Client = formData.get("passClient");
+  const ClientId = formData.get("passClient");
 
   await createPassword(
     {
@@ -293,7 +308,7 @@ async function action({ request }) {
       PassUsername,
       PassHTML,
       PassPW,
-      Client,
+      ClientId,
     },
     { signal: request.signal }
   );

@@ -5,10 +5,13 @@ import { MdOutlineComputer } from "react-icons/md";
 // import { capitalizeFirstWord } from "../utils/caps";
 import { useState } from "react";
 import { IoSearch } from "react-icons/io5";
+import PasswordCard from "../components/PasswordCard";
+import { useOrganization } from "@clerk/clerk-react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Sites = () => {
   const passwords = useLoaderData();
+  const { organization } = useOrganization();
 
   // Used for Filter State
   const [filter, setFilter] = useState("");
@@ -23,6 +26,7 @@ const Sites = () => {
 
   return (
     <div className="flex flex-col gap-4 pb-10 justify-center align-middle">
+      <h2>Search Websites:</h2>
       <div className="max-w-[1000px] w-full flex flex-col justify-center align-middle content-center">
         <div className="flex flex-col flex-nowrap gap-4 align-middle justify-start">
           <IoSearch
@@ -47,7 +51,9 @@ const Sites = () => {
       </div>
       <div className="mt-4 grid grid-cols-1 gap-4">
         {passFiltered == "" ? (
-          <Link to="/client">No Sites Yet... Add A Password To A Client</Link>
+          <Link to={`/${organization.id}/client`}>
+            No Sites Yet... Add A Password To A Client
+          </Link>
         ) : null}
         {passFiltered
           ?.filter((val) => {
@@ -59,14 +65,11 @@ const Sites = () => {
               return val;
             }
           })
-          .map((item) => (
-            <Link
-              to={`/sites/${item.PassSite}`}
-              className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px]  md:hover:scale-105 hover:opacity-90 transition ease-in-out"
-              key={item.PassId}>
+          .map((item, index) => (
+            <PasswordCard key={index} id={item.PassId} name={item.PassSite}>
               <MdOutlineComputer className="text-4xl text-slate-900 " />
               <h3 className="text-slate-900 ">{item.PassSite}</h3>
-            </Link>
+            </PasswordCard>
           ))}
       </div>
     </div>

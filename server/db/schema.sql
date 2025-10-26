@@ -1,21 +1,11 @@
--- Drop and recreate schema, then seed sample data
+-- Disable FK checks so DROP TABLE won't complain about ordering
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS Passwords;
-DROP TABLE IF EXISTS Clients;
-DROP TABLE IF EXISTS Managers;
-DROP TABLE IF EXISTS Org;
+DROP TABLE IF EXISTS Client;
+DROP TABLE IF EXISTS Manager;
 
 SET FOREIGN_KEY_CHECKS = 1;
-
--- Create Organization table
-CREATE TABLE Org (
-  -- OrgId BINARY(16) PRIMARY KEY DEFAULT (UUID_TO_BIN(UUID())),
-  -- OrgId CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  OrgId VARCHAR(255) PRIMARY KEY,
-  OrgName VARCHAR(255) NOT NULL UNIQUE,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
 
 -- Create Manager table
 CREATE TABLE Manager (
@@ -24,10 +14,10 @@ CREATE TABLE Manager (
   UserEmail VARCHAR(255) NOT NULL UNIQUE,
   UserRole VARCHAR(255) NOT NULL,
   UserActive BOOLEAN NOT NULL DEFAULT TRUE,
-  OrgId VARCHAR(255),
+  OrgId VARCHAR(255) NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_managers_org FOREIGN KEY (OrgId) REFERENCES Org(OrgId)
-);
+  INDEX idx_manager_orgid (OrgId)
+) ENGINE=InnoDB;
 
 -- Create Client table
 CREATE TABLE Client (
@@ -36,12 +26,12 @@ CREATE TABLE Client (
   ClientCompany VARCHAR(255) NOT NULL,
   ClientEmail VARCHAR(255) NOT NULL,
   ClientNotes VARCHAR(255),
-  Manager INT NOT NULL,
-  OrgId VARCHAR(255),
+  ManagerId INT NOT NULL,
+  OrgId VARCHAR(255) NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_clients_org FOREIGN KEY (OrgId) REFERENCES Org (OrgId),
-  CONSTRAINT fk_clients_manager FOREIGN KEY (Manager) REFERENCES Manager(UserId) ON DELETE CASCADE
-);
+  CONSTRAINT fk_client_manager FOREIGN KEY (ManagerId) REFERENCES Manager(UserId) ON DELETE CASCADE,
+  CONSTRAINT fk_client_org FOREIGN KEY (OrgId) REFERENCES Manager(OrgId) ON DELETE CASCADE
+) ENGINE=InnoDB;
 
 -- Create Passwords table
 CREATE TABLE Passwords (
@@ -50,9 +40,9 @@ CREATE TABLE Passwords (
   PassUsername VARCHAR(255) NOT NULL,
   PassHTML VARCHAR(1024) NOT NULL,
   PassPW VARCHAR(255) NOT NULL,
-  Client INT,
-  OrgId VARCHAR(255),
+  ClientId INT,
+  OrgId VARCHAR(255) NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_passwords_org FOREIGN KEY (OrgId) REFERENCES Org (OrgId),
-  CONSTRAINT fk_passwords_client FOREIGN KEY (Client) REFERENCES Client(ClientId) ON DELETE CASCADE
-);
+  CONSTRAINT fk_passwords_org FOREIGN KEY (OrgId) REFERENCES Manager(OrgId) ON DELETE CASCADE,
+  CONSTRAINT fk_passwords_client FOREIGN KEY (ClientId) REFERENCES Client(ClientId) ON DELETE CASCADE
+) ENGINE=InnoDB;

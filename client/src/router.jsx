@@ -4,7 +4,7 @@ import ErrorMessage from "./pages/ErrorMessage";
 import Error from "./pages/Error";
 import { ClientRoute } from "./pages/Client";
 import { SitesRoute } from "./pages/Sites";
-import { SettingsRoute } from "./pages/Settings";
+// import { SettingsRoute } from "./pages/Settings";
 import { AddClientRoute } from "./pages/AddClient";
 import { ClientInnerRoute } from "./pages/ClientInner";
 import { SiteInnerPage } from "./pages/SitesInner";
@@ -14,10 +14,15 @@ import { EditClientRoute } from "./pages/EditClient";
 import { EditUserRoute } from "./pages/EditUser";
 import { EditPasswordRoute } from "./pages/EditPassword";
 import { UserRoute } from "./pages/User";
+import { OrgRedirect } from "./components/OrgRedirect";
 
 export const router = createBrowserRouter([
   {
     path: "/",
+    element: <OrgRedirect />,
+  },
+  {
+    path: `/:orgId`,
     element: <RootLayout />,
     children: [
       {
@@ -25,7 +30,7 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Navigate to="/dashboard" />,
+            element: <Navigate to="profile" />,
           },
           {
             path: "client",
@@ -48,7 +53,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: `dashboard`,
+            path: `profile`,
             children: [{ index: true, ...ProfileRoute }],
           },
           {
@@ -65,7 +70,7 @@ export const router = createBrowserRouter([
           // { path: "settings", ...SettingsRoute },
           { path: "add-client", ...AddClientRoute },
           { path: "add-manager", ...AddUserRoute },
-          { path: "*", element: <Error /> || <Navigate to="/dashboard" /> },
+          { path: "*", element: <Error /> || <Navigate to="profile" /> },
         ],
       },
     ],

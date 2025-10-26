@@ -2,49 +2,45 @@ import { Link, useLoaderData } from "react-router-dom";
 import { getManagers } from "../api/managers";
 import { CgProfile } from "react-icons/cg";
 import { getClients } from "../api/clients";
-import { useUser } from "@clerk/clerk-react";
+import { useOrganization, useUser } from "@clerk/clerk-react";
+import ClientCard from "../components/ClientCard";
+import ManagerCard from "../components/ManagerCard";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Profile = () => {
   const { user, client } = useLoaderData();
 
+  // Clerk username
   const userName = useUser().user.fullName;
+  const { organization } = useOrganization();
 
   return (
     <div className="grid grid-cols-1 gap-4 mt-4">
-      {user != "" ? (
-        <div>
-          Welcome, <b className="text-lime-500">{userName}!</b>
-        </div>
-      ) : (
-        <Link to="/add-manager">Add A New Manager</Link>
-      )}
+      <div>
+        Welcome, <b className="text-lime-500">{userName}!</b>
+      </div>
       <div className="flex flex-col-reverse md:flex-row gap-4">
         {client != "" ? (
           <div className="flex flex-col gap-4 mt-4">
             <h2>Clients:</h2>
             {client.map((item, index) => (
-              <Link
-                to={`/client/${item.ClientId}`}
-                className="site-card bg-slate-200 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px] md:hover:scale-105 hover:opacity-90 transition ease-in-out"
-                key={index}>
-                {/* <img src="#" alt={item.ClientUsername} /> */}
+              <ClientCard key={index} id={item.ClientId}>
                 <CgProfile className="text-4xl text-slate-900 " />
                 <h3 className="text-slate-900 ">{item.ClientUsername}</h3>
-              </Link>
+              </ClientCard>
             ))}
           </div>
         ) : (
           <div className="flex flex-col gap-4 mt-4">
             <h2>Clients:</h2>
             <div className="site-card flex flex-row flex-nowrap gap-4 align-middle justify-start  rounded-lg font-bold w-full md:w-100 md:max-w-[350px] text-lime-500">
-              {!user ? (
-                <Link to="/add-manager">
-                  No Managers Yet... :{"("}
+              {user == "" && client == "" ? (
+                <Link to={`/${organization.id}/add-manager`}>
+                  No Clients or Managers Yet... :{"("}
                   <br /> Add A Manager
                 </Link>
               ) : (
-                <Link to="/add-client">
+                <Link to={`/${organization.id}/add-client`}>
                   No Clients Yet... :{"("}
                   <br /> Add A Client
                 </Link>
@@ -57,19 +53,14 @@ const Profile = () => {
           <div>
             <div className="flex flex-col gap-4 mt-4">
               <h2>Account Managers:</h2>
-              {user.map((item) => (
-                <Link
-                  to={`/manager/${item.UserId}`}
-                  className={`site-card ${
-                    item.UserActive == 1
-                      ? `bg-slate-400 !text-slate-500`
-                      : `bg-slate-600`
-                  } flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg  font-bold w-full md:w-100 md:max-w-[350px]  md:hover:scale-105 hover:opacity-90 transition ease-in-out`}
-                  key={item.UserId}>
-                  {/* <img src="#" alt={item.ClientUsername} /> */}
+              {user.map((item, index) => (
+                <ManagerCard
+                  key={index}
+                  id={item.UserId}
+                  active={item.UserActive}>
                   <CgProfile className="text-4xl text-slate-900 " />
                   <h3 className="text-slate-900 ">{item.UserName}</h3>
-                </Link>
+                </ManagerCard>
               ))}
             </div>
           </div>

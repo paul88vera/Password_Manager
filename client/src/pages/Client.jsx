@@ -4,10 +4,12 @@ import { CgProfile } from "react-icons/cg";
 import { IoSearch } from "react-icons/io5";
 // import { capitalizeFirstWord } from "../utils/caps";
 import { useState } from "react";
+import { getManagers } from "../api/managers";
+import ClientCard from "../components/ClientCard";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Client = () => {
-  const client = useLoaderData();
+  const { client, user } = useLoaderData();
 
   // Used for Filter State
   const [filter, setFilter] = useState("");
@@ -15,6 +17,7 @@ const Client = () => {
 
   return (
     <div className="flex flex-col gap-4  pb-10">
+      <h2>Search Clients:</h2>
       <div className="max-w-[1000px] w-full flex flex-col justify-center align-middle content-center">
         <IoSearch
           className={`text-3xl text-lime-500 hover:scale-115 transition-all ease-in-out ${
@@ -36,7 +39,12 @@ const Client = () => {
         ) : null}
       </div>
       <div className="mt-4 grid grid-cols-1 gap-4">
-        {client == "" ? (
+        {client && user == "" ? (
+          <Link to="/add-manager">
+            No Clients or Managers Yet... Add A Manager
+          </Link>
+        ) : null}
+        {client == "" && user != "" ? (
           <Link to="/add-client">No Clients Yet... Add A Client</Link>
         ) : null}
         {client
@@ -49,14 +57,11 @@ const Client = () => {
               return val;
             }
           })
-          .map((item) => (
-            <Link
-              to={`/client/${item.ClientId}`}
-              className="site-card bg-slate-300 flex flex-row flex-nowrap gap-4 align-middle justify-start p-4 rounded-lg text-slate-900 font-bold w-full md:w-100 md:max-w-[350px]  md:hover:scale-105 hover:opacity-90 transition ease-in-out"
-              key={item.ClientId}>
+          .map((data, index) => (
+            <ClientCard key={index} id={data.ClientId}>
               <CgProfile className="text-4xl text-slate-900 " />
-              <h3 className="text-slate-900 ">{item.ClientUsername}</h3>
-            </Link>
+              <h3 className="text-slate-900 ">{data.ClientUsername}</h3>
+            </ClientCard>
           ))}
       </div>
     </div>
@@ -65,7 +70,8 @@ const Client = () => {
 
 async function loader({ request: { signal } }) {
   const client = await getClients({ signal });
-  return client;
+  const user = await getManagers({ signal });
+  return { client: client, user: user };
 }
 
 export const ClientRoute = {

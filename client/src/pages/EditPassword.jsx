@@ -2,10 +2,12 @@ import { Form, redirect, useLoaderData } from "react-router-dom";
 import { deletePassword, editPassword, getPassword } from "../api/passwords";
 // import { capitalizeFirstWord } from "../utils/caps"; // Just makes the stuff Capitalized
 import { useState } from "react";
+import { useOrganization } from "@clerk/clerk-react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const EditPassword = () => {
   const { password } = useLoaderData();
+  const { organization } = useOrganization();
 
   // Default State
   const [siteName, setSiteName] = useState(password[0]?.PassSite || "");
@@ -18,17 +20,19 @@ const EditPassword = () => {
 
   // Needed for password/client identification
   const passID = password[0]?.PassId;
-  const passClient = password[0]?.Client;
+  const passClient = password[0]?.ClientId;
 
   return (
     <div className="flex flex-row flex-wrap gap-4 mt-8">
       <div className="flex flex-col align-middle justify-center">
+        <h2>Editing Password:</h2>
         <Form
           method="post"
-          action={`/password/${passID}/edit`}
+          action={`/${organization.id}/password/${passID}/edit`}
           className="form_container flex flex-col justify-between gap-4 max-w-100">
           <input name="passClient" type="hidden" defaultValue={passClient} />
           <input name="passID" type="hidden" defaultValue={passID} />
+          <input type="hidden" name="orgId" defaultValue={organization.id} />
           <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
             <label htmlFor="siteName" className="w-40">
               Site Name:
@@ -95,7 +99,9 @@ const EditPassword = () => {
               type="button"
               className="button cancel-btn"
               onClick={() => {
-                window.location.replace(`/client/${passClient}`);
+                window.location.replace(
+                  `/${organization.id}/client/${passClient}`
+                );
               }}>
               Cancel
             </button>
@@ -113,7 +119,9 @@ const EditPassword = () => {
               ) == true
             ) {
               deletePassword(password[0]?.PassId, passClient);
-              window.location.replace(`/client/${password[0]?.Client}`);
+              window.location.replace(
+                `/${organization.id}/client/${passClient}`
+              );
             } else {
               return;
             }
@@ -132,7 +140,8 @@ async function action({ request }) {
   const PassUsername = formData.get("username");
   const PassHTML = formData.get("site_url");
   const PassPW = formData.get("password");
-  const Client = formData.get("passClient");
+  const ClientId = formData.get("passClient");
+  const OrgId = formData.get("orgId");
 
   await editPassword(
     PassID,
@@ -141,12 +150,12 @@ async function action({ request }) {
       PassUsername,
       PassHTML,
       PassPW,
-      Client,
+      ClientId,
     },
     { signal: request.signal }
   );
 
-  return redirect(`/client/${Client}`);
+  return redirect(`/${OrgId}/client/${ClientId}`);
 }
 
 async function loader({ request: { signal }, params: { id } }) {
