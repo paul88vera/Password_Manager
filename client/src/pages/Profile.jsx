@@ -48,8 +48,7 @@ const Profile = () => {
             </div>
           </div>
         )}
-        {(user != "" && user[0]?.UserRole === "Admin") ||
-        user[0]?.UserRole === "Manager" ? (
+        {user[0]?.UserRole === "Admin" || user[0]?.UserRole === "Member" ? (
           <div>
             <div className="flex flex-col gap-4 mt-4">
               <h2>Account Managers:</h2>

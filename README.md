@@ -10,17 +10,16 @@ Front-End:
 - TailwindCSS
 - Axios
 - React Icons
-- Full Calendar
-- Clerk
+- Clerk/React
 
 Back-End:
 
 - MySQL
 - Express.js
 - Node.js
-- Cors
-- Clerk
 - Nodemon
+- Cors
+- Clerk/Express
 - Dotenvx
 
 ## Features

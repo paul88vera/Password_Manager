@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 *.env*
+client/certs/*
+!client/certs/.gitkeep
 
 # Editor directories and files
 .vscode/*

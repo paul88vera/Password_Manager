@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
     element: <OrgRedirect />,
   },
   {
-    path: `/:orgId`,
+    path: `/:id`,
     element: <RootLayout />,
     children: [
       {

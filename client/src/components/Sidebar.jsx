@@ -16,7 +16,7 @@ import {
 
 const Sidebar = () => {
   const [selectAdd, setSelectAdd] = useState();
-  const auth = useUser().user.id;
+  const auth = useUser().user.organizationMemberships[0].roleName;
   const { organization } = useOrganization();
 
   const showModal = () => {
@@ -55,8 +55,7 @@ const Sidebar = () => {
               onClick={showModal}>
               <IoMdCloseCircleOutline className="text-3xl" />
             </div>
-            {auth == import.meta.env.VITE_DEV_TOKEN ||
-            auth == import.meta.env.VITE_DEV_TOKEN2 ? (
+            {auth == "Admin" ? (
               <div className="flex flex-col gap-4 text-center pt-4">
                 <Link
                   to={`/${organization.id}/add-manager`}

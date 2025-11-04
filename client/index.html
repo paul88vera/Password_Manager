@@ -7,7 +7,7 @@
       href="/icons/favicon-32x32.png"
       type="image/x-icon" />
     <link rel="stylesheet" href="./src/index.css" />
-    <link rel="manifest" href="./manifest.json" />
+    <link rel="manifest" href="/manifest.webmanifest" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PassManager | Transcendental Marketing Agency</title>
@@ -16,15 +16,5 @@
     <div id="root"></div>
     <div id="modal"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script>
-      window.onSpotifyIframeApiReady = (IFrameAPI) => {
-        let element = document.getElementById("modal");
-        let options = {
-          uri: "spotify:episode:7makk4oTQel546B0PZlDM5",
-        };
-        let callback = (EmbedController) => {};
-        IFrameAPI.createController(element, options, callback);
-      };
-    </script>
   </body>
 </html>

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { getAuth, Organization } = require("@clerk/express");
 
-const db = require("../db/connection");
+const  db  = require("../db/connection");
 
 // @route    GET /users
 // @desc     Get all users
@@ -22,12 +22,12 @@ router.get("/", async (req, res) => {
 // @route    GET /users:id
 // @desc     Get one user
 // @access   Private
-router.get("/:UserId", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { UserId } = req.params;
+    const { id } = req.params;
     const query = "SELECT * FROM Manager WHERE UserId = ?";
-    const [results] = await connection.query(query, [UserId]);
+    const [results] = await connection.query(query, [id]);
     res.json(results);
   } catch (err) {
     console.error(err);
@@ -38,10 +38,10 @@ router.get("/:UserId", async (req, res) => {
 // @route    PUT /users:id
 // @desc     Update one user by id
 // @access   Private
-router.put("/:UserId", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { UserId } = req.params;
+    const { id } = req.params;
     const { UserName, UserEmail, UserRole, UserActive } = req.body;
     const query =
       "UPDATE Manager SET UserName = ?, UserEmail = ?, UserRole = ?, UserActive = ? WHERE UserId = ?";
@@ -50,7 +50,7 @@ router.put("/:UserId", async (req, res) => {
       UserEmail,
       UserRole,
       UserActive,
-      UserId,
+      id,
     ]);
     res.json(results);
   } catch (err) {
@@ -92,12 +92,12 @@ router.post("/", async (req, res) => {
 // @route    DELETE /users:id
 // @desc     Create a user
 // @access   Private
-router.delete("/:UserId", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const connection = await db;
-    const { UserId } = req.params;
+    const { id } = req.params;
     const query = "DELETE FROM Manager WHERE UserId = ?";
-    connection.query(query, [UserId]);
+    connection.query(query, [id]);
     res.send("User Deleted");
   } catch (err) {
     console.error(err);

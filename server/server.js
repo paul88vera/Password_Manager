@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const PORT = 5500;
+const PORT = 5400;
 const routes = require("./routes");
 const { clerkMiddleware, getAuth } = require("@clerk/express");
 require("@dotenvx/dotenvx").config();
@@ -32,11 +32,11 @@ app.use(
 app.use("/api", requireAuth, routes);
 
 // Serve React static files
-app.use(express.static(path.join(__dirname, "../client/dist", "/index.html"))); // adjust to your client build path
+app.use(express.static(path.join(__dirname, "../client/dist")));
 
-// Catch-all route for React SPA
-app.get("/*w", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist", "/index.html"));
+// React SPA catch-all (must come last)
+app.get(/^\/(?!api).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
 });
 
 // listener

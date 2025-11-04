@@ -29,7 +29,7 @@ const SitesInner = () => {
 
   // password filtered by ClientID = [1,2]
   const clientIDFilterByPassword = passwordFilteredBySite.map(
-    (item) => item.Client
+    (item) => item.ClientId
   );
 
   // Client filtered from passwords

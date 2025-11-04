@@ -33,12 +33,12 @@ router.get("/", async (req, res) => {
  * @desc     Get one client password by id
  * @access   Private
  * */
-router.get("/:PassId", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { PassId } = req.params;
+    const { id } = req.params;
     const query = "SELECT * FROM Passwords WHERE PassID = ?";
-    const [results] = await connection.query(query, [PassId]);
+    const [results] = await connection.query(query, [id]);
 
     res.json(results);
   } catch (err) {
@@ -52,10 +52,10 @@ router.get("/:PassId", async (req, res) => {
  * @desc     Update client password by Id
  * @access   Private
  * */
-router.put("/:PassId", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { PassId } = req.params;
+    const { id } = req.params;
     const { PassSite, PassUsername, PassHTML, PassPW, ClientId } = req.body;
 
     const query =
@@ -74,7 +74,7 @@ router.put("/:PassId", async (req, res) => {
         PassHTML,
         encryptedPassword,
         ClientId,
-        PassId,
+        id,
       ]);
       res.json(results);
     } else {
@@ -84,7 +84,7 @@ router.put("/:PassId", async (req, res) => {
         PassHTML,
         PassPW,
         ClientId,
-        PassId,
+        id,
       ]);
       res.json(results);
     }
@@ -137,12 +137,12 @@ router.post("/", async (req, res) => {
  * @desc     delete a client password
  * @access   Private
  * */
-router.delete("/:PassId", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const connection = await db;
-    const { PassId } = req.params;
+    const { id } = req.params;
     const query = "DELETE FROM Passwords WHERE PassId = ?";
-    connection.query(query, [PassId]);
+    connection.query(query, [id]);
     res.send("Password Deleted");
   } catch (err) {
     console.error(err);

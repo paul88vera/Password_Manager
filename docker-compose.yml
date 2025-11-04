@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile.client
     environment:
       # Internal API for Docker networking
-      - REACT_APP_API_URL=http://server:5500/
+      - VITE_API_URL=https://server:5400/
     ports:
       - "3000:80" # React app exposed on LAN
     depends_on:
@@ -19,11 +19,12 @@ services:
       context: ./server
       dockerfile: Dockerfile.server
     ports:
-      - "5500:5500" # API exposed on LAN
+      - "5400:5400" # API exposed on LAN
     depends_on:
       - db
     environment:
-      - DB_HOST=db
+      - DB_HOST=db # ✅ Use service name, not localhost
+      - DB_PORT=3306 # Optional but explicit
       - VITE_SQL_USER=root
       - VITE_SQL_PASSWD=WebDev88!!
       - VITE_SQL_DB=passManager
@@ -46,7 +47,6 @@ services:
       # only for first boot:
       # - ./server/db/db.sql:/docker-entrypoint-initdb.d/1-db.sql
       # - ./server/db/schema.sql:/docker-entrypoint-initdb.d/2-schema.sql
-      # - ./server/db/seeds.sql:/docker-entrypoint-initdb.d/3-seeds.sql
 
 volumes:
   db_data: {}

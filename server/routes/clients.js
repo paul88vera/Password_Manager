@@ -22,12 +22,12 @@ router.get("/", async (req, res) => {
 // @route    GET /client:id
 // @desc     Get one Client by id
 // @access   Private
-router.get("/:ClientId", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { ClientId } = req.params;
+    const { id } = req.params;
     const query = "SELECT * FROM Client WHERE ClientId = ?";
-    const [results] = await connection.query(query, [ClientId]);
+    const [results] = await connection.query(query, [id]);
     res.json(results);
   } catch (err) {
     console.error(err);
@@ -38,10 +38,10 @@ router.get("/:ClientId", async (req, res) => {
 // @route    PUT /client/:id
 // @desc     Update Client by id
 // @access   Private
-router.put("/:ClientId", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { ClientId } = req.params;
+    const { id } = req.params;
     const {
       ClientUsername,
       ClientCompany,
@@ -57,7 +57,7 @@ router.put("/:ClientId", async (req, res) => {
       ClientEmail,
       ClientNotes,
       ManagerId,
-      ClientId,
+      id,
     ]);
     res.json(results);
   } catch (err) {
@@ -72,7 +72,7 @@ router.put("/:ClientId", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { ClientId } = req.params;
+    const { id } = req.params;
     const {
       ClientUsername,
       ClientCompany,
@@ -96,7 +96,7 @@ router.post("/", async (req, res) => {
       ClientNotes,
       ManagerId,
       orgId,
-      ClientId,
+      id,
     ]);
     res.json(results);
   } catch (err) {
@@ -110,11 +110,11 @@ router.post("/", async (req, res) => {
  * @desc      Delete Client by id
  * @access    Private
  */
-router.delete("/:ClientId", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const connection = await db; // Wait for connection to resolve
-  const { ClientId } = req.params;
+  const { id } = req.params;
   const query = "DELETE FROM Client WHERE ClientId = ?";
-  connection.query(query, [ClientId], (err) => {
+  connection.query(query, [id], (err) => {
     if (err) {
       res.status(500).send("Server error");
       console.error(err);

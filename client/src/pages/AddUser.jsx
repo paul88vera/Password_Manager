@@ -60,8 +60,7 @@ const AddUser = () => {
             onChange={(e) => setUserRole(e.target.value)}
             defaultValue={userRole}>
             <option value="Admin">Admin</option>
-            <option value="Manager">Manager</option>
-            <option value="Staff">Staff</option>
+            <option value="Member">Member</option>
           </select>
         </div>
 
