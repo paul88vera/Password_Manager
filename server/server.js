@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const fs = require("fs");
+const https = require("https");
 const cors = require("cors");
 const PORT = 5400;
 const routes = require("./routes");
@@ -39,7 +41,20 @@ app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
 });
 
+// Load your local certs
+const options = {
+  key: fs.readFileSync(
+    path.join(__dirname, "../client/certs/app.verafied.tech-key.pem")
+  ),
+  cert: fs.readFileSync(
+    path.join(__dirname, "../client/certs/app.verafied.tech.pem")
+  ),
+};
+
 // listener
-app.listen(PORT, "0.0.0.0", () => {
-  console.log("server is on port: ", PORT);
+// app.listen(PORT, "0.0.0.0", () => {
+//   console.log("server is on port: ", PORT);
+// });
+https.createServer(options, app).listen(PORT, () => {
+  console.log(`✅ HTTPS Server running on https://localhost:${PORT}`);
 });

@@ -11,6 +11,7 @@ Front-End:
 - Axios
 - React Icons
 - Clerk/React
+- AWS S3 + Amplify
 
 Back-End:
 
@@ -21,6 +22,7 @@ Back-End:
 - Cors
 - Clerk/Express
 - Dotenvx
+- AWS Aurora + RDS
 
 ## Features
 

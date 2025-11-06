@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile.client
     environment:
       # Internal API for Docker networking
-      - VITE_API_URL=https://server:5400/
+      - VITE_API_URL=http://server:5400
     ports:
       - "3000:80" # React app exposed on LAN
     depends_on:
@@ -28,6 +28,7 @@ services:
       - VITE_SQL_USER=root
       - VITE_SQL_PASSWD=WebDev88!!
       - VITE_SQL_DB=passManager
+      # - CORS_ORIGIN=https://192.168.0.165
     volumes:
       - ./server:/app # mount local server code → container
       - /app/node_modules # container keeps its own node_modules
@@ -44,6 +45,8 @@ services:
       - "3307:3306" # MySQL reachable on LAN
     volumes:
       - db_data:/var/lib/mysql # persistent DB storage
+      - ./client/certs/app.verafied.tech-key.pem:/app/certs/app.verafied.tech-key.pem
+      - ./client/certs/app.verafied.tech.pem:/app/certs/app.verafied.tech.pem
       # only for first boot:
       # - ./server/db/db.sql:/docker-entrypoint-initdb.d/1-db.sql
       # - ./server/db/schema.sql:/docker-entrypoint-initdb.d/2-schema.sql
