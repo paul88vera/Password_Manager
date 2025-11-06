@@ -2,7 +2,7 @@
   "name": "@pm/rf-client",
   "private": true,
   "version": "0.0.1",
-  "proxy": "http://localhost:5400/api",
+  "proxy": "https://app.verafied.tech:5400/api",
   "scripts": {
     "dev": "vite",
     "test": "vitest",

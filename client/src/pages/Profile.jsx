@@ -15,7 +15,7 @@ const Profile = () => {
   const { organization } = useOrganization();
 
   return (
-    <div className="grid grid-cols-1 gap-4 mt-4">
+    <div className="grid grid-cols-1 gap-4">
       <div>
         Welcome, <b className="text-lime-500">{userName}!</b>
       </div>
