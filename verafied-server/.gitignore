@@ -11,12 +11,11 @@ node_modules
 dist
 dist-ssr
 *.local
-*.env*
+*.env
+*.env.production
 
-AWSCLIV2.pkg
-
-client/certs/*
-!client/certs/.gitkeep
+/certs/*
+!/certs/.gitkeep
 
 # Editor directories and files
 .vscode/*

@@ -12,12 +12,13 @@ const Profile = () => {
 
   // Clerk username
   const userName = useUser().user.fullName;
+
   const { organization } = useOrganization();
 
   return (
     <div className="grid grid-cols-1 gap-4">
       <div>
-        Welcome, <b className="text-lime-500">{userName}!</b>
+        Welcome, <b className="text-lime-500">{userName || "Admin User"}!</b>
       </div>
       <div className="flex flex-col-reverse md:flex-row gap-4">
         {client != "" ? (

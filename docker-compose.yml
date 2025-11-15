@@ -1,55 +1,79 @@
-services:
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile.client
-    environment:
-      # Internal API for Docker networking
-      - VITE_API_URL=http://server:5400
-    ports:
-      - "3000:80" # React app exposed on LAN
-    depends_on:
-      - server
-    volumes:
-      - ./client:/app # mount local client code → container
-      - /app/node_modules # keep container's node_modules separate
+version: "3.8"
 
+services:
   server:
     build:
       context: ./server
       dockerfile: Dockerfile.server
     ports:
       - "5400:5400" # API exposed on LAN
-    depends_on:
-      - db
     environment:
-      - DB_HOST=db # ✅ Use service name, not localhost
-      - DB_PORT=3306 # Optional but explicit
-      - VITE_SQL_USER=root
-      - VITE_SQL_PASSWD=WebDev88!!
-      - VITE_SQL_DB=passManager
-      # - CORS_ORIGIN=https://192.168.0.165
+      - VITE_SERVER_PORT=5400
+      - VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}
+      - VITE_CLERK_SECRET=${VITE_CLERK_SECRET}
+      - VITE_SQL_USER=${VITE_SQL_USER}
+      - VITE_SQL_PASSWD=${VITE_SQL_PASSWD}
+      - VITE_SQL_DB=${VITE_SQL_DB}
+      - VITE_DB_HOST=${VITE_DB_HOST}
+      - VITE_DB_PORT=${VITE_DB_PORT}
+      - CORS_ORIGIN=${CORS_ORIGIN}
     volumes:
       - ./server:/app # mount local server code → container
       - /app/node_modules # container keeps its own node_modules
-    command: >
-      sh -c "node server.js --watch /app" # hot reload on code changes
-
-  db:
-    image: mysql:8.0
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: WebDev88!!
-      MYSQL_DATABASE: passManager
-    ports:
-      - "3307:3306" # MySQL reachable on LAN
-    volumes:
-      - db_data:/var/lib/mysql # persistent DB storage
-      - ./client/certs/app.verafied.tech-key.pem:/app/certs/app.verafied.tech-key.pem
-      - ./client/certs/app.verafied.tech.pem:/app/certs/app.verafied.tech.pem
-      # only for first boot:
-      # - ./server/db/db.sql:/docker-entrypoint-initdb.d/1-db.sql
-      # - ./server/db/schema.sql:/docker-entrypoint-initdb.d/2-schema.sql
+    command: >
+      sh -c "node server.js"
 
-volumes:
-  db_data: {}
+  # client:
+  #   build:
+  #     context: ./client
+  #     dockerfile: Dockerfile.client
+  #   environment:
+  #     # Internal API for Docker networking
+  #     - VITE_API_URL=http://server:5400
+  #   ports:
+  #     - "3000:80" # React app exposed on LAN
+  #   depends_on:
+  #     - server
+  #   volumes:
+  #     - ./client:/app # mount local client code → container
+  #     - /app/node_modules # keep container's node_modules separate
+
+  # server:
+  #   build:
+  #     context: ./server
+  #     dockerfile: Dockerfile.server
+  #   ports:
+  #     - "5400:5400" # API exposed on LAN
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     - DB_HOST=myrds.link # ✅ Use service name, not localhost
+  #     - DB_PORT=3306 # Optional but explicit
+  #     - VITE_SQL_USER=admin
+  #     - VITE_SQL_PASSWD=WebDev88!!
+  #     - VITE_SQL_DB=verafied_app
+  #   volumes:
+  #     - ./server:/app # mount local server code → container
+  #     - /app/node_modules # container keeps its own node_modules
+  #   command: >
+  #     sh -c "node server.js --watch /app" # hot reload on code changes
+
+#   db:
+#     image: mysql:8.0
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: WebDev88!!
+#       MYSQL_DATABASE: passManager
+#     ports:
+#       - "3307:3306" # MySQL reachable on LAN
+#     volumes:
+#       - db_data:/var/lib/mysql # persistent DB storage
+#       - ./client/certs/app.verafied.tech-key.pem:/app/certs/app.verafied.tech-key.pem
+#       - ./client/certs/app.verafied.tech.pem:/app/certs/app.verafied.tech.pem
+#       # only for first boot:
+#       # - ./server/db/db.sql:/docker-entrypoint-initdb.d/1-db.sql
+#       # - ./server/db/schema.sql:/docker-entrypoint-initdb.d/2-schema.sql
+
+# volumes:
+#   db_data: {}

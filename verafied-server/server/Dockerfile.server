@@ -1,0 +1,15 @@
+# Use Amazon Linux 2023 with Node.js
+FROM public.ecr.aws/amazonlinux/amazonlinux:2023
+
+RUN dnf install -y nodejs npm && dnf clean all
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+RUN npm install --omit=dev
+
+COPY . .
+
+EXPOSE 5400
+
+CMD ["npm", "start"]

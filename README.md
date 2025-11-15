@@ -16,13 +16,14 @@ Front-End:
 Back-End:
 
 - MySQL
+- AWS Aurora + RDS
+- AWS EC2 + Docker
 - Express.js
 - Node.js
 - Nodemon
 - Cors
 - Clerk/Express
 - Dotenvx
-- AWS Aurora + RDS
 
 ## Features
 
