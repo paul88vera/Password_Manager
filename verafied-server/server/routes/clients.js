@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-// const { getAuth } = require("@clerk/express");
+const { getAuth } = require("@clerk/express");
 const db = require("../db/connection");
 
 // @route    GET /client
@@ -79,14 +79,13 @@ router.post("/", async (req, res) => {
       ClientEmail,
       ClientNotes,
       ManagerId,
-      OrgId,
     } = req.body;
 
-    // const { orgId } = getAuth(req);
+    const { orgId } = getAuth(req);
 
-    // if (!orgId) {
-    //   return res.status(400).json({ error: "OrgId is required" });
-    // }
+    if (!orgId) {
+      return res.status(400).json({ error: "OrgId is required" });
+    }
 
     const query =
       "INSERT INTO Client (ClientUsername, ClientCompany, ClientEmail, ClientNotes, ManagerId, OrgId) VALUES (?,?,?,?,?,?)";
@@ -96,7 +95,7 @@ router.post("/", async (req, res) => {
       ClientEmail,
       ClientNotes,
       ManagerId,
-      OrgId,
+      orgId,
       id,
     ]);
     res.json(results);

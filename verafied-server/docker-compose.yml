@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.server
+    container_name: verafied-server
+    restart: always
+    env_file:
+      - ./server/.env
+    expose:
+      - "5400"
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+      - ./certs:/etc/ssl/certs
+  nginx:
+    image: nginx:alpine
+    container_name: verafied-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./certs:/etc/ssl/certs
+    depends_on:
+      - server

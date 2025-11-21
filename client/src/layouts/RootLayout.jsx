@@ -1,8 +1,8 @@
 import {
   Outlet,
   ScrollRestoration,
+  useLocation,
   useNavigate,
-  useParams,
 } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import {
@@ -13,25 +13,54 @@ import {
 } from "@clerk/clerk-react";
 import { attachClerkInterceptor } from "../api/base";
 import { useAuth } from "@clerk/clerk-react";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 
 const RootLayout = () => {
   const { getToken } = useAuth();
+  const location = useLocation();
 
   useEffect(() => {
     attachClerkInterceptor(getToken);
   }, [getToken]);
 
   const { organization } = useOrganization();
-  const { orgId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (organization && organization.id && !orgId) {
-      // Redirect to URL with orgId
-      navigate(`/${organization.id}/profile`, { replace: true });
+    if (!organization || !organization.id) return;
+
+    const currentOrgId = organization.id;
+    const path = location.pathname;
+
+    // 1. If path already starts with "/orgId", do NOTHING
+    if (path.startsWith(`/${currentOrgId}`)) return;
+
+    // 2. Detect if path incorrectly contains another orgId
+    // e.g. /abcd123/profile → remove the first segment
+    const segments = path.split("/").filter(Boolean); // removes empty items
+    const firstSegment = segments[0];
+
+    const isOrgIdInUrl =
+      firstSegment &&
+      /^[a-zA-Z0-9]+$/.test(firstSegment) &&
+      firstSegment.length >= 10;
+    // Clerk orgIds are long alphanumeric strings (10+ chars)
+
+    let cleanedPath = path;
+
+    if (isOrgIdInUrl) {
+      // remove the incorrect org prefix
+      cleanedPath = "/" + segments.slice(1).join("/");
     }
-  }, [organization, orgId, navigate]);
+
+    // 3. Build corrected path (prefix with correct orgId)
+    const corrected = `/${currentOrgId}${cleanedPath}`;
+
+    // 4. Redirect only if different
+    if (corrected !== path) {
+      navigate(corrected, { replace: true });
+    }
+  }, [organization, location.pathname, navigate]);
 
   return (
     <div className="flex flex-col-reverse md:flex-row gap-0 flex-nowrap">
@@ -55,4 +84,4 @@ const RootLayout = () => {
   );
 };
 
-export default RootLayout;
+export default memo(RootLayout);

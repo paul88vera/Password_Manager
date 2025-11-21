@@ -1,4 +1,5 @@
 import { useOrganization } from "@clerk/clerk-react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 const Error = () => {
@@ -13,4 +14,4 @@ const Error = () => {
   );
 };
 
-export default Error;
+export default React.memo(Error);

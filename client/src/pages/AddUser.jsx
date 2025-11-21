@@ -1,16 +1,14 @@
 import { Form, Link, redirect } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
 import { createManager } from "../api/managers";
-
 import { useOrganization } from "@clerk/clerk-react";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const AddUser = () => {
   const [userName, setUserName] = useState();
   const [userEmail, setUserEmail] = useState();
   const [userActive] = useState(1);
   const [userRole, setUserRole] = useState("Staff");
-  const { organization } = useOrganization(); // from Clerk Auth
+  const { organization } = useOrganization();
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
@@ -118,7 +116,10 @@ async function action({ request }) {
   return redirect(`/${OrgId}/profile`);
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AddUserRoute = {
   action,
   element: <AddUser />,
 };
+
+export default React.memo(AddUser);

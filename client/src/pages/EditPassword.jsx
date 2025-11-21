@@ -1,26 +1,38 @@
-import { Form, redirect, useLoaderData } from "react-router-dom";
+import { Form, useNavigate, redirect, useLoaderData } from "react-router-dom";
 import { deletePassword, editPassword, getPassword } from "../api/passwords";
 // import { capitalizeFirstWord } from "../utils/caps"; // Just makes the stuff Capitalized
-import { useState } from "react";
-import { useOrganization } from "@clerk/clerk-react";
+import * as React from "react";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const EditPassword = () => {
   const { password } = useLoaderData();
-  const { organization } = useOrganization();
+  const navigate = useNavigate();
+
+  const defaultValues = React.useMemo(() => {
+    const pwd = password || {};
+    return {
+      organization: pwd[0]?.OrgId || "",
+      siteName: pwd[0]?.PassSite || "",
+      siteUrl: pwd[0]?.PassHTML || "",
+      username: pwd[0]?.PassUsername || "",
+      newPassword: pwd[0]?.PassPW
+        ? pwd[0]?.PassPW.split(import.meta.env.VITE_ENCRYPTION_KEY).join("")
+        : "",
+      passID: pwd[0]?.PassId,
+      passClient: pwd[0]?.ClientId,
+    };
+  }, [password]);
 
   // Default State
-  const [siteName, setSiteName] = useState(password[0]?.PassSite || "");
-  const [siteUrl, setSiteUrl] = useState(password[0]?.PassHTML || "");
-  const [username, setUsername] = useState(password[0]?.PassUsername || "");
-  const [newPassword, setNewPassword] = useState(
-    password[0]?.PassPW.split(import.meta.env.VITE_ENCRYPTION_KEY).join("") ||
-      ""
+  const [siteName, setSiteName] = React.useState(defaultValues.siteName);
+  const [siteUrl, setSiteUrl] = React.useState(defaultValues.siteUrl || "");
+  const [username, setUsername] = React.useState(defaultValues.username || "");
+  const [newPassword, setNewPassword] = React.useState(
+    defaultValues.newPassword
+      .split(import.meta.env.VITE_ENCRYPTION_KEY)
+      .join("") || ""
   );
 
   // Needed for password/client identification
-  const passID = password[0]?.PassId;
-  const passClient = password[0]?.ClientId;
 
   return (
     <div className="flex flex-row flex-wrap gap-4 mt-8">
@@ -28,11 +40,23 @@ const EditPassword = () => {
         <h2>Editing Password:</h2>
         <Form
           method="post"
-          action={`/${organization.id}/password/${passID}/edit`}
+          action={`/${defaultValues.organization}/password/${defaultValues.passID}/edit`}
           className="form_container flex flex-col justify-between gap-4 max-w-100">
-          <input name="passClient" type="hidden" defaultValue={passClient} />
-          <input name="passID" type="hidden" defaultValue={passID} />
-          <input type="hidden" name="orgId" defaultValue={organization.id} />
+          <input
+            name="passClient"
+            type="hidden"
+            defaultValue={defaultValues.passClient}
+          />
+          <input
+            name="passID"
+            type="hidden"
+            defaultValue={defaultValues.passID}
+          />
+          <input
+            type="hidden"
+            name="orgId"
+            defaultValue={defaultValues.organization}
+          />
           <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
             <label htmlFor="siteName" className="w-40">
               Site Name:
@@ -98,11 +122,11 @@ const EditPassword = () => {
             <button
               type="button"
               className="button cancel-btn"
-              onClick={() => {
-                window.location.replace(
-                  `/${organization.id}/client/${passClient}`
-                );
-              }}>
+              onClick={() =>
+                navigate(
+                  `/${defaultValues.organization}/client/${defaultValues.passClient}`
+                )
+              }>
               Cancel
             </button>
             <button type="submit" id="submit-btn" className="button save-btn">
@@ -118,9 +142,9 @@ const EditPassword = () => {
                 "Are you sure you would like to delete this password?"
               ) == true
             ) {
-              deletePassword(password[0]?.PassId, passClient);
-              window.location.replace(
-                `/${organization.id}/client/${passClient}`
+              deletePassword(defaultValues.passID, defaultValues.passClient);
+              window.location.redirect(
+                `/${defaultValues.organization}/client/${defaultValues.passClient}`
               );
             } else {
               return;
@@ -151,6 +175,7 @@ async function action({ request }) {
       PassHTML,
       PassPW,
       ClientId,
+      OrgId,
     },
     { signal: request.signal }
   );
@@ -163,8 +188,11 @@ async function loader({ request: { signal }, params: { id } }) {
   return { password: password };
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const EditPasswordRoute = {
   action,
   loader,
   element: <EditPassword />,
 };
+
+export default React.memo(EditPassword);

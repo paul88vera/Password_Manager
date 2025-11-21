@@ -4,7 +4,6 @@ import ErrorMessage from "./pages/ErrorMessage";
 import Error from "./pages/Error";
 import { ClientRoute } from "./pages/Client";
 import { SitesRoute } from "./pages/Sites";
-// import { SettingsRoute } from "./pages/Settings";
 import { AddClientRoute } from "./pages/AddClient";
 import { ClientInnerRoute } from "./pages/ClientInner";
 import { SiteInnerPage } from "./pages/SitesInner";
@@ -33,6 +32,10 @@ export const router = createBrowserRouter([
             element: <Navigate to="profile" />,
           },
           {
+            path: `profile`,
+            ...ProfileRoute,
+          },
+          {
             path: "client",
             children: [
               { index: true, ...ClientRoute },
@@ -51,10 +54,6 @@ export const router = createBrowserRouter([
               { index: true, ...SitesRoute },
               { path: ":id", ...SiteInnerPage },
             ],
-          },
-          {
-            path: `profile`,
-            children: [{ index: true, ...ProfileRoute }],
           },
           {
             path: "manager/:id",

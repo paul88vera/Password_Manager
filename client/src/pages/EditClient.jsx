@@ -1,14 +1,12 @@
-import { Form, Link, redirect, useLoaderData } from "react-router-dom";
-import { useState } from "react";
+import { Form, redirect, useLoaderData, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { editClient, getClient } from "../api/clients";
 import { getManagers } from "../api/managers";
-import { useOrganization } from "@clerk/clerk-react";
 // import { capitalizeFirstWord } from "../utils/caps";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const EditClient = () => {
+  const navigate = useNavigate();
   const { users, client } = useLoaderData();
-  const { organization } = useOrganization();
 
   // Default State
   const [ClientUsername, setClientUsername] = useState(
@@ -22,6 +20,7 @@ const EditClient = () => {
   const [POCs, setPOC] = useState(client[0]?.ManagerId || "");
 
   const clientID = client[0]?.ClientId;
+  const organization = client[0]?.OrgId;
 
   // Filters only Active Users
   const activeUserFilter = users.filter((item) => item.UserActive === 1);
@@ -32,8 +31,8 @@ const EditClient = () => {
       <Form
         method="post"
         className="form_container flex flex-col justify-between gap-4 !h-full">
-        <input type="hidden" name="clientId" defaultValue={clientID} />
-        <input type="hidden" name="clientOrg" defaultValue={organization.id} />
+        <input type="hidden" name="ClientId" defaultValue={clientID} />
+        <input type="hidden" name="ClientOrg" defaultValue={organization} />
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="ClientUsername" className="w-40">
             Full Name:
@@ -114,12 +113,12 @@ const EditClient = () => {
         </div>
 
         <div className="flex flex-row gap-2 mt-2">
-          <Link
-            to={`/${organization.id}/client/${client[0]?.ClientId}`}
+          <button
+            onClick={() => navigate(`/${organization}/client/${clientID}`)}
             type="cancel"
             className="button cancel-btn">
             Cancel
-          </Link>
+          </button>
           <button type="submit" className="button save-btn">
             Save
           </button>
@@ -162,8 +161,11 @@ async function loader({ request: { signal }, params: { id } }) {
   return { users: users, client: client };
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const EditClientRoute = {
   loader,
   action,
   element: <EditClient />,
 };
+
+export default React.memo(EditClient);

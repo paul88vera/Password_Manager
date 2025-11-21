@@ -5,14 +5,12 @@ import { CgProfile } from "react-icons/cg";
 // import { capitalizeFirstWord } from "../utils/caps"; // capitalizes stuff
 import { BiChevronLeftSquare } from "react-icons/bi";
 import { IoSearch } from "react-icons/io5";
-import { useState } from "react";
+import React, { useState } from "react";
 import ClientCard from "../components/ClientCard";
-import { useOrganization } from "@clerk/clerk-react";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const SitesInner = () => {
   const { client, passwords } = useLoaderData();
-  const { organization } = useOrganization();
+  const organization = client[0]?.OrgId;
 
   // Used for Filter State
   const [filter, setFilter] = useState("");
@@ -20,7 +18,7 @@ const SitesInner = () => {
 
   // Takes password from URL slug
   const url = window.location;
-  const slug = url.pathname.split(`/${organization.id}/sites/`).filter(Boolean);
+  const slug = url.pathname.split(`/${organization}/sites/`).filter(Boolean);
 
   // password filter by SiteName
   const passwordFilteredBySite = passwords.filter(
@@ -85,7 +83,8 @@ const SitesInner = () => {
             <ClientCard
               key={index}
               id={item.ClientId}
-              name={item.ClientUsername}>
+              name={item.ClientUsername}
+              organization={organization}>
               <CgProfile className="text-4xl text-slate-900 " />
               <h3 className="text-slate-900 ">{item.ClientUsername}</h3>
             </ClientCard>
@@ -101,7 +100,10 @@ async function loader({ request: { signal } }) {
   return { client: client, passwords: passwords };
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const SiteInnerPage = {
   loader,
   element: <SitesInner />,
 };
+
+export default React.memo(SitesInner);

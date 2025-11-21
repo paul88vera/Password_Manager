@@ -1,13 +1,22 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useOrganization } from "@clerk/clerk-react";
+import * as React from "react";
 
 export function OrgRedirect() {
   const { organization } = useOrganization();
+  const location = useLocation();
 
-  if (!organization) {
-    // Show a loader or fallback while Clerk initializes
+  const redirectPath = React.useMemo(() => {
+    // Strip any leading slash to keep it clean
+    const cleanPath = location.pathname.replace(/^\//, "");
+
+    if (!organization) return null;
+    return `/${organization.id}/${cleanPath}`;
+  }, [organization, location.pathname]);
+
+  if (!organization || !redirectPath) {
     return <div>Loading...</div>;
   }
 
-  return <Navigate to={`/${organization.id}/profile`} replace />;
+  return <Navigate to={redirectPath} replace />;
 }

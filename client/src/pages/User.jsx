@@ -2,11 +2,10 @@ import { Link, useLoaderData } from "react-router-dom";
 import { getManager } from "../api/managers";
 import { CgProfile } from "react-icons/cg";
 // import { capitalizeFirstWord } from "../utils/caps";
-import { useState } from "react";
+import React, { useState } from "react";
 import { BiChevronLeftSquare } from "react-icons/bi";
 import { useOrganization } from "@clerk/clerk-react";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const User = () => {
   const { user } = useLoaderData();
   const [editIcon, setEditIcon] = useState();
@@ -71,7 +70,10 @@ async function loader({ request: { signal }, params: { id } }) {
   return { user: user };
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const UserRoute = {
   loader,
   element: <User />,
 };
+
+export default React.memo(User);
