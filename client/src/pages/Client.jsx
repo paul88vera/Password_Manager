@@ -10,6 +10,7 @@ import ClientCard from "../components/ClientCard";
 // eslint-disable-next-line react-refresh/only-export-components
 const Client = () => {
   const { client, user } = useLoaderData();
+  const organization = client[0]?.OrgId;
 
   // Used for Filter State
   const [filter, setFilter] = useState("");
@@ -58,7 +59,10 @@ const Client = () => {
             }
           })
           .map((data, index) => (
-            <ClientCard key={index} id={data.ClientId}>
+            <ClientCard
+              key={index}
+              id={data.ClientId}
+              organization={organization}>
               <CgProfile className="text-4xl text-slate-900 " />
               <h3 className="text-slate-900 ">{data.ClientUsername}</h3>
             </ClientCard>

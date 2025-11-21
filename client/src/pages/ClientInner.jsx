@@ -287,7 +287,7 @@ const ClientInner = () => {
                 ) === true
               ) {
                 deleteClient(passClient);
-                navigate(`/${client[0]?.OrgId}/client/${passClient}`);
+                navigate(`/${client[0]?.OrgId}/client`);
               } else {
                 return;
               }
