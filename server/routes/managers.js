@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { getAuth, Organization } = require("@clerk/express");
+// const { getAuth, Organization } = require("@clerk/express");
 
-const  db  = require("../db/connection");
+const db = require("../db/connection");
 
 // @route    GET /users
 // @desc     Get all users
@@ -67,12 +67,6 @@ router.post("/", async (req, res) => {
     const connection = await db; // Wait for connection to resolve
     const { UserName, UserEmail, UserRole, UserActive, OrgId } = req.body;
 
-    const { orgId } = getAuth(req);
-
-    if (!OrgId || !orgId) {
-      return res.status(400).json({ error: "OrgId is required" });
-    }
-
     const query =
       "INSERT INTO Manager (UserName, UserEmail, UserRole, UserActive, OrgId) VALUES (?,?,?,?,?)";
     const [results] = await connection.query(query, [
@@ -80,7 +74,7 @@ router.post("/", async (req, res) => {
       UserEmail,
       UserRole,
       UserActive,
-      orgId,
+      OrgId,
     ]);
     res.json(results);
   } catch (err) {

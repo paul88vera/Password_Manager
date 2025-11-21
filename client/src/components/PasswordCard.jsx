@@ -1,4 +1,5 @@
 import { useOrganization } from "@clerk/clerk-react";
+import { memo } from "react";
 import { Link } from "react-router-dom";
 
 const PasswordCard = ({ children, id, name }) => {
@@ -13,4 +14,4 @@ const PasswordCard = ({ children, id, name }) => {
   );
 };
 
-export default PasswordCard;
+export default memo(PasswordCard);

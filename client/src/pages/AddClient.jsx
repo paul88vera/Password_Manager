@@ -1,11 +1,10 @@
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
 import { createClient, getClients } from "../api/clients";
 import { getManagers } from "../api/managers";
 import { useOrganization } from "@clerk/clerk-react";
 // import { capitalizeFirstWord } from "../utils/caps";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const AddClient = () => {
   const { users } = useLoaderData();
 
@@ -13,10 +12,10 @@ const AddClient = () => {
   const [ClientCompany, setClientCompany] = useState("");
   const [ClientNotes, setClientNotes] = useState("");
   const [ClientEmail, setClientEmail] = useState("");
-  const { organization } = useOrganization(); // from Clerk Auth
 
   // Only Active Users as Client Account Manager
   const activeUsers = users.filter((item) => item.UserActive === 1);
+  const { organization } = useOrganization();
 
   return (
     <div className="flex flex-col gap-4 md:mt-4 pb-8">
@@ -135,6 +134,7 @@ async function action({ request }) {
       ClientEmail,
       ClientNotes,
       ManagerId,
+      OrgId,
     },
     { signal: request.signal }
   );
@@ -148,8 +148,11 @@ async function loader({ request: { signal } }) {
   return { users: users, client: client };
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AddClientRoute = {
   loader,
   action,
   element: <AddClient />,
 };
+
+export default React.memo(AddClient);

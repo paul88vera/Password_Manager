@@ -1,9 +1,8 @@
 import { Form, Link, redirect } from "react-router-dom";
 import { createOrg } from "../api/org";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useOrganization } from "@clerk/clerk-react";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const Settings = () => {
   const [orgName, setOrgName] = useState("");
   const { organization } = useOrganization();
@@ -63,7 +62,10 @@ async function action({ request }) {
   return redirect(`/${OrgId}/profile`);
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const SettingsRoute = {
   action,
   element: <Settings />,
 };
+
+export default React.memo(Settings);

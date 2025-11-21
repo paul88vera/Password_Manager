@@ -1,4 +1,10 @@
-import { Form, Link, useLoaderData, useNavigation } from "react-router-dom";
+import {
+  Form,
+  Link,
+  useLoaderData,
+  useNavigation,
+  useNavigate,
+} from "react-router-dom";
 import { createPassword, getPasswords } from "../api/passwords";
 import { CgProfile } from "react-icons/cg";
 import { FaLock } from "react-icons/fa6";
@@ -7,23 +13,21 @@ import { MdEdit } from "react-icons/md";
 import { FaPlusCircle } from "react-icons/fa";
 import { IoIosTrash } from "react-icons/io";
 import { deleteClient, getClient } from "../api/clients";
-import { useState } from "react";
+import React, { useState } from "react";
 // import { capitalizeFirstWord } from "../utils/caps";
 import { getManagers } from "../api/managers";
 import { BiChevronLeftSquare } from "react-icons/bi";
-import { useOrganization } from "@clerk/clerk-react";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const ClientInner = () => {
   const { passwords, client, users } = useLoaderData();
   const [openCardId, setOpenCardId] = useState();
   const [modalOpened, setModalOpened] = useState();
   const [editIcon, setEditIcon] = useState();
   const isMobile = useNavigation();
-
-  const { organization } = useOrganization();
+  const navigate = useNavigate();
 
   // Client Info
+  const organization = client[0]?.OrgId;
   const [passClient] = useState(client[0]?.ClientId);
   const [siteName, setSiteName] = useState("");
   const [siteUrl, setSiteUrl] = useState("");
@@ -67,7 +71,7 @@ const ClientInner = () => {
                 setEditIcon(false);
               }}>
               <Link
-                to={`/${organization.id}/client/${client[0]?.ClientId}/edit`}
+                to={`/${organization}/client/${passClient}/edit`}
                 title="Edit Client Info"
                 className="text-red-900 text-[1rem] text-center hover:text-red-700 h-2 transition ease-in-out">
                 <CgProfile className="text-6xl text-slate-900" />
@@ -105,6 +109,7 @@ const ClientInner = () => {
                 method="post"
                 onSubmit={toggleModal}
                 className="form_container flex flex-col justify-between gap-4 max-w-100">
+                <input name="orgId" type="hidden" defaultValue={organization} />
                 <input
                   name="passClient"
                   id="passClient"
@@ -135,10 +140,10 @@ const ClientInner = () => {
                     name="site_url"
                     id="site_url"
                     className="w-60"
+                    defaultValue={siteUrl}
                     onChange={(e) => {
                       setSiteUrl(e.target.value);
                     }}
-                    placeholder={siteUrl}
                   />
                 </div>
                 <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
@@ -216,7 +221,7 @@ const ClientInner = () => {
                   </Link>
                 </div>
                 {openCardId === pass.PassId ? (
-                  <Link to={`/${organization.id}/password/${pass.PassId}/edit`}>
+                  <Link to={`/${organization}/password/${pass.PassId}/edit`}>
                     <MdEdit className="text-2xl text-lime-500 hover:text-slate-300 absolute right-0" />
                   </Link>
                 ) : null}
@@ -281,8 +286,8 @@ const ClientInner = () => {
                   "Are you sure you would like to delete this client?"
                 ) === true
               ) {
-                window.location.replace(`/${organization.id}/client`);
                 deleteClient(passClient);
+                navigate(`/${client[0]?.OrgId}/client/${passClient}`);
               } else {
                 return;
               }
@@ -301,6 +306,7 @@ async function action({ request }) {
   const PassHTML = formData.get("site_url");
   const PassPW = formData.get("password");
   const ClientId = formData.get("passClient");
+  const OrgId = formData.get("orgId");
 
   await createPassword(
     {
@@ -309,9 +315,12 @@ async function action({ request }) {
       PassHTML,
       PassPW,
       ClientId,
+      OrgId,
     },
     { signal: request.signal }
   );
+
+  return null;
 }
 
 async function loader({ request: { signal }, params: { id } }) {
@@ -321,8 +330,11 @@ async function loader({ request: { signal }, params: { id } }) {
   return { passwords: passwords, client: client, users: users };
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const ClientInnerRoute = {
   loader,
   action,
   element: <ClientInner />,
 };
+
+export default React.memo(ClientInner);

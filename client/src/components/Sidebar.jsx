@@ -4,7 +4,7 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdOutlineScreenSearchDesktop } from "react-icons/md";
 import { RiUserSearchFill } from "react-icons/ri";
 import { CiCirclePlus } from "react-icons/ci";
-import { useState } from "react";
+import { memo, useState } from "react";
 import {
   SignedIn,
   SignedOut,
@@ -80,4 +80,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default memo(Sidebar);

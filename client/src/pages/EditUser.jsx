@@ -1,12 +1,17 @@
-import { Form, Link, redirect, useLoaderData } from "react-router-dom";
-import { useState } from "react";
+import {
+  Form,
+  Link,
+  redirect,
+  useLoaderData,
+  useNavigate,
+} from "react-router-dom";
+import React, { useState } from "react";
 import { deleteManager, editManager, getManager } from "../api/managers";
-import { useOrganization } from "@clerk/clerk-react";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const EditUser = () => {
   const { users } = useLoaderData();
-  const { organization } = useOrganization();
+  const navigate = useNavigate();
+  const organization = users[0]?.OrgId;
 
   const [userName, setUserName] = useState(users[0]?.UserName);
   const [userEmail, setUserEmail] = useState(users[0]?.UserEmail);
@@ -23,7 +28,7 @@ const EditUser = () => {
         className="form_container flex flex-col justify-between gap-4 !h-full">
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <input type="hidden" name="userId" defaultValue={userID} />
-          <input type="hidden" name="orgId" defaultValue={organization.id} />
+          <input type="hidden" name="orgId" defaultValue={organization} />
           <label htmlFor="UserName" className="w-40">
             Full Name:
           </label>
@@ -54,21 +59,6 @@ const EditUser = () => {
             }}
           />
         </div>
-        {/* <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
-          <label htmlFor="userLogin" className="w-40">
-            Password:
-          </label>
-          <input
-            type="text"
-            name="userLogin"
-            id="userLogin"
-            className="w-60"
-            defaultValue={userLogin}
-            onChange={(e) => {
-              setUserLogin(e.target.value);
-            }}
-          />
-        </div> */}
         <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
           <label htmlFor="userRole" className="w-40">
             Role:
@@ -97,12 +87,12 @@ const EditUser = () => {
         </div>
 
         <div className="flex flex-row gap-2 mt-2">
-          <Link
-            to={`/${organization.id}/profile`}
+          <button
+            onClick={() => navigate(`/${organization}/profile`)}
             type="cancel"
             className="button cancel-btn">
             Cancel
-          </Link>
+          </button>
           <button type="submit" className="button save-btn">
             Save
           </button>
@@ -117,7 +107,7 @@ const EditUser = () => {
             ) == true
           ) {
             deleteManager(users[0]?.UserId);
-            window.location.replace(`/${organization.id}/profile`);
+            navigate(`/${organization}/profile`);
           } else {
             return;
           }
@@ -158,8 +148,11 @@ async function loader({ request: { signal }, params: { id } }) {
   return { users: users };
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const EditUserRoute = {
   loader,
   action,
   element: <EditUser />,
 };
+
+export default React.memo(EditUser);

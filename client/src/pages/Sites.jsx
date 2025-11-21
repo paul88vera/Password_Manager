@@ -3,12 +3,11 @@ import { getPasswords } from "../api/passwords";
 import { MdOutlineComputer } from "react-icons/md";
 // import { BiChevronLeftSquare } from "react-icons/bi";
 // import { capitalizeFirstWord } from "../utils/caps";
-import { useState } from "react";
+import React, { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import PasswordCard from "../components/PasswordCard";
 import { useOrganization } from "@clerk/clerk-react";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const Sites = () => {
   const passwords = useLoaderData();
   const { organization } = useOrganization();
@@ -81,7 +80,10 @@ async function loader({ request: { signal } }) {
   return passwords;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const SitesRoute = {
   loader,
   element: <Sites />,
 };
+
+export default React.memo(Sites);

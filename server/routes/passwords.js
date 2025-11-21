@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const { getAuth } = require("@clerk/express");
-
 const db = require("../db/connection");
 
 /**
@@ -102,17 +100,18 @@ router.put("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const connection = await db; // Wait for connection to resolve
-    const { PassSite, PassUsername, PassHTML, PassPW, ClientId } = req.body;
+    const { PassSite, PassUsername, PassHTML, PassPW, ClientId, OrgId } =
+      req.body;
 
     // Encryption -- added before for DB encryption
     const encryptedPassword = PassPW.split("").join(process.env.ENCRYPTION_KEY);
 
     // Clerk Auth
-    const { orgId } = getAuth(req);
+    // const { orgId } = getAuth(req);
 
-    if (!orgId) {
-      return res.status(400).json({ error: "OrgId is required" });
-    }
+    // if (!orgId) {
+    //   return res.status(400).json({ error: "OrgId is required" });
+    // }
 
     const query =
       "INSERT INTO Passwords (PassSite, PassUsername, PassHTML, PassPW, ClientId, OrgId) VALUES (?,?,?,?,?,?)";
@@ -123,7 +122,7 @@ router.post("/", async (req, res) => {
       PassHTML,
       encryptedPassword,
       ClientId,
-      orgId,
+      OrgId,
     ]);
     res.json(results);
   } catch (err) {

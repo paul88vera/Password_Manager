@@ -5,11 +5,10 @@ import { CgProfile } from "react-icons/cg";
 // import { capitalizeFirstWord } from "../utils/caps"; // capitalizes stuff
 import { BiChevronLeftSquare } from "react-icons/bi";
 import { IoSearch } from "react-icons/io5";
-import { useState } from "react";
+import React, { useState } from "react";
 import ClientCard from "../components/ClientCard";
 import { useOrganization } from "@clerk/clerk-react";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const SitesInner = () => {
   const { client, passwords } = useLoaderData();
   const { organization } = useOrganization();
@@ -101,7 +100,10 @@ async function loader({ request: { signal } }) {
   return { client: client, passwords: passwords };
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const SiteInnerPage = {
   loader,
   element: <SitesInner />,
 };
+
+export default React.memo(SitesInner);
