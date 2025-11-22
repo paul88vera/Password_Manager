@@ -31,10 +31,33 @@ const Profile = () => {
       <div>
         Welcome, <b className="text-lime-500">{userName || "Admin User"}!</b>
       </div>
-      <div className="flex flex-col-reverse md:flex-row gap-4">
+      <div className="grid grid-cols-1 gap-4">
+        {memoUser !== "" ? (
+          <div>
+              <h2>Account Managers:</h2>
+            <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 grid-rows-auto gap-4 mt-4">
+              {memoUser.map((item, index) => (
+                <ManagerCard
+                  key={index}
+                  id={item.UserId}
+                  organization={organization}
+                  active={item.UserActive}>
+                  <CgProfile className="text-4xl text-slate-900 " />
+                  <h3 className="text-slate-900 ">{item.UserName}</h3>
+                </ManagerCard>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <Link to={`/${organization}/add-manager`}>
+            No Clients or Managers Yet... :{"("}
+            <br /> Add A Manager
+          </Link>
+        )}
         {memoClient != "" ? (
-          <div className="flex flex-col gap-4 mt-4">
+          <div className="grid grid-cols-1 gap-0">
             <h2>Clients:</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
             {memoClient.map((item, index) => (
               <ClientCard
                 key={index}
@@ -44,6 +67,7 @@ const Profile = () => {
                 <h3 className="text-slate-900 ">{item.ClientUsername}</h3>
               </ClientCard>
             ))}
+          </div>
           </div>
         ) : (
           <div className="flex flex-col gap-4 mt-4">
@@ -63,28 +87,7 @@ const Profile = () => {
             </div>
           </div>
         )}
-        {memoUser !== "" ? (
-          <div>
-            <div className="flex flex-col gap-4 mt-4">
-              <h2>Account Managers:</h2>
-              {memoUser.map((item, index) => (
-                <ManagerCard
-                  key={index}
-                  id={item.UserId}
-                  organization={organization}
-                  active={item.UserActive}>
-                  <CgProfile className="text-4xl text-slate-900 " />
-                  <h3 className="text-slate-900 ">{item.UserName}</h3>
-                </ManagerCard>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <Link to={`/${organization}/add-manager`}>
-            No Clients or Managers Yet... :{"("}
-            <br /> Add A Manager
-          </Link>
-        )}
+        
       </div>
     </div>
   );

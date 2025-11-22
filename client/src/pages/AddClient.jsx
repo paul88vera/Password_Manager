@@ -22,8 +22,8 @@ const AddClient = () => {
       <h2>Add A New Client:</h2>
       <Form
         method="post"
-        className="form_container flex flex-col justify-between gap-4 !h-full">
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        className="form_container flex flex-col justify-between gap-4 !h-full md:w-100">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <input type="hidden" name="orgId" defaultValue={organization.id} />
           <label htmlFor="ClientUsername" className="w-40">
             Full Name:
@@ -40,7 +40,7 @@ const AddClient = () => {
           />
         </div>
 
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="ClientCompany" className="w-40">
             Company:
           </label>
@@ -55,7 +55,7 @@ const AddClient = () => {
             }}
           />
         </div>
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="ClientEmail" className="w-40">
             Email:
           </label>
@@ -70,7 +70,7 @@ const AddClient = () => {
             }}
           />
         </div>
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="ClientPOC" className="w-40">
             Manager:
           </label>
@@ -87,7 +87,7 @@ const AddClient = () => {
           </select>
         </div>
 
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="ClientNotes" className="w-40">
             Notes:
           </label>

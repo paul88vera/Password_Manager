@@ -13,8 +13,8 @@ const User = () => {
   const { organization } = useOrganization();
 
   return (
-    <div className="flex flex-col gap-4 mt-4">
-      <div className="flex flex-col flex-nowrap gap-4 align-middle justify-start">
+    <div className="flex flex-col gap-4 mt-4 md:w-100">
+      <div className="flex flex-col flex-nowrap gap-4 align-middle justify-start w-20">
         <Link to="../">
           <BiChevronLeftSquare className="text-3xl text-lime-500 hover:scale-115 transition-all ease-in-out cursor-pointer" />
         </Link>

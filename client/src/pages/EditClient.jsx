@@ -30,10 +30,10 @@ const EditClient = () => {
       <h2>Editing Client:</h2>
       <Form
         method="post"
-        className="form_container flex flex-col justify-between gap-4 !h-full">
+        className="form_container flex flex-col justify-between gap-4 !h-full md:w-100">
         <input type="hidden" name="ClientId" defaultValue={clientID} />
         <input type="hidden" name="ClientOrg" defaultValue={organization} />
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="ClientUsername" className="w-40">
             Full Name:
           </label>
@@ -49,7 +49,7 @@ const EditClient = () => {
           />
         </div>
 
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="ClientCompany" className="w-40">
             Company:
           </label>
@@ -64,7 +64,7 @@ const EditClient = () => {
             }}
           />
         </div>
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="ClientEmail" className="w-40">
             Email:
           </label>
@@ -79,7 +79,7 @@ const EditClient = () => {
             }}
           />
         </div>
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="ClientPOC" className="w-40">
             POC:
           </label>
@@ -97,7 +97,7 @@ const EditClient = () => {
           </select>
         </div>
 
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="ClientNotes" className="w-40">
             Notes:
           </label>

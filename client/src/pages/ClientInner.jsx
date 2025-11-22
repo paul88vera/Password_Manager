@@ -53,13 +53,13 @@ const ClientInner = () => {
   const userFilter = users.filter((item) => clientFilter.includes(item.UserId));
 
   return (
-    <div className="flex flex-col gap-4 md:mt-4 pb-8">
-      <div className="flex flex-col flex-nowrap gap-4 align-middle justify-start">
+    <div className="flex flex-col gap-4 lg:mt-4 pb-8">
+      <div className="flex flex-col flex-nowrap gap-4 align-middle justify-start w-20">
         <Link to="../">
           <BiChevronLeftSquare className="text-3xl text-lime-500 hover:scale-115 transition-all ease-in-out cursor-pointer" />
         </Link>
       </div>
-      <div className="flex flex-col flex-nowrap justify-between bg-slate-300 pl-4 pr-8 pb-8 pt-4 rounded-2xl relative">
+      <div className="flex flex-col flex-nowrap justify-between bg-slate-300 px-2 md:pl-4 md:pr-8 pb-8 pt-4 rounded-2xl relative">
         <div className="flex flex-row md:gap-60 justify-between relative w-full">
           <div className="flex flex-row flex-nowrap gap-2">
             <div
@@ -92,19 +92,19 @@ const ClientInner = () => {
             </p>
           </div>
           <div
-            className="!text-slate-900 button flex flex-row gap-2 flex-nowrap align-middle justify-end mr-[-20px] hover:scale-105 transition ease-in-out p-0 cursor-pointer text-[1rem]"
+            className="!text-slate-900 button flex flex-row gap-2 flex-nowrap align-middle justify-end lg:mr-[-20px] transition ease-in-out p-0 cursor-pointer text-[1rem]"
             onClick={() => setModalOpened(true)}>
             {isMobile ? null : "Add Password "}
             <FaPlusCircle
-              className="text-1xl mt-1 text-slate-900"
+              className="text-2xl mt-2 mr-2 text-slate-900 hover:text-slate-700"
               title="Add a password"
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8 ml-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8 mx-0 lg:ml-4 min-w-auto">
           {modalOpened ? (
-            <div className="grid grid-cols-1 align-middle ">
+            <div className="grid grid-cols-1 align-middle absolute z-10 top-10 left-10 transform -translate-x-1/2 -translate-y-1/2 bg-slate-200 p-0 rounded-lg shadow-lg w-100">
               <Form
                 method="post"
                 onSubmit={toggleModal}
@@ -116,7 +116,7 @@ const ClientInner = () => {
                   type="hidden"
                   defaultValue={passClient}
                 />
-                <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+                <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
                   <label htmlFor="siteName" className="w-40">
                     Site Name:
                   </label>
@@ -131,7 +131,7 @@ const ClientInner = () => {
                     }}
                   />
                 </div>
-                <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right overflow-hidden text-overflow-ellipsis whitespace-nowrap">
+                <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left overflow-hidden text-overflow-ellipsis whitespace-nowrap">
                   <label htmlFor="site_url" className="w-40">
                     Site URL:
                   </label>
@@ -146,7 +146,7 @@ const ClientInner = () => {
                     }}
                   />
                 </div>
-                <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+                <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
                   <label htmlFor="username" className="w-40">
                     Username:
                   </label>
@@ -161,7 +161,7 @@ const ClientInner = () => {
                     }}
                   />
                 </div>
-                <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+                <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
                   <label htmlFor="password" className="w-40">
                     Password:
                   </label>
@@ -196,17 +196,17 @@ const ClientInner = () => {
           ) : null}
           {passwordFilter.map((pass) => (
             <div
-              className="site-card text-slate-300 flex flex-col flex-nowrap gap-4 align-middle justify-start p-4 pb-0 rounded-lg bg-slate-900 font-bold hover:bg-slate-950 transition ease-in-out w-100"
+              className="site-card text-slate-300 flex flex-col flex-nowrap gap-0 align-middle justify-start p-0 pb-0 rounded-xl font-bold transition ease-in-out items-stretch"
               key={pass.PassId}>
               <div
-                className="grid grid-rows-1 grid-cols-1 align-start justify-start relative cursor-pointer "
+                className="grid grid-rows-1 grid-cols-2 justify-start relative cursor-pointer bg-slate-900 p-4 rounded-xl"
                 onClick={() => toggleCard(pass.PassId)}>
                 {openCardId === pass.PassId ? (
-                  <FaLockOpen className="text-3xl flex flex-row justify-center align-middle mt-1" />
+                  <FaLockOpen className="text-3xl flex flex-row justify-center align-middle mt-1 pb-2 col-span-1" />
                 ) : (
-                  <FaLock className="text-3xl flex flex-row justify-center align-middle mt-1" />
+                  <FaLock className="text-3xl flex flex-row justify-center align-middle mt-1 col-span-1 pb-2" />
                 )}
-                <div className="grid grid-cols-1 grid-rows-2 justify-start w-full overflow-hidden text-overflow-ellipsis whitespace-nowrap">
+                <div className="grid grid-cols-1 grid-rows-2 justify-start overflow-hidden text-overflow-ellipsis whitespace-nowrap col-span-2">
                   <h3 className=" ">{pass.PassSite}</h3>
                   <Link
                     target="_blank"
@@ -222,39 +222,39 @@ const ClientInner = () => {
                 </div>
                 {openCardId === pass.PassId ? (
                   <Link to={`/${organization}/password/${pass.PassId}/edit`}>
-                    <MdEdit className="text-2xl text-lime-500 hover:text-slate-300 absolute right-0 top-2 grid grid-cols-1" />
+                    <MdEdit className="text-2xl text-lime-500 hover:text-slate-300 absolute right-4 top-6 grid grid-cols-1" />
                   </Link>
                 ) : null}
               </div>
-              <div className="p-0">
+              <div className="z-10">
                 {openCardId === pass.PassId ? (
                   <div
-                    className="flex flex-col gap-4 pt-0 pb-8"
+                    className="grid grid-cols-1 gap-4 pt-0 pb-8 bg-slate-900 p-4 pt-4 rounded-bl-xl rounded-br-xl mt-[-1.5rem]"
                     key={pass.PassId}>
                     <label
                       htmlFor="username"
-                      className="flex flex-row flex-nowrap gap-4 justify-end">
+                      className="flex flex-row flex-nowrap gap-4 justify-start">
                       Username:{" "}
-                      <input
-                        type="text"
-                        name="username"
-                        defaultValue={pass.PassUsername}
-                        className="w-auto bg-slate-300 text-slate-900 pl-2 rounded-sm"
-                      />
                     </label>
+                    <input
+                      type="text"
+                      name="username"
+                      defaultValue={pass.PassUsername}
+                      className="w-auto bg-slate-300 text-slate-900 pl-2 rounded-sm"
+                    />
                     <label
                       htmlFor="Password"
-                      className="flex flex-row flex-nowrap gap-4 justify-end">
+                      className="flex flex-row flex-nowrap gap-4 justify-start">
                       Password:{" "}
-                      <input
-                        type="text"
-                        name="password"
-                        defaultValue={pass.PassPW.split(
-                          import.meta.env.VITE_ENCRYPTION_KEY
-                        ).join("")}
-                        className="psw w-auto bg-slate-300 text-slate-900 pl-2 rounded-sm"
-                      />
                     </label>
+                    <input
+                      type="text"
+                      name="password"
+                      defaultValue={pass.PassPW.split(
+                        import.meta.env.VITE_ENCRYPTION_KEY
+                      ).join("")}
+                      className="psw w-auto bg-slate-300 text-slate-900 pl-2 rounded-sm"
+                    />
                   </div>
                 ) : null}
               </div>

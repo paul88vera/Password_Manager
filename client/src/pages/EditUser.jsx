@@ -25,8 +25,8 @@ const EditUser = () => {
       <h2>Editing Manager:</h2>
       <Form
         method="post"
-        className="form_container flex flex-col justify-between gap-4 !h-full">
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        className="form_container flex flex-col justify-between gap-4 !h-full md:w-100">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <input type="hidden" name="userId" defaultValue={userID} />
           <input type="hidden" name="orgId" defaultValue={organization} />
           <label htmlFor="UserName" className="w-40">
@@ -44,7 +44,7 @@ const EditUser = () => {
           />
         </div>
 
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="userEmail" className="w-40">
             Email:
           </label>
@@ -59,7 +59,7 @@ const EditUser = () => {
             }}
           />
         </div>
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="userRole" className="w-40">
             Role:
           </label>
@@ -74,16 +74,16 @@ const EditUser = () => {
           </select>
         </div>
 
-        <div className="flex flex-row gap-2 justify-end flex-nowrap text-right">
+        <div className="flex flex-col gap-2 justify-end flex-nowrap text-left">
           <label
             htmlFor="userActive"
-            className="flex flex-row flex-nowrap gap-2 w-40 justify-start align-middle">
-            Active:
+            className="flex flex-row flex-nowrap gap-2 w-auto justify-start align-middle">
+            Status:
+          </label>
             <select name="userActive" id="userActive" defaultValue={userActive}>
               <option value="1">Active</option>
               <option value="0">Deactivated</option>
             </select>
-          </label>
         </div>
 
         <div className="flex flex-row gap-2 mt-2">
