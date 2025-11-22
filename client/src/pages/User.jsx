@@ -13,7 +13,7 @@ const User = () => {
   const { organization } = useOrganization();
 
   return (
-    <div className="flex flex-col gap-4 mt-4 md:w-100">
+    <div className="flex flex-col gap-4 mt-4 md:w-full">
       <div className="flex flex-col flex-nowrap gap-4 align-middle justify-start w-20">
         <Link to="../">
           <BiChevronLeftSquare className="text-3xl text-lime-500 hover:scale-115 transition-all ease-in-out cursor-pointer" />
@@ -37,7 +37,7 @@ const User = () => {
               {editIcon ? <p className="text-red-900">edit</p> : null}
             </Link>
           </div>
-          <div className="flex flex-col gap-1 text-2xl font-bold text-slate-950">
+          <div className="flex flex-col gap-1 text-2xl font-bold text-slate-950 overflow-hidden md:overflow-visible w-auto">
             {user[0]?.UserName || "Unknown"}{" "}
             <div>
               <p className="text-sm">
@@ -55,7 +55,7 @@ const User = () => {
             <Link
               to={`mailto:${user[0]?.UserEmail}`}
               title={`Email ${user[0]?.UserName}`}
-              className="text-[1rem] font-thin !text-lime-900 hover:!text-lime-700">
+              className="text-[1rem] font-thin !text-lime-900 hover:!text-lime-700 text-overflow-ellipsis whitespace-nowrap max-w-[200px] md:max-w-100">
               {user[0]?.UserEmail || "Unknown"}
             </Link>
           </div>

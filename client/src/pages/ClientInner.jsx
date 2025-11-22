@@ -78,7 +78,7 @@ const ClientInner = () => {
                 {editIcon ? <p className="text-red-900">edit</p> : null}
               </Link>
             </div>
-            <p className="flex flex-col gap-0 text-2xl font-bold text-slate-950">
+            <p className="flex flex-col gap-0 text-2xl font-bold text-slate-950 overflow-hidden text-overflow-ellipsis">
               {client[0]?.ClientUsername || "Unknown"} <br />
               <span className="text-[1.2rem] font-normal">
                 {client[0]?.ClientCompany || "Unknown"}
@@ -86,7 +86,7 @@ const ClientInner = () => {
               <Link
                 to={`mailto:${client[0]?.ClientEmail}`}
                 title={`Click to email ${client[0]?.ClientUsername}`}
-                className="text-[1rem] font-thin !text-lime-900 hover:!text-lime-700">
+                className="text-[1rem] font-thin !text-lime-900 hover:!text-lime-700 text-overflow-ellipsis whitespace-nowrap max-w-[200px] md:max-w-100">
                 {client[0]?.ClientEmail || "Unknown"}
               </Link>
             </p>
@@ -104,7 +104,7 @@ const ClientInner = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8 mx-0 lg:ml-4 min-w-auto">
           {modalOpened ? (
-            <div className="grid grid-cols-1 align-middle absolute z-10 top-10 left-10 transform -translate-x-1/2 -translate-y-1/2 bg-slate-200 p-0 rounded-lg shadow-lg w-100">
+            <div className="grid grid-cols-1 align-middle absolute z-10 top-10 left-10 p-0 rounded-lg shadow-lg w-100">
               <Form
                 method="post"
                 onSubmit={toggleModal}
@@ -229,7 +229,7 @@ const ClientInner = () => {
               <div className="z-10">
                 {openCardId === pass.PassId ? (
                   <div
-                    className="grid grid-cols-1 gap-4 pt-0 pb-8 bg-slate-900 p-4 pt-4 rounded-bl-xl rounded-br-xl mt-[-1.5rem]"
+                    className="grid grid-cols-1 gap-4 pt-4 pb-8 bg-slate-900 p-4 rounded-bl-xl rounded-br-xl mt-[-1.5rem]"
                     key={pass.PassId}>
                     <label
                       htmlFor="username"

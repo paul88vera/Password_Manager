@@ -4,10 +4,11 @@ import { MdOutlineComputer } from "react-icons/md";
 import React, { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import PasswordCard from "../components/PasswordCard";
+import {useOrganization} from "@clerk/clerk-react";
 
 const Sites = () => {
   const passwords = useLoaderData();
-  const organization = passwords[0]?.OrgId;
+  const {organization} = useOrganization();
 
   // Used for Filter State
   const [filter, setFilter] = useState("");
@@ -47,7 +48,7 @@ const Sites = () => {
       </div>
       <div className="mt-4 grid grid-cols-1 gap-4">
         {passFiltered == "" ? (
-          <Link to={`/${organization}/client`}>
+          <Link to={`/${organization.id}/client`}>
             No Sites Yet... Add A Password To A Client
           </Link>
         ) : null}
