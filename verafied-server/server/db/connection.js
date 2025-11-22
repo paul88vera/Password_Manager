@@ -1,5 +1,5 @@
-const mysql = require("mysql2/promise");
 require("@dotenvx/dotenvx").config();
+const mysql = require("mysql2/promise");
 
 async function connectDB() {
   try {

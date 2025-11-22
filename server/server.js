@@ -1,9 +1,9 @@
+require("@dotenvx/dotenvx").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const routes = require("./routes");
 const { clerkMiddleware, getAuth } = require("@clerk/express");
-require("@dotenvx/dotenvx").config();
 const PORT = process.env.VITE_SERVER_PORT;
 
 // === MIDDLEWARE ===
@@ -29,15 +29,15 @@ app.use(cors());
 // );
 
 // === AUTH ===
-function requireAuth(req, res, next) {
-  const { userId, orgId } = getAuth(req);
+// function requireAuth(req, res, next) {
+//   const { userId, orgId } = getAuth(req);
 
-  if (!userId || !orgId) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
+//   if (!userId || !orgId) {
+//     return res.status(401).json({ message: "Unauthorized" });
+//   }
 
-  next();
-}
+//   next();
+// }
 
 // === ROUTES ===
 // app.use("/api", requireAuth, routes);

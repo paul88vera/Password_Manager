@@ -22,7 +22,7 @@ const SitesInner = () => {
 
   // password filter by SiteName
   const passwordFilteredBySite = passwords.filter(
-    (item) => item.PassSite === slug[0]
+    (item) => item.PassSite.toLowerCase() === slug[0]
   );
 
   // password filtered by ClientID = [1,2]
@@ -45,7 +45,7 @@ const SitesInner = () => {
       <div className="flex flex-row flex-nowrap gap-2 justify-start">
         <h2 className="mt-2">Website:</h2>
         <span className="flex flex-row flex-nowrap gap-2 text-3xl font-bold text-lime-500 align-top">
-          {passwordFilteredBySite[0].PassSite}
+          {passwordFilteredBySite[0]?.PassSite}
           <IoSearch
             className={`text-3xl text-lime-500 hover:scale-115 transition-all ease-in-out cursor-pointer mt-1 ${
               searchOpen ? "hidden" : null

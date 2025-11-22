@@ -48,7 +48,7 @@ const Profile = () => {
         ) : (
           <div className="flex flex-col gap-4 mt-4">
             <h2>Clients:</h2>
-            <div className="site-card flex flex-row flex-nowrap gap-4 align-middle justify-start  rounded-lg font-bold w-full md:w-100 md:max-w-[350px] text-lime-500">
+            <div className="site-card flex flex-row flex-nowrap gap-4 align-middle justify-start rounded-lg font-bold w-full md:w-100 md:max-w-[350px] text-lime-500">
               {memoUser == "" && memoClient == "" ? (
                 <Link to={`/${organization}/add-manager`}>
                   No Clients or Managers Yet... :{"("}

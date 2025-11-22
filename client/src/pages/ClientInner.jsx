@@ -102,13 +102,13 @@ const ClientInner = () => {
           </div>
         </div>
 
-        <div className="flex flex-row flex-wrap gap-4 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8 ml-4">
           {modalOpened ? (
-            <div className="flex flex-col align-middle justify-center">
+            <div className="grid grid-cols-1 align-middle ">
               <Form
                 method="post"
                 onSubmit={toggleModal}
-                className="form_container flex flex-col justify-between gap-4 max-w-100">
+                className="form_container flex flex-col justify-between gap-4 max-w-100 overflow-hidden">
                 <input name="orgId" type="hidden" defaultValue={organization} />
                 <input
                   name="passClient"
@@ -125,13 +125,13 @@ const ClientInner = () => {
                     name="siteName"
                     id="siteName"
                     className="w-60"
-                    defaultValue={siteName}
+                    placeholder={siteName}
                     onChange={(e) => {
                       setSiteName(e.target.value);
                     }}
                   />
                 </div>
-                <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+                <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right overflow-hidden text-overflow-ellipsis whitespace-nowrap">
                   <label htmlFor="site_url" className="w-40">
                     Site URL:
                   </label>
@@ -140,7 +140,7 @@ const ClientInner = () => {
                     name="site_url"
                     id="site_url"
                     className="w-60"
-                    defaultValue={siteUrl}
+                    placeholder={siteUrl}
                     onChange={(e) => {
                       setSiteUrl(e.target.value);
                     }}
@@ -155,7 +155,7 @@ const ClientInner = () => {
                     name="username"
                     id="username"
                     className="w-60"
-                    defaultValue={username}
+                    placeholder={username}
                     onChange={(e) => {
                       setUsername(e.target.value);
                     }}
@@ -170,7 +170,7 @@ const ClientInner = () => {
                     name="password"
                     id="password"
                     className="w-60"
-                    defaultValue={password}
+                    placeholder={password}
                     onChange={(e) => {
                       setPassword(e.target.value);
                     }}
@@ -196,17 +196,17 @@ const ClientInner = () => {
           ) : null}
           {passwordFilter.map((pass) => (
             <div
-              className="site-card text-slate-300 flex flex-col flex-nowrap gap-4 align-middle justify-start p-4  pb-0 rounded-lg bg-slate-900 font-bold w-full md:max-w-[380px] hover:bg-slate-950 transition ease-in-out"
+              className="site-card text-slate-300 flex flex-col flex-nowrap gap-4 align-middle justify-start p-4 pb-0 rounded-lg bg-slate-900 font-bold hover:bg-slate-950 transition ease-in-out w-100"
               key={pass.PassId}>
               <div
-                className="flex flex-row gap-4 align-middle justify-start w-full relative cursor-pointer"
+                className="grid grid-rows-1 grid-cols-1 align-start justify-start relative cursor-pointer "
                 onClick={() => toggleCard(pass.PassId)}>
                 {openCardId === pass.PassId ? (
-                  <FaLockOpen className="text-3xl flex flex-row justify-center align-middle mt-2" />
+                  <FaLockOpen className="text-3xl flex flex-row justify-center align-middle mt-1" />
                 ) : (
-                  <FaLock className="text-3xl flex flex-row justify-center align-middle mt-2" />
+                  <FaLock className="text-3xl flex flex-row justify-center align-middle mt-1" />
                 )}
-                <div className="flex flex-col justify-start">
+                <div className="grid grid-cols-1 grid-rows-2 justify-start w-full overflow-hidden text-overflow-ellipsis whitespace-nowrap">
                   <h3 className=" ">{pass.PassSite}</h3>
                   <Link
                     target="_blank"
@@ -216,13 +216,13 @@ const ClientInner = () => {
                         ? `${pass.PassHTML}`
                         : `https://${pass.PassHTML}`
                     }
-                    className="text-[1rem] font-thin">
+                    className="text-[1rem] font-thin overflow-hidden text-overflow-ellipsis whitespace-nowrap">
                     {pass.PassHTML}
                   </Link>
                 </div>
                 {openCardId === pass.PassId ? (
                   <Link to={`/${organization}/password/${pass.PassId}/edit`}>
-                    <MdEdit className="text-2xl text-lime-500 hover:text-slate-300 absolute right-0" />
+                    <MdEdit className="text-2xl text-lime-500 hover:text-slate-300 absolute right-0 top-2 grid grid-cols-1" />
                   </Link>
                 ) : null}
               </div>
