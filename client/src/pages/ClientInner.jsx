@@ -86,13 +86,13 @@ const ClientInner = () => {
               <Link
                 to={`mailto:${client[0]?.ClientEmail}`}
                 title={`Click to email ${client[0]?.ClientUsername}`}
-                className="text-[1rem] font-thin !text-lime-900 hover:!text-lime-700 text-overflow-ellipsis whitespace-nowrap max-w-[200px] md:max-w-100">
+                className="text-[1rem] font-thin text-lime-900! hover:text-lime-700! text-overflow-ellipsis whitespace-nowrap max-w-[200px] md:max-w-100">
                 {client[0]?.ClientEmail || "Unknown"}
               </Link>
             </p>
           </div>
           <div
-            className="!text-slate-900 button flex flex-row gap-2 flex-nowrap align-middle justify-end lg:mr-[-20px] transition ease-in-out p-0 cursor-pointer text-[1rem]"
+            className="text-slate-900! button flex flex-row gap-2 flex-nowrap align-middle justify-end lg:mr-5 transition ease-in-out p-0 cursor-pointer text-[1rem]"
             onClick={() => setModalOpened(true)}>
             {isMobile ? null : "Add Password "}
             <FaPlusCircle
@@ -102,7 +102,7 @@ const ClientInner = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8 mx-0 lg:ml-4 min-w-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8 mx-0 lg:ml-4 min-w-auto z-50">
           {modalOpened ? (
             <div className="grid grid-cols-1 align-middle absolute z-10 top-10 left-10 p-0 rounded-lg shadow-lg w-100">
               <Form
@@ -226,7 +226,7 @@ const ClientInner = () => {
                   </Link>
                 ) : null}
               </div>
-              <div className="z-10">
+              <div className="z-2">
                 {openCardId === pass.PassId ? (
                   <div
                     className="grid grid-cols-1 gap-4 pt-4 pb-8 bg-slate-900 p-4 rounded-bl-xl rounded-br-xl mt-[-1.5rem]"
