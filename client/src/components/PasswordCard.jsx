@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const PasswordCard = ({ children, id, name }) => {
   const { organization } = useOrganization();
 
-  const newName = name.replace(/\s+/g, "").toLowerCase();
+  const newName = name.replace(/\s+/g, "_").toLowerCase();
 
   return (
     <Link

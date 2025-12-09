@@ -57,11 +57,9 @@ const Sites = () => {
             if (filter == "") {
               return val;
             } else if (
-              // val.PassSite.toLowerCase().includes(filter.toLowerCase());
-
-              val.PassSite.replace(/\s+/g, "") // "WP Site" → "WPSite"
+              val.PassSite.replace(/\s+/g, " ") // "WP Site" → "WPSite"
                 .toLowerCase()
-                .includes(filter.replace(/\s+/g, "").toLowerCase())
+                .includes(filter.replace(/\s+/g, " ").toLowerCase())
             ) {
               return val;
             }
