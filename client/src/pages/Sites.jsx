@@ -4,10 +4,11 @@ import { MdOutlineComputer } from "react-icons/md";
 import React, { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import PasswordCard from "../components/PasswordCard";
+import {useOrganization} from "@clerk/clerk-react";
 
 const Sites = () => {
   const passwords = useLoaderData();
-  const organization = passwords[0]?.OrgId;
+  const {organization} = useOrganization();
 
   // Used for Filter State
   const [filter, setFilter] = useState("");
@@ -41,13 +42,13 @@ const Sites = () => {
             onChange={(event) => {
               setFilter(event.target.value);
             }}
-            className="p-2 text-center rounded-full bg-slate-500 text-slate-200 w-full placeholder:!text-slate-200 focus:outline-1 focus:outline-lime-500 mt-4"
+            className="p-2 text-center rounded-full bg-slate-500 text-slate-200 w-full placeholder:text-slate-200! focus:outline-1 focus:outline-lime-500 mt-4"
           />
         ) : null}
       </div>
-      <div className="mt-4 grid grid-cols-1 gap-4">
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {passFiltered == "" ? (
-          <Link to={`/${organization}/client`}>
+          <Link to={`/${organization.id}/client`}>
             No Sites Yet... Add A Password To A Client
           </Link>
         ) : null}
@@ -56,7 +57,9 @@ const Sites = () => {
             if (filter == "") {
               return val;
             } else if (
-              val.PassSite.toLowerCase().includes(filter.toLowerCase())
+              val.PassSite.replace(/\s+/g, " ") // "WP Site" → "WPSite"
+                .toLowerCase()
+                .includes(filter.replace(/\s+/g, " ").toLowerCase())
             ) {
               return val;
             }

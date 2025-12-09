@@ -1,12 +1,12 @@
 // const https = require("https");    //DEV
 // const fs = require("fs");    //DEV
 // const path = require("path");    // DEV
+require("@dotenvx/dotenvx").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const routes = require("./routes");
 const { clerkMiddleware, getAuth } = require("@clerk/express");
-require("@dotenvx/dotenvx").config();
 const PORT = process.env.VITE_SERVER_PORT;
 
 // === MIDDLEWARE ===

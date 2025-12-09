@@ -31,42 +31,11 @@ const Profile = () => {
       <div>
         Welcome, <b className="text-lime-500">{userName || "Admin User"}!</b>
       </div>
-      <div className="flex flex-col-reverse md:flex-row gap-4">
-        {memoClient != "" ? (
-          <div className="flex flex-col gap-4 mt-4">
-            <h2>Clients:</h2>
-            {memoClient.map((item, index) => (
-              <ClientCard
-                key={index}
-                id={item.ClientId}
-                organization={organization}>
-                <CgProfile className="text-4xl text-slate-900 " />
-                <h3 className="text-slate-900 ">{item.ClientUsername}</h3>
-              </ClientCard>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4 mt-4">
-            <h2>Clients:</h2>
-            <div className="site-card flex flex-row flex-nowrap gap-4 align-middle justify-start  rounded-lg font-bold w-full md:w-100 md:max-w-[350px] text-lime-500">
-              {memoUser == "" && memoClient == "" ? (
-                <Link to={`/${organization}/add-manager`}>
-                  No Clients or Managers Yet... :{"("}
-                  <br /> Add A Manager
-                </Link>
-              ) : (
-                <Link to={`/${organization}/add-client`}>
-                  No Clients Yet... :{"("}
-                  <br /> Add A Client
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
+      <div className="grid grid-cols-1 gap-4">
         {memoUser !== "" ? (
           <div>
-            <div className="flex flex-col gap-4 mt-4">
               <h2>Account Managers:</h2>
+            <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 grid-rows-auto gap-4 mt-4">
               {memoUser.map((item, index) => (
                 <ManagerCard
                   key={index}
@@ -85,6 +54,40 @@ const Profile = () => {
             <br /> Add A Manager
           </Link>
         )}
+        {memoClient != "" ? (
+          <div className="grid grid-cols-1 gap-0">
+            <h2>Clients:</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
+            {memoClient.map((item, index) => (
+              <ClientCard
+                key={index}
+                id={item.ClientId}
+                organization={organization}>
+                <CgProfile className="text-4xl text-slate-900 " />
+                <h3 className="text-slate-900 ">{item.ClientUsername}</h3>
+              </ClientCard>
+            ))}
+          </div>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4 mt-4">
+            <h2>Clients:</h2>
+            <div className="site-card flex flex-row flex-nowrap gap-4 align-middle justify-start rounded-lg font-bold w-full md:w-100 md:max-w-[350px] text-lime-500">
+              {memoUser == "" && memoClient == "" ? (
+                <Link to={`/${organization}/add-manager`}>
+                  No Clients or Managers Yet... :{"("}
+                  <br /> Add A Manager
+                </Link>
+              ) : (
+                <Link to={`/${organization}/add-client`}>
+                  No Clients Yet... :{"("}
+                  <br /> Add A Client
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
+        
       </div>
     </div>
   );

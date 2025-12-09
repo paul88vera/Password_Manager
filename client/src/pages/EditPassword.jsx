@@ -35,13 +35,13 @@ const EditPassword = () => {
   // Needed for password/client identification
 
   return (
-    <div className="flex flex-row flex-wrap gap-4 mt-8">
-      <div className="flex flex-col align-middle justify-center">
+    <div className="flex flex-row flex-wrap gap-4 mt-2 justify-center">
+      <div className="flex flex-col align-middle justify-center gap-4">
         <h2>Editing Password:</h2>
         <Form
           method="post"
           action={`/${defaultValues.organization}/password/${defaultValues.passID}/edit`}
-          className="form_container flex flex-col justify-between gap-4 max-w-100">
+          className="form_container flex flex-col justify-between gap-4 w-100">
           <input
             name="passClient"
             type="hidden"
@@ -57,7 +57,7 @@ const EditPassword = () => {
             name="orgId"
             defaultValue={defaultValues.organization}
           />
-          <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+          <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
             <label htmlFor="siteName" className="w-40">
               Site Name:
             </label>
@@ -72,7 +72,7 @@ const EditPassword = () => {
               }}
             />
           </div>
-          <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+          <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
             <label htmlFor="site_url" className="w-40">
               Site URL:
             </label>
@@ -87,7 +87,7 @@ const EditPassword = () => {
               defaultValue={siteUrl}
             />
           </div>
-          <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+          <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
             <label htmlFor="username" className="w-40">
               Username:
             </label>
@@ -102,7 +102,7 @@ const EditPassword = () => {
               }}
             />
           </div>
-          <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+          <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
             <label htmlFor="password" className="w-40">
               Password:
             </label>

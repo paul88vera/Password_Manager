@@ -35,11 +35,11 @@ const Client = () => {
             onChange={(event) => {
               setFilter(event.target.value);
             }}
-            className="p-2 text-center rounded-full bg-slate-500 text-slate-200 w-full placeholder:!text-slate-200 focus:outline-1 focus:outline-lime-500"
+            className="p-2 text-center rounded-full bg-slate-500 text-slate-200 w-full placeholder:text-slate-200! focus:outline-1 focus:outline-lime-500"
           />
         ) : null}
       </div>
-      <div className="mt-4 grid grid-cols-1 gap-4">
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {client && user == "" ? (
           <Link to="/add-manager">
             No Clients or Managers Yet... Add A Manager

@@ -15,9 +15,9 @@ const AddUser = () => {
       <h2>Add A New Manager:</h2>
       <Form
         method="post"
-        className="form_container flex flex-col justify-between gap-4 !h-full">
+        className="form_container flex flex-col justify-between gap-4 !h-full md:w-100">
         <input type="hidden" name="orgId" value={organization.id} />
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="UserName" className="w-40">
             Full Name:
           </label>
@@ -33,7 +33,7 @@ const AddUser = () => {
           />
         </div>
 
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="userEmail" className="w-40">
             Email:
           </label>
@@ -48,7 +48,7 @@ const AddUser = () => {
             }}
           />
         </div>
-        <div className="flex flex-row gap-2 flex-nowrap justify-between align-middle text-right">
+        <div className="flex flex-col gap-2 flex-nowrap justify-between align-middle text-left">
           <label htmlFor="userRole" className="w-40">
             Role:
           </label>
@@ -62,11 +62,11 @@ const AddUser = () => {
           </select>
         </div>
 
-        <div className="flex flex-row gap-2 justify-end flex-nowrap text-right">
+        <div className="flex flex-row gap-2 justify-start flex-nowrap text-left">
           <label
             htmlFor="userActive"
-            className="flex flex-row flex-nowrap gap-0 w-40 justify-start align-middle">
-            Active:
+            className="flex flex-row flex-nowrap gap-0 w-40 justify-start">
+            Status:
             <input
               type="checkbox"
               name="userActive"
