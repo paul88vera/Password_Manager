@@ -2,7 +2,7 @@
   "name": "pm",
   "version": "0.0.1",
   "scripts": {
-    "server": "cd server && npm run start",
+    "server": "cd verafied-server/server && node server.js",
     "client": "cd client && npm run dev",
     "dev": "concurrently \"npm run client\" \"npm run server\""
   },

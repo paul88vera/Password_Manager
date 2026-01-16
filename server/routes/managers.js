@@ -90,7 +90,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const connection = await db;
     const { id } = req.params;
-    const query = "DELETE FROM Manager WHERE UserId = ?";
+    const query = "UPDATE Manager SET UserActive = 0 WHERE UserId = ?";
     connection.query(query, [id]);
     res.send("User Deleted");
   } catch (err) {
