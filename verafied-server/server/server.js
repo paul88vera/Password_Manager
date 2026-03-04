@@ -14,47 +14,11 @@ const PORT = process.env.VITE_SERVER_PORT;
  * !PRODUCTION SERVER SETUP
  */
 
-// === MIDDLEWARE ===
-app.use(express.json());
-app.use(
-  cors({
-    origin: ["https://app.verafied.tech"], // frontend domain
-    credentials: true, // if sending cookies
-  })
-);
-
-// === Clerk Auth ===
-app.use(
-  clerkMiddleware({
-    publishableKey: process.env.VITE_CLERK_PUBLISHABLE_KEY,
-    secretKey: process.env.VITE_CLERK_SECRET,
-  })
-);
-
-// === AUTH ===
-function requireAuth(req, res, next) {
-  const { userId, orgId } = getAuth(req);
-
-  if (!userId || !orgId) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
-  next();
-}
-
-// === ROUTES ===
-app.use("/api", requireAuth, routes);
-
-
-/**
- * !DEVELOPMENT SERVER SETUP
- */
-
 // // === MIDDLEWARE ===
 // app.use(express.json());
 // app.use(
 //   cors({
-//     origin: ["https://localhost:5173"], // frontend domain
+//     origin: ["https://app.verafied.tech"], // frontend domain
 //     credentials: true, // if sending cookies
 //   })
 // );
@@ -80,6 +44,42 @@ app.use("/api", requireAuth, routes);
 
 // // === ROUTES ===
 // app.use("/api", requireAuth, routes);
+
+
+/**
+ * !DEVELOPMENT SERVER SETUP
+ */
+
+// === MIDDLEWARE ===
+app.use(express.json());
+app.use(
+  cors({
+    origin: ["https://localhost:5173"], // frontend domain
+    credentials: true, // if sending cookies
+  })
+);
+
+// === Clerk Auth ===
+app.use(
+  clerkMiddleware({
+    publishableKey: process.env.VITE_CLERK_PUBLISHABLE_KEY,
+    secretKey: process.env.VITE_CLERK_SECRET,
+  })
+);
+
+// === AUTH ===
+function requireAuth(req, res, next) {
+  const { userId, orgId } = getAuth(req);
+
+  if (!userId || !orgId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  next();
+}
+
+// === ROUTES ===
+app.use("/api", requireAuth, routes);
 
 
 // !BOTH === START SERVER ===

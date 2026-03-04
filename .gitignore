@@ -18,6 +18,9 @@ AWSCLIV2.pkg
 client/certs/*
 !client/certs/.gitkeep
 
+verafied-server/certs/*
+!verafied-server/certs/.gitkeep
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
